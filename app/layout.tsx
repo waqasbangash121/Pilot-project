@@ -14,8 +14,6 @@ const sans = Manrope({
   variable: "--font-hyper-sans",
   display: "swap",
 });
-<Analytics />;
-<SpeedInsights />;
 const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-hyper-mono",
@@ -39,6 +37,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(createWebsiteSchema()) }}
         />
         <SiteShell>{children}</SiteShell>
+        {/* ✅ FIXED: Analytics + Speed Insights must be here */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
