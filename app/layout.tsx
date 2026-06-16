@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
-
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteShell } from "@/components/layout/site-shell";
 import { defaultMetadata, defaultViewport } from "@/config/metadata";
 import { createOrganizationSchema, createWebsiteSchema } from "@/schemas";
@@ -13,7 +14,8 @@ const sans = Manrope({
   variable: "--font-hyper-sans",
   display: "swap",
 });
-
+<Analytics />;
+<SpeedInsights />;
 const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-hyper-mono",

@@ -63,3 +63,6 @@ Thumbs.db
 *.wmv
 
 >>>>>>> da2eefa063645b4eef2b97cb49fc02ff746a60a7
+
+.vercel
+.env*
