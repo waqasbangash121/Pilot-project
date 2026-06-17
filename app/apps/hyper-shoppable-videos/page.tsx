@@ -35,7 +35,7 @@ const benefits = [
   },
   {
     id: 3,
-    title: "Improve SEO Performance",
+    title: "Manage Content Easily",
     description: "Better engagement signals improve ranking and organic visibility.",
     imageSrc: "/shopable-benefit-3.png",
   },
@@ -190,6 +190,7 @@ export default function HyperShoppableVideosPage() {
             <CardStack
               items={benefits.map((b) => ({
                 id: b.id,
+                title: b.title,
                 imageSrc: b.imageSrc,
               }))}
               cardHeight={420}
