@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import Image from "next/image";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { Accordion } from "@/components/ui/accordion";
 import { Container } from "@/components/ui/container";
@@ -88,21 +89,21 @@ type HeroContent = {
 
 const productAccents = [
   {
-    logo: "/aichat.svg",
+    logo: "/hyper-aichat.svg",
     label: "AI Shopping Assistant",
     color: "text-primary",
     bg: "bg-primary/10",
     border: "border-primary/20",
   },
   {
-    logo: "/shoppable-videos.svg",
+    logo: "/hyper-videos.svg",
     label: "Shoppable Videos",
     color: "text-[hsl(var(--brand-end))]",
     bg: "bg-[hsl(var(--brand-end)/0.12)]",
     border: "border-[hsl(var(--brand-end)/0.25)]",
   },
   {
-    logo: "/smart-search-filters.svg",
+    logo: "/hyper-search.svg",
     label: "Smart Search & Filters",
     color: "text-primary",
     bg: "bg-primary/10",
@@ -367,9 +368,17 @@ export function ThreeProductsSection({ products }: { products: readonly ProductI
               className="rounded-[10px] border border-border bg-surface p-7 shadow-[0_18px_50px_-40px_hsl(var(--shadow)/0.85)]"
             >
               <div className="flex items-start gap-4">
-                <MiniIcon className={`${accent.border} ${accent.bg} ${accent.color}`}>
-                  {index === 0 ? "AI" : index === 1 ? "SV" : "SF"}
-                </MiniIcon>
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl border ${accent.border} ${accent.bg}`}
+                >
+                  <Image
+                    src={accent.logo}
+                    alt={accent.label}
+                    width={50}
+                    height={50}
+                    className="rounded-md object-contain"
+                  />
+                </div>
                 <div>
                   <h3 className={`text-lg font-bold ${accent.color}`}>{accent.label}</h3>
                   <p className="text-sm font-semibold text-foreground">({product.name})</p>
