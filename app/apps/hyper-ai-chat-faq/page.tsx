@@ -5,6 +5,7 @@ import { CardStack } from "@/components/CardStack";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
+import TrackLink from "@/components/TrackLink";
 
 export const metadata = createPageMetadata({
   title: "Hyper AI Chat & FAQs – Shopify AI Customer Support Automation",
@@ -132,12 +133,13 @@ export default function HyperAIChatFAQPage() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <TrackLink
               href="https://apps.shopify.com/hyper-chatbot-and-faqs"
+              eventName="click_install_button"
               className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
             >
               Install on Shopify
-            </Link>
+            </TrackLink>
 
             <Link href="#features" className="text-sm font-medium text-primary underline">
               Explore Features
@@ -371,7 +373,7 @@ export default function HyperAIChatFAQPage() {
 
               {/* Buttons */}
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
+                <TrackLink
                   href="https://apps.shopify.com/hyper-chatbot-and-faqs"
                   className="
               inline-flex items-center justify-center
@@ -383,9 +385,10 @@ export default function HyperAIChatFAQPage() {
               transition
               hover:opacity-90
             "
+                  eventName="click_install_button"
                 >
                   Install on Shopify
-                </Link>
+                </TrackLink>
 
                 <Link
                   href="#features"

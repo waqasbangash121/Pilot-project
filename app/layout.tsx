@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
@@ -6,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SiteShell } from "@/components/layout/site-shell";
 import { defaultMetadata, defaultViewport } from "@/config/metadata";
 import { createOrganizationSchema, createWebsiteSchema } from "@/schemas";
+import GoogleAnalytics from "@/app/GoogleAnalytics";
 
 import "./globals.css";
 
@@ -25,6 +27,7 @@ const sans = Manrope({
   variable: "--font-hyper-sans",
   display: "swap",
 });
+
 const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-hyper-mono",
@@ -38,18 +41,47 @@ export const viewport: Viewport = defaultViewport;
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* ✅ Google Analytics (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZC5XNC1VDY"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-ZC5XNC1VDY', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+      </head>
+
       <body className="bg-background font-sans text-foreground">
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+
+        <GoogleAnalytics />
+
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(createOrganizationSchema()) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(createOrganizationSchema()),
+          }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(createWebsiteSchema()) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(createWebsiteSchema()),
+          }}
         />
+
         <SiteShell>{children}</SiteShell>
-        {/* ✅ FIXED: Analytics + Speed Insights must be here */}
+
+        {/* Vercel Analytics */}
         <Analytics />
         <SpeedInsights />
       </body>

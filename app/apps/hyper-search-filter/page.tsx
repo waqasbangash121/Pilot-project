@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import { CardStack } from "@/components/CardStack";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import TrackLink from "@/components/TrackLink";
 
 import { createPageMetadata } from "@/config/metadata";
 
@@ -127,12 +128,13 @@ export default function HyperSearchFilterPage() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <TrackLink
               href="https://apps.shopify.com/hyper-search-product-filters"
               className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-medium text-white"
+              eventName="click_install_button"
             >
               Install on Shopify
-            </Link>
+            </TrackLink>
 
             <Link href="#features" className="text-sm font-medium text-primary underline">
               Explore Features
@@ -351,12 +353,13 @@ export default function HyperSearchFilterPage() {
 
               {/* Buttons */}
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
+                <TrackLink
                   href="https://apps.shopify.com/hyper-search-product-filters"
                   className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-medium text-white hover:opacity-90 transition"
+                  eventName="click_install_button"
                 >
                   Install on Shopify
-                </Link>
+                </TrackLink>
 
                 <Link
                   href="#features"
