@@ -1,102 +1,135 @@
 import Link from "next/link";
-
 import Image from "next/image";
+import { Check } from "lucide-react";
+
+import { CardStack } from "@/components/CardStack";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+
 import { createPageMetadata } from "@/config/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Hyper Search & Filters – AI Product Discovery for Shopify Stores",
+  title: "Hyper AI Search – AI-Powered Shopify Search & Product Discovery",
   description:
-    "Improve Shopify product discovery with AI-powered semantic search and smart filters. Help customers find products faster, increase conversions, and improve store UX with Hyper Search & Filters.",
-  path: "/apps/hyper-search-filter",
+    "Hyper AI Search helps Shopify stores improve product discovery using AI-powered semantic search, smart filters, autocomplete, and personalized shopping experiences.",
+  path: "/apps/hyper-ai-search",
 });
 
+/* DATA */
 const features = [
-  "AI-powered semantic product search",
-  "Intent-based search results (not keyword-only)",
-  "Advanced Shopify collection filtering",
-  "Fast, optimized product discovery",
-  "Custom filter logic per collection",
-  "Mobile-first search experience",
+  "AI-powered semantic search",
+  "Intent-based product discovery",
+  "Advanced collection filters",
+  "Instant search suggestions",
+];
+
+const seoBenefits = [
+  {
+    icon: "🔍",
+    title: "AI Product Discovery",
+    desc: "Understand customer intent instead of exact keyword matching.",
+  },
+  {
+    icon: "⚡",
+    title: "Faster Shopping",
+    desc: "Instant results reduce friction and improve browsing speed.",
+  },
+  {
+    icon: "📈",
+    title: "Higher Conversions",
+    desc: "Better product discovery leads to more purchases.",
+  },
+  {
+    icon: "🧠",
+    title: "Intent-Based Search",
+    desc: "AI understands meaning behind queries for better results.",
+  },
 ];
 
 const benefits = [
   {
-    title: "Increase Product Discoverability",
-    description:
-      "Help customers find exactly what they need using AI that understands meaning, not just keywords.",
+    id: 1,
+    title: "Find Products Faster",
+    description: "AI understands customer intent and delivers relevant products instantly.",
+    imageSrc: "/search-benefit-1.png",
   },
   {
+    id: 2,
     title: "Reduce Shopping Friction",
-    description:
-      "Smart filters and instant search results make browsing faster and easier for customers.",
+    description: "Smart filters simplify navigation and improve UX.",
+    imageSrc: "/search-benefit-2.png",
   },
   {
-    title: "Boost Conversion Rates",
-    description: "Better product discovery directly increases add-to-cart rates and sales.",
+    id: 3,
+    title: "Increase Conversions",
+    description: "Better discovery directly improves purchase rate.",
+    imageSrc: "/search-benefit-4.png",
+  },
+  {
+    id: 4,
+    title: "In-depth Analytics",
+    description: "Gain insights into customer behavior and search patterns.",
+    imageSrc: "/search-benefit-3.png",
   },
 ];
 
 const faqs = [
   {
-    q: "What is AI product search in Shopify?",
-    a: "It is a smart search system that understands customer intent and shows more relevant products compared to traditional keyword search.",
+    q: "What is AI product search?",
+    a: "AI search understands intent instead of relying only on keyword matching.",
   },
   {
-    q: "Does Hyper Search replace Shopify default search?",
-    a: "It enhances Shopify search by adding AI understanding, filtering, and smarter ranking of products.",
+    q: "Does it replace Shopify search?",
+    a: "No. It enhances Shopify search with AI-powered discovery.",
   },
   {
-    q: "Will this improve SEO or just UX?",
-    a: "It improves both UX and SEO signals like engagement time, bounce rate, and interaction depth.",
+    q: "Can it improve conversions?",
+    a: "Yes. Better discovery improves purchase behavior.",
+  },
+  {
+    q: "Is it mobile friendly?",
+    a: "Yes. It is fully optimized for mobile commerce.",
+  },
+  {
+    q: "Can it handle large catalogs?",
+    a: "Yes. It scales for large Shopify stores.",
   },
 ];
 
 export default function HyperSearchFilterPage() {
   return (
     <>
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
         <Container className="max-w-5xl text-center">
-          {/* LOGO BADGE */}
           <div className="flex justify-center">
             <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
               <Image
                 src="/hyper-search.svg"
-                alt="Hyper Search AI Shopify App Logo"
+                alt="Hyper AI Search"
                 width={28}
                 height={28}
                 className="h-7 w-7 rounded-md object-contain"
               />
               <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                Hyper Search & Filters
+                Hyper AI Search
               </span>
             </div>
           </div>
 
-          {/* BADGE TEXT */}
-          <p className="mt-6 text-xs sm:text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">
-            AI-Powered Shopify Product Discovery
-          </p>
-
-          {/* TITLE */}
-          <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-            AI-Powered Search & Filters for Shopify Product Discovery
+          <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
+            AI Search & Smart Filters for Shopify Stores
           </h1>
 
-          {/* DESCRIPTION */}
           <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Improve your Shopify store with intelligent product search and advanced filtering. Hyper
-            helps customers find products instantly using AI-powered relevance, increasing
-            conversions and improving overall shopping experience.
+            Help customers discover products faster with AI-powered semantic search, smart filters,
+            autocomplete, and personalized recommendations.
           </p>
 
-          {/* CTA */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="https://apps.shopify.com/hyper-search-product-filters"
-              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-white shadow-md hover:opacity-90 transition"
+              className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-medium text-white"
             >
               Install on Shopify
             </Link>
@@ -108,145 +141,236 @@ export default function HyperSearchFilterPage() {
         </Container>
       </Section>
 
-      {/* PROBLEM / SEO CONTEXT SECTION */}
-      <Section className="pb-16">
-        <Container className="max-w-4xl">
-          <div className="rounded-2xl border border-border bg-surface p-6 sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-              Why Shopify Stores Need Better Search
-            </h2>
+      {/* ================= FEATURES ================= */}
+      <Section id="features" className="py-20 lg:py-28">
+        <Container className="max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center border border-border rounded-2xl bg-surface p-6 sm:p-10">
+            {/* LEFT */}
+            <div className="flex flex-col gap-8">
+              <div>
+                <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                  Core Features
+                </span>
+              </div>
 
-            <div className="mt-5 space-y-5 text-muted-foreground leading-7">
-              <p>
-                Most Shopify stores rely on basic keyword search that fails to understand customer
-                intent. This leads to poor product discovery, frustrated users, and lost sales.
-              </p>
+              <div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
+                  AI Search Built for Shopify Growth
+                </h2>
 
-              <p>
-                Hyper Search solves this by using AI to understand meaning, context, and
-                relationships between products — delivering more accurate and relevant results.
-              </p>
+                <p className="mt-5 text-muted-foreground leading-7 max-w-xl">
+                  Hyper AI Search improves product discovery using semantic understanding and
+                  intelligent ranking.
+                </p>
+              </div>
 
-              <p>
-                This improves user experience, reduces bounce rates, and increases conversion rates
-                across your store.
-              </p>
+              <div className="flex flex-col gap-6">
+                {features.map((f) => (
+                  <div key={f} className="flex gap-4 items-start">
+                    <Check className="w-5 h-5 mt-1 text-primary" />
+                    <div>
+                      <p className="font-medium">{f}</p>
+                      <p className="text-sm text-muted-foreground mt-1 leading-6">
+                        Helps customers find products faster and more accurately.
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="relative">
+              <div className="rounded-2xl border border-border overflow-hidden bg-surface">
+                <Image
+                  src="/search-banner.png"
+                  alt="AI Search Dashboard"
+                  width={1200}
+                  height={900}
+                  className="w-full h-auto"
+                />
+              </div>
+
+              {/* FLOATING BADGE (MISSING PIECE) */}
+              <div className="absolute -bottom-4 -left-4 bg-background border border-border rounded-xl px-4 py-2 shadow-sm">
+                <p className="text-xs text-muted-foreground">
+                  ⚡ AI Search → Instant Results → Conversion
+                </p>
+              </div>
             </div>
           </div>
         </Container>
       </Section>
 
-      {/* FEATURES */}
-      <Section id="features" className="pb-16">
+      {/* ================= SEO BENEFITS (CardStack SECTION) ================= */}
+      <Section className="pb-20">
         <Container className="max-w-6xl">
-          <h2 className="text-center text-2xl sm:text-3xl font-semibold tracking-tight">
-            Core Features of Hyper Search & Filters
-          </h2>
+          <div className="w-full flex justify-center">
+            <CardStack
+              items={benefits.map((b) => ({
+                id: b.id,
+                title: b.title,
+                imageSrc: b.imageSrc,
+              }))}
+              cardHeight={420}
+              autoAdvance={true}
+              intervalMs={3500}
+            />
+          </div>
 
-          <p className="mt-4 text-center text-muted-foreground max-w-2xl mx-auto">
-            Built for modern Shopify merchants who want faster search, better discovery, and higher
-            conversions.
-          </p>
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {seoBenefits.map((b) => (
+              <div key={b.title} className="rounded-3xl border border-border bg-surface p-8">
+                <div className="text-4xl">{b.icon}</div>
+                <h3 className="mt-5 text-lg font-semibold">{b.title}</h3>
+                <p className="mt-3 text-sm text-muted-foreground leading-7">{b.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <div
-                key={feature}
-                className="rounded-xl border border-border bg-surface p-5 hover:border-primary/40 transition"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-                  <p className="text-sm text-muted-foreground leading-6">{feature}</p>
+      {/* ================= HOW IT WORKS (CORRECT ORDER RESTORED) ================= */}
+      <Section className="py-20 lg:py-24">
+        <Container className="max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+              How It Works
+            </span>
+
+            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
+              How AI Search Converts Visitors Into Buyers
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "Understand Intent",
+                icon: "🔍",
+                desc: "AI analyzes what customers actually mean.",
+              },
+              {
+                step: "02",
+                title: "Show Smart Results",
+                icon: "⚡",
+                desc: "Relevant products are ranked intelligently.",
+              },
+              {
+                step: "03",
+                title: "Drive Conversions",
+                icon: "🛒",
+                desc: "Faster discovery leads to more purchases.",
+              },
+            ].map((s) => (
+              <div key={s.step} className="rounded-3xl border border-border bg-surface p-8">
+                <div className="flex justify-between">
+                  <span className="text-primary font-medium">Step {s.step}</span>
+                  <span className="text-3xl">{s.icon}</span>
+                </div>
+
+                <h3 className="mt-6 text-xl font-semibold">{s.title}</h3>
+                <p className="mt-4 text-sm text-muted-foreground leading-7">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 rounded-3xl border border-border bg-surface p-8">
+            <h3 className="text-2xl font-semibold">Why AI Search Matters</h3>
+            <p className="mt-5 text-muted-foreground leading-8">
+              AI search reduces friction in product discovery and helps customers reach checkout
+              faster with more relevant results.
+            </p>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ================= FAQ ================= */}
+      <Section className="pb-20">
+        <Container className="max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-semibold">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-5">
+            {faqs.map((f, i) => (
+              <div key={f.q} className="rounded-3xl border border-border bg-surface p-6 sm:p-8">
+                <div className="flex gap-4">
+                  <div className="text-primary font-semibold">{String(i + 1).padStart(2, "0")}</div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{f.q}</h3>
+                    <p className="mt-3 text-sm text-muted-foreground leading-7">{f.a}</p>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </Container>
       </Section>
-
-      {/* BENEFITS */}
-      <Section className="pb-16">
+      {/* ================= FINAL CTA (MISSING ENDING RESTORED) ================= */}
+      <Section className="pb-24 pt-8">
         <Container className="max-w-6xl">
-          <h2 className="text-center text-2xl sm:text-3xl font-semibold tracking-tight">
-            Business Benefits
-          </h2>
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-background to-surface p-8 sm:p-12 lg:p-16">
+            {/* Background glow */}
+            <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {benefits.map((b) => (
-              <div key={b.title} className="rounded-2xl border border-border bg-surface p-6 sm:p-8">
-                <h3 className="text-lg font-semibold">{b.title}</h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-6">{b.description}</p>
+            <div className="relative z-10">
+              {/* Badge */}
+              <div className="flex justify-center">
+                <span className="inline-flex rounded-full border border-border px-4 py-1 text-xs font-medium text-muted-foreground">
+                  Shopify AI Search
+                </span>
               </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
 
-      {/* HOW IT WORKS */}
-      <Section className="pb-16">
-        <Container className="max-w-4xl">
-          <div className="rounded-2xl border border-border bg-surface p-6 sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-              How Hyper Search Works
-            </h2>
+              {/* Heading */}
+              <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
+                Turn Search Into Revenue
+              </h2>
 
-            <div className="mt-5 space-y-5 text-muted-foreground leading-7">
-              <p>
-                Hyper uses AI models to understand customer intent beyond keywords. Instead of exact
-                matches, it analyzes meaning and context.
+              {/* Description */}
+              <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
+                Hyper AI Search helps Shopify merchants improve product discovery, reduce friction,
+                and increase conversions by turning search into an intelligent shopping experience.
               </p>
 
-              <p>
-                This allows Shopify stores to show more relevant products even when search queries
-                are vague or complex.
-              </p>
+              {/* Feature Pills */}
+              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+                <div className="rounded-full border border-border px-4 py-2">🔍 Smart Search</div>
+                <div className="rounded-full border border-border px-4 py-2">
+                  ⚡ Instant Results
+                </div>
+                <div className="rounded-full border border-border px-4 py-2">
+                  📈 Higher Conversions
+                </div>
+                <div className="rounded-full border border-border px-4 py-2">
+                  🧠 AI Understanding
+                </div>
+              </div>
 
-              <p>
-                Combined with smart filters, merchants can deliver highly personalized shopping
-                experiences in real time.
+              {/* Buttons */}
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  href="https://apps.shopify.com/hyper-search-product-filters"
+                  className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-sm font-medium text-white hover:opacity-90 transition"
+                >
+                  Install on Shopify
+                </Link>
+
+                <Link
+                  href="#features"
+                  className="inline-flex items-center justify-center rounded-full border border-border px-8 py-4 text-sm font-medium hover:bg-surface transition"
+                >
+                  Explore Features
+                </Link>
+              </div>
+
+              {/* Trust line */}
+              <p className="mt-8 text-center text-sm text-muted-foreground">
+                Built for Shopify brands focused on scaling through AI-powered product discovery.
               </p>
             </div>
-          </div>
-        </Container>
-      </Section>
-
-      {/* FAQ (SEO + GEO BOOST) */}
-      <Section className="pb-16">
-        <Container className="max-w-4xl">
-          <h2 className="text-center text-2xl sm:text-3xl font-semibold">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="mt-8 space-y-4">
-            {faqs.map((f) => (
-              <div key={f.q} className="rounded-xl border border-border bg-surface p-5">
-                <h3 className="font-semibold">{f.q}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* CTA */}
-      <Section className="pb-24">
-        <Container className="max-w-5xl">
-          <div className="rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-transparent p-8 sm:p-12 text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold">
-              Upgrade Your Shopify Search Experience Today
-            </h2>
-
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Improve product discovery, increase conversions, and deliver a faster shopping
-              experience with Hyper AI Search & Filters.
-            </p>
-
-            <Link
-              href="https://apps.shopify.com/hyper-search-product-filters"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-medium text-white hover:opacity-90 transition"
-            >
-              Install Now
-            </Link>
           </div>
         </Container>
       </Section>

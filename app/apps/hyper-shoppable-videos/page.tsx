@@ -20,6 +20,29 @@ const features = [
   "Seamless Shopify integration",
 ];
 
+const seoBenefits = [
+  {
+    icon: "🎥",
+    title: "Interactive Product Videos",
+    desc: "Create immersive shopping experiences by tagging products directly inside videos.",
+  },
+  {
+    icon: "🛒",
+    title: "Direct Add-to-Cart",
+    desc: "Allow customers to purchase products instantly without interrupting video playback.",
+  },
+  {
+    icon: "📈",
+    title: "Higher Engagement Metrics",
+    desc: "Increase time-on-site and product interactions that support Shopify growth.",
+  },
+  {
+    icon: "⚡",
+    title: "Improve Conversion Rates",
+    desc: "Reduce friction between product discovery and checkout with seamless video commerce.",
+  },
+];
+
 const benefits = [
   {
     id: 1,
@@ -43,16 +66,28 @@ const benefits = [
 
 const faqs = [
   {
-    q: "What are shoppable videos in Shopify?",
-    a: "They are interactive videos where customers can click products inside the video and purchase instantly.",
+    q: "What are shoppable videos for Shopify?",
+    a: "Shoppable videos are interactive product videos that allow customers to click featured products, view details, and purchase directly while watching.",
   },
   {
-    q: "Do shoppable videos increase sales?",
-    a: "Yes, they reduce friction and increase engagement, which directly improves conversion rates.",
+    q: "How do shoppable videos increase sales?",
+    a: "By reducing the number of steps between product discovery and checkout, shoppable videos improve customer engagement and conversion rates.",
+  },
+  {
+    q: "Can customers add products to cart directly from videos?",
+    a: "Yes. Hyper Shoppable Videos enables direct product interaction and add-to-cart functionality without interrupting the viewing experience.",
+  },
+  {
+    q: "Does Hyper Shoppable Videos work with Shopify themes?",
+    a: "Yes. The app integrates seamlessly with Shopify stores and is designed to work across modern Shopify themes.",
+  },
+  {
+    q: "Do shoppable videos improve customer engagement?",
+    a: "Interactive video commerce typically increases session duration, product interactions, and customer engagement compared to static product pages.",
   },
   {
     q: "Is coding required to use Hyper Shoppable Videos?",
-    a: "No, it is a plug-and-play Shopify app.",
+    a: "No. Hyper Shoppable Videos is designed as a plug-and-play Shopify app with an easy setup process.",
   },
 ];
 
@@ -199,94 +234,292 @@ export default function HyperShoppableVideosPage() {
             />
           </div>
 
-          {/* SEO SUPPORT CONTENT (IMPORTANT FOR GEO) */}
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <h3 className="text-lg font-semibold">Shoppable Video Commerce for Shopify Stores</h3>
-              <p className="mt-3 text-sm text-muted-foreground leading-6">
-                Turn passive video viewers into active buyers by allowing customers to interact with
-                products directly inside video content without leaving the shopping experience.
-              </p>
-            </div>
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {seoBenefits.map((item) => (
+              <div
+                key={item.title}
+                className="
+        rounded-3xl
+        border
+        border-border
+        bg-surface
+        p-8
+        transition-all
+        duration-300
+        hover:border-primary/30
+        hover:shadow-xl
+      "
+              >
+                <div className="text-4xl">{item.icon}</div>
 
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <h3 className="text-lg font-semibold">
-                Improve Engagement Signals for SEO Performance
-              </h3>
-              <p className="mt-3 text-sm text-muted-foreground leading-6">
-                Longer session duration, higher interaction rates, and improved product discovery
-                signals help strengthen organic search visibility for Shopify product pages.
-              </p>
-            </div>
+                <h3 className="mt-5 text-lg font-semibold">{item.title}</h3>
 
-            <div className="rounded-2xl border border-border bg-surface p-6">
-              <h3 className="text-lg font-semibold">Reduce Friction in the Buying Journey</h3>
-              <p className="mt-3 text-sm text-muted-foreground leading-6">
-                Customers can explore, view, and purchase products instantly from video content,
-                removing unnecessary steps between discovery and checkout.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </Section>
-      {/* HOW IT WORKS */}
-      <Section className="pb-16">
-        <Container className="max-w-4xl">
-          <div className="rounded-2xl border border-border bg-surface p-6 sm:p-10">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-              How Shoppable Videos Work
-            </h2>
-
-            <div className="mt-5 space-y-5 text-muted-foreground leading-7">
-              <p>Merchants upload product videos and tag items directly inside the content.</p>
-
-              <p>
-                Customers can click on products while watching and instantly view or purchase them.
-              </p>
-
-              <p>
-                This transforms passive viewing into active shopping and increases conversions
-                significantly.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </Section>
-      {/* FAQ (SEO + GEO BOOST) */}
-      <Section className="pb-16">
-        <Container className="max-w-4xl">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-center">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="mt-8 space-y-5">
-            {faqs.map((f) => (
-              <div key={f.q} className="rounded-xl border border-border bg-surface p-5">
-                <h3 className="font-semibold">{f.q}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{f.a}</p>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.desc}</p>
               </div>
             ))}
           </div>
         </Container>
       </Section>
-      {/* CTA */}
-      <Section className="pb-24">
-        <Container className="max-w-5xl">
-          <div className="rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-transparent p-10 text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold">
-              Turn Your Videos Into Sales Engines
+      {/* HOW IT WORKS */}
+      <Section className="py-20 lg:py-24">
+        <Container className="max-w-6xl">
+          {/* HEADER */}
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
+              How It Works
+            </span>
+
+            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
+              How Shopify Shoppable Videos Turn Viewers Into Customers
             </h2>
 
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Increase engagement and conversions with interactive video commerce built for Shopify.
+            <p className="mt-5 text-muted-foreground leading-7">
+              Hyper Shoppable Videos transforms traditional product videos into interactive shopping
+              experiences. Customers can discover products, explore details, and purchase instantly
+              without disrupting their browsing journey.
             </p>
+          </div>
 
-            <Link
-              href="https://apps.shopify.com/hyper-shopable-videos"
-              className="mt-8 inline-flex rounded-full bg-primary px-7 py-3 text-sm font-medium text-white hover:opacity-90"
-            >
-              Install Now
-            </Link>
+          {/* PROCESS */}
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {[
+              {
+                step: "01",
+                icon: "🎥",
+                title: "Upload Product Videos",
+                description:
+                  "Merchants upload product, promotional, or social commerce videos directly to their Shopify store and prepare them for interactive shopping.",
+              },
+              {
+                step: "02",
+                icon: "🏷️",
+                title: "Tag Products in Real Time",
+                description:
+                  "Products are linked directly inside the video experience, allowing shoppers to view pricing, details, and variants while watching.",
+              },
+              {
+                step: "03",
+                icon: "🛒",
+                title: "Enable Instant Purchases",
+                description:
+                  "Customers can add products to cart and complete purchases with fewer steps, creating a seamless video commerce experience.",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="
+            group relative overflow-hidden rounded-3xl
+            border border-border
+            bg-linear-to-b from-background to-surface
+            p-8
+            transition-all duration-300
+            hover:-translate-y-1
+            hover:border-primary/40
+            hover:shadow-xl
+          "
+              >
+                {/* Background Glow */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500">
+                  <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
+                </div>
+
+                {/* Step */}
+                <div className="relative z-10 flex items-center justify-between">
+                  <span className="text-sm font-medium text-primary">Step {item.step}</span>
+
+                  <span className="text-3xl">{item.icon}</span>
+                </div>
+
+                {/* Title */}
+                <h3 className="relative z-10 mt-6 text-xl font-semibold tracking-tight">
+                  {item.title}
+                </h3>
+
+                {/* Description */}
+                <p className="relative z-10 mt-4 text-sm leading-7 text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* SEO BLOCK */}
+          <div className="mt-14 rounded-3xl border border-border bg-surface p-8 sm:p-10">
+            <h3 className="text-2xl font-semibold tracking-tight">
+              Why Shoppable Videos Matter for Shopify Brands
+            </h3>
+
+            <p className="mt-5 text-muted-foreground leading-8">
+              Interactive video commerce combines storytelling with direct purchasing, helping
+              Shopify merchants increase customer engagement, improve product discovery, and reduce
+              friction during the buying process. By enabling shoppers to interact with products
+              directly inside video content, businesses can create modern shopping experiences that
+              encourage higher conversion rates and stronger customer retention.
+            </p>
+          </div>
+        </Container>
+      </Section>
+      {/* FAQ (SEO + GEO BOOST) */}
+      <Section className="py-20 lg:py-24">
+        <Container className="max-w-5xl">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
+              FAQ
+            </span>
+
+            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
+              Frequently Asked Questions About Shopify Shoppable Videos
+            </h2>
+
+            <p className="mt-5 text-muted-foreground leading-7">
+              Learn how Hyper Shoppable Videos helps Shopify merchants create interactive shopping
+              experiences, increase engagement, and improve conversion rates.
+            </p>
+          </div>
+
+          {/* FAQ Cards */}
+          <div className="mt-14 space-y-5">
+            {faqs.map((faq, index) => (
+              <div
+                key={faq.q}
+                className="
+            group rounded-3xl
+            border border-border
+            bg-surface
+            p-6 sm:p-8
+            transition-all duration-300
+            hover:border-primary/30
+            hover:shadow-lg
+          "
+              >
+                <div className="flex items-start gap-5">
+                  {/* Number */}
+                  <div
+                    className="
+              flex h-10 w-10 shrink-0 items-center justify-center
+              rounded-full bg-primary/10
+              text-sm font-semibold text-primary
+            "
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight">{faq.q}</h3>
+
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">{faq.a}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* SEO Block */}
+          <div className="mt-14 rounded-3xl border border-border bg-gradient-to-br from-primary/5 to-transparent p-8 text-center">
+            <h3 className="text-2xl font-semibold">
+              Why Shopify Merchants Choose Hyper Shoppable Videos
+            </h3>
+
+            <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
+              Hyper Shoppable Videos helps Shopify businesses transform traditional product videos
+              into interactive shopping experiences. By combining video commerce with direct
+              purchasing, merchants can improve customer engagement, increase product discovery, and
+              create seamless buying journeys that drive higher conversion rates.
+            </p>
+          </div>
+        </Container>
+      </Section>
+      {/* CTA */}
+      {/* FINAL CTA */}
+      <Section className="pb-24 pt-8">
+        <Container className="max-w-6xl">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-background to-surface p-8 sm:p-12 lg:p-16">
+            {/* Background Effects */}
+            <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
+
+            <div className="relative z-10">
+              {/* Badge */}
+              <div className="flex justify-center">
+                <span className="inline-flex rounded-full border border-border px-4 py-1 text-xs font-medium text-muted-foreground">
+                  Shopify Video Commerce
+                </span>
+              </div>
+
+              {/* Heading */}
+              <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
+                Turn Product Videos Into Revenue
+              </h2>
+
+              {/* Description */}
+              <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
+                Hyper Shoppable Videos helps Shopify merchants create interactive shopping
+                experiences that increase customer engagement, improve product discovery, and enable
+                direct purchases from video content. Build a modern video-first storefront that
+                converts viewers into customers.
+              </p>
+
+              {/* Benefits */}
+              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+                <div className="rounded-full border border-border px-4 py-2">
+                  🎥 Interactive Videos
+                </div>
+
+                <div className="rounded-full border border-border px-4 py-2">
+                  🛒 Direct Add-to-Cart
+                </div>
+
+                <div className="rounded-full border border-border px-4 py-2">
+                  ⚡ Higher Conversions
+                </div>
+
+                <div className="rounded-full border border-border px-4 py-2">
+                  📈 Better Engagement
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  href="https://apps.shopify.com/hyper-shopable-videos"
+                  className="
+              inline-flex items-center justify-center
+              rounded-full
+              bg-primary
+              px-8 py-4
+              text-sm font-medium
+              text-white
+              transition
+              hover:opacity-90
+            "
+                >
+                  Install on Shopify
+                </Link>
+
+                <Link
+                  href="#features"
+                  className="
+              inline-flex items-center justify-center
+              rounded-full
+              border border-border
+              px-8 py-4
+              text-sm font-medium
+              hover:bg-surface
+              transition
+            "
+                >
+                  Explore Features
+                </Link>
+              </div>
+
+              {/* Trust Text */}
+              <p className="mt-8 text-center text-sm text-muted-foreground">
+                Designed for Shopify brands looking to grow through interactive video commerce and
+                modern customer experiences.
+              </p>
+            </div>
           </div>
         </Container>
       </Section>
