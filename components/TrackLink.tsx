@@ -1,26 +1,28 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 
-type Props = {
-  href: string;
+type TrackLinkProps = React.ComponentPropsWithoutRef<typeof Link> & {
   eventName: string;
-  className?: string;
-  children: React.ReactNode;
 };
 
-export default function TrackLink({ href, eventName, className, children }: Props) {
-  const handleClick = () => {
-    trackEvent(eventName, {
-      event_label: href,
-      value: 1,
-    });
-  };
+const TrackLink = React.forwardRef<HTMLAnchorElement, TrackLinkProps>(
+  ({ eventName, href, onClick, ...props }, ref) => {
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      trackEvent(eventName, {
+        event_label: String(href),
+        value: 1,
+      });
 
-  return (
-    <Link href={href} onClick={handleClick} className={className}>
-      {children}
-    </Link>
-  );
-}
+      onClick?.(e);
+    };
+
+    return <Link ref={ref} href={href} onClick={handleClick} {...props} />;
+  },
+);
+
+TrackLink.displayName = "TrackLink";
+
+export default TrackLink;

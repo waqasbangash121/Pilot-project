@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Check } from "lucide-react";
-
+import PricingComponent from "@/components/PricingComponent";
 import { CardStack } from "@/components/CardStack";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -71,6 +71,90 @@ const benefits = [
     title: "In-depth Analytics",
     description: "Gain insights into customer behavior and search patterns.",
     imageSrc: "/search-benefit-3.png",
+  },
+];
+
+const pricingTiers = [
+  {
+    name: "Free",
+    subtitle: "Free",
+    price: "Free",
+    description: "Launch advanced Shopify search and product filtering with essential features.",
+    features: [
+      { text: "Upto 50 products", included: true },
+      { text: "Unlimited search queries", included: true },
+      { text: "Real-time product sync", included: true },
+      { text: "Typo tolerance", included: true },
+      { text: "15 filters", included: true },
+      { text: "7-day analytics", included: true },
+      { text: "Basic support", included: true },
+    ],
+    buttonText: "Install Free",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-search-product-filters",
+  },
+  {
+    name: "Starter",
+    subtitle: "Starter",
+    price: "$15",
+    period: "/mo",
+    description: "Boost product discovery with unlimited filters and smarter Shopify search.",
+    features: [
+      { text: "Upto 5,000 products", included: true },
+      { text: "Unlimited search queries", included: true },
+      { text: "Custom CSS", included: true },
+      { text: "50 synonyms", included: true },
+      { text: "Unlimited filters", included: true },
+      { text: "30-day analytics", included: true },
+      { text: "Basic support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonHref: "https://apps.shopify.com/hyper-search-product-filters",
+  },
+  {
+    name: "Professional",
+    subtitle: "PROFESSIONAL",
+    price: "$49",
+    period: "/mo",
+    description: "Optimize search relevance with analytics, synonyms, and advanced filtering.",
+    badge: { text: "Most Popular" },
+    features: [
+      { text: "Upto 50,000 products", included: true },
+      { text: "Remove branding", included: true },
+      { text: "Custom CSS", included: true },
+      { text: "Unlimited synonyms", included: true },
+      { text: "Unlimited filters", included: true },
+      { text: "1-year analytics", included: true },
+      { text: "Filter usage analytics", included: true },
+      { text: "Export/import data", included: true },
+      { text: "Priority support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-search-product-filters",
+    highlighted: true,
+  },
+  {
+    name: "Enterprise",
+    subtitle: "ENTERPRISE",
+    price: "$119",
+    period: "/mo",
+    description: "Complete Shopify search and merchandising solution for high-volume brands.",
+    features: [
+      { text: "Upto 200,000 products", included: true },
+      { text: "Unlimited filters", included: true },
+      { text: "Custom CSS", included: true },
+      { text: "Unlimited synonyms", included: true },
+      { text: "Color & size swatches", included: true },
+      { text: "Export/import data", included: true },
+      { text: "Unlimited product labels", included: true },
+      { text: "Unlimited analytics history", included: true },
+      { text: "Zero results report", included: true },
+      { text: "Dedicated priority support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
   },
 ];
 
@@ -287,6 +371,13 @@ export default function HyperSearchFilterPage() {
           </div>
         </Container>
       </Section>
+
+      <PricingComponent
+        productName="Hyper Search and Filters"
+        title="Pricing for Hyper Search & Filters"
+        subtitle="Shopify search and filter plans for growing ecommerce stores. Enhance product discovery with instant search, advanced collection filters, smart merchandising, and optimized shopping experiences."
+        tiers={pricingTiers}
+      />
 
       {/* ================= FAQ ================= */}
       <Section className="pb-20">

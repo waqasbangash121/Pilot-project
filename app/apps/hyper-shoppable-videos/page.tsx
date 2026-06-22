@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
+import PricingComponent from "@/components/PricingComponent";
 
 export const metadata = createPageMetadata({
   title: "Hyper Shoppable Videos – Shopify Video Commerce & Interactive Shopping",
@@ -62,6 +63,89 @@ const benefits = [
     title: "Manage Content Easily",
     description: "Better engagement signals improve ranking and organic visibility.",
     imageSrc: "/shopable-benefit-3.png",
+  },
+];
+const pricingTiers = [
+  {
+    name: "Free",
+    subtitle: "Free",
+    price: "Free",
+    description: "Add shoppable product videos to Shopify and improve customer engagement.",
+    features: [
+      { text: "5 videos", included: true },
+      { text: "1 widget", included: true },
+      { text: "1 tag/video", included: true },
+      { text: "1000 monthly views", included: true },
+      { text: "Basic analytics", included: true },
+      { text: "Manual upload", included: true },
+      { text: "TikTok import", included: true },
+    ],
+    buttonText: "Install Free",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
+  },
+  {
+    name: "Starter",
+    subtitle: "Starter",
+    price: "$19",
+    period: "/mo",
+    description:
+      "Transform TikTok, Instagram, and UGC videos into shoppable storefront experiences.",
+    features: [
+      { text: "30 videos", included: true },
+      { text: "5 widgets", included: true },
+      { text: "3 tags/video", included: true },
+      { text: "8000 monthly views", included: true },
+      { text: "Standard analytics", included: true },
+      { text: "Manual upload", included: true },
+      { text: "TikTok import", included: true },
+      { text: "10 AI matches/month", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
+  },
+  {
+    name: "Growth",
+    subtitle: "GROWTH",
+    price: "$49",
+    period: "/mo",
+    description:
+      "Optimize video commerce performance with analytics, branding, and advanced controls.",
+    badge: { text: "Most Popular" },
+    features: [
+      { text: "200 videos", included: true },
+      { text: "15 widgets", included: true },
+      { text: "10 tags/video", included: true },
+      { text: "40,000 monthly views", included: true },
+      { text: "Advanced analytics", included: true },
+      { text: "TikTok/Instagram uploads", included: true },
+      { text: "75 AI matches/month", included: true },
+      { text: "A/B testing", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
+    highlighted: true,
+  },
+  {
+    name: "Pro",
+    subtitle: "PRO",
+    price: "$119",
+    period: "/mo",
+    description: "Complete Shopify video commerce solution with premium support and scalability.",
+    features: [
+      { text: "500 videos", included: true },
+      { text: "Unlimited widgets", included: true },
+      { text: "Unlimited tag/video", included: true },
+      { text: "Unlimited monthly views", included: true },
+      { text: "Advanced analytics", included: true },
+      { text: "TikTok/Instagram uploads", included: true },
+      { text: "300 AI matches/month", included: true },
+      { text: "HeyGen import", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
   },
 ];
 
@@ -361,6 +445,13 @@ export default function HyperShoppableVideosPage() {
           </div>
         </Container>
       </Section>
+      <PricingComponent
+        productName="Hyper Shoppable Videos"
+        title="Pricing for Shoppable Videos"
+        subtitle="Plans built for every Shopify store — create interactive shopping experiences, increase engagement, and improve conversion rates."
+        tiers={pricingTiers}
+      />
+
       {/* FAQ (SEO + GEO BOOST) */}
       <Section className="py-20 lg:py-24">
         <Container className="max-w-5xl">

@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
+import PricingComponent from "@/components/PricingComponent";
 
 export const metadata = createPageMetadata({
   title: "Hyper AI Chat & FAQs – Shopify AI Customer Support Automation",
@@ -79,6 +80,85 @@ const benefits = [
     description:
       "Leverage AI trained on your store data to provide personalized and accurate responses.",
     imageSrc: "/aichat-benefit-5.png",
+  },
+];
+
+const pricingTiers = [
+  {
+    name: "Free",
+    subtitle: "Free",
+    price: "Free",
+    description:
+      "Add a Shopify AI chatbot and searchable FAQs to answer customer questions instantly.",
+    features: [
+      { text: "Up to 50 AI replies/month", included: true },
+      { text: "AI training", included: true },
+      { text: "10 FAQs", included: true },
+      { text: "Chat history(30 days)", included: true },
+      { text: "Basic analytics", included: true },
+      { text: "Email support", included: true },
+    ],
+    buttonText: "Install Free",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+  },
+  {
+    name: "Starter",
+    subtitle: "Starter",
+    price: "$19",
+    period: "/mo",
+    description: "Automate customer support and product discovery with AI-powered Shopify chat.",
+    features: [
+      { text: "500 AI replies/month", included: true },
+      { text: "AI training", included: true },
+      { text: "25 FAQs", included: true },
+      { text: "Chat history(180 days)", included: true },
+      { text: "Advanced analytics", included: true },
+      { text: "Custom branding", included: true },
+      { text: "Basic support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+  },
+  {
+    name: "Growth",
+    subtitle: "GROWTH",
+    price: "$49",
+    period: "/mo",
+    description: "Improve customer experience with advanced chatbot analytics and FAQ automation.",
+    badge: { text: "Most Popular" },
+    features: [
+      { text: "2500 AI replies/month", included: true },
+      { text: "AI training", included: true },
+      { text: "Unlimited FAQs", included: true },
+      { text: "Chat history(365 days)", included: true },
+      { text: "Custom branding", included: true },
+      { text: "Advanced analytics", included: true },
+      { text: "Premium support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+    highlighted: true,
+  },
+  {
+    name: "Pro",
+    subtitle: "PRO",
+    price: "$99",
+    period: "/mo",
+    description: "Complete AI customer support solution for high-volume Shopify stores and brands.",
+    features: [
+      { text: "10,000 AI replies/month", included: true },
+      { text: "AI training", included: true },
+      { text: "Unlimited FAQs", included: true },
+      { text: "Chat history(unlimited)", included: true },
+      { text: "White label branding", included: true },
+      { text: "Enterprise analytics", included: true },
+      { text: "Priority support", included: true },
+    ],
+    buttonText: "Install on Shopify",
+    buttonVariant: "secondary" as const,
+    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
   },
 ];
 
@@ -299,7 +379,12 @@ export default function HyperAIChatFAQPage() {
           </div>
         </Container>
       </Section>
-
+      <PricingComponent
+        productName="Hyper AI Chat & FAQs"
+        title="Pricing for AI Chat & FAQ Automation"
+        subtitle="Plans built for every Shopify store — automate support, reduce tickets, and reply 24/7."
+        tiers={pricingTiers}
+      />
       {/* FAQ */}
       <Section className="py-20 lg:py-24">
         <Container className="max-w-5xl">
