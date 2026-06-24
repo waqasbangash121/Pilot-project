@@ -195,9 +195,91 @@ const faqs = [
   },
 ];
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Hyper AI Search",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Shopify",
+
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Free",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    {
+      "@type": "Offer",
+      name: "Starter",
+      price: "15",
+      priceCurrency: "USD",
+    },
+    {
+      "@type": "Offer",
+      name: "Professional",
+      price: "49",
+      priceCurrency: "USD",
+    },
+    {
+      "@type": "Offer",
+      name: "Enterprise",
+      price: "119",
+      priceCurrency: "USD",
+    },
+  ],
+
+  publisher: {
+    "@type": "Organization",
+    name: "Hyper Apps",
+    url: "https://niagarat.com",
+  },
+
+  description:
+    "Vector-based semantic search and smart filters for Shopify stores. Indexes up to 200,000 products, supports metafield filters, and deploys via app embed with no Liquid edits.",
+
+  featureList: [
+    "Vector-based semantic search",
+    "NLP intent mapping",
+    "Typo tolerance",
+    "Metafield filters",
+    "Real-time Shopify webhook sync",
+    "Instant autocomplete",
+    "Smart merchandising controls",
+    "Zero-results reporting",
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
+
 export default function HyperSearchFilterPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareApplicationSchema),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
       {/* ================= HERO ================= */}
       <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
         <Container className="max-w-5xl text-center">
