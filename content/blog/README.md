@@ -37,23 +37,51 @@ The `slug` must exactly match the filename. Keep `draft: true` until the article
 
 ## 2. Register the article
 
-Open `content/blog/posts.ts`, add an import, then add the article to `blogPostEntries`:
+Open `content/blog/posts.ts`.
+
+First, add this import directly below the existing MDX import. Replace `your-article-slug` with your actual filename:
 
 ```ts
-import YourArticle, { metadata as yourArticleMetadata } from "./your-article-slug.mdx";
+import YourArticle, * as yourArticleModule from "./your-article-slug.mdx";
+```
 
+Then add this metadata constant above `blogPostEntries`:
+
+```ts
+const yourArticleMetadata = (
+  yourArticleModule as unknown as { metadata: BlogPostMetadata }
+).metadata;
+```
+
+Finally, add the post object inside the `blogPostEntries` array. Put the newest post first:
+
+```ts
 export const blogPostEntries: BlogPostEntry[] = [
   {
-    ...(yourArticleMetadata as BlogPostMetadata),
+    ...yourArticleMetadata,
     Content: YourArticle,
   },
-  // Keep the existing posts below this line.
+  // Keep existing posts below this line.
 ];
 ```
 
 ## 3. Publish
 
-Change `draft` to `false`, then commit and push:
+When your article is ready, change `draft` to `false`. Then check the site locally:
+
+```bash
+pnpm typecheck
+pnpm build
+pnpm dev
+```
+
+Open:
+
+```text
+http://localhost:3000/blog/your-article-slug
+```
+
+Then commit and push:
 
 ```bash
 git add content/blog
