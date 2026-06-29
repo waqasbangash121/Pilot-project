@@ -1,6 +1,8 @@
 import type { ComponentType } from "react";
 
-export type ResourceMetadata = {
+import ContentAGuideToShopifyAppInstallation, * as ContentAGuideToShopifyAppInstallationModule from "./a-guide-to-shopify-app-installation.mdx";
+
+export type ManagedContentMetadata = {
   type: "resource";
   title: string;
   slug: string;
@@ -16,12 +18,18 @@ export type ResourceMetadata = {
   coverImage?: string;
   readingTime: number;
   draft?: boolean;
-  resourceType: "Guide" | "Playbook" | "Checklist" | "Template" | "Case Study" | "Documentation";
-  audience: string;
+  competitorName?: string;
+  decisionSummary?: string;
+  resourceType?: "Guide" | "Playbook" | "Checklist" | "Template" | "Case Study" | "Documentation";
+  audience?: string;
 };
 
-export type ResourceEntry = ResourceMetadata & {
+export type ManagedContentEntry = ManagedContentMetadata & {
   Content: ComponentType;
 };
 
-export const resourceEntries: ResourceEntry[] = [];
+const ContentAGuideToShopifyAppInstallationMetadata = (ContentAGuideToShopifyAppInstallationModule as unknown as { metadata: ManagedContentMetadata }).metadata;
+
+export const resourceEntries: ManagedContentEntry[] = [
+  { ...ContentAGuideToShopifyAppInstallationMetadata, Content: ContentAGuideToShopifyAppInstallation },
+];
