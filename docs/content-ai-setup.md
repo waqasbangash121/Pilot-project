@@ -31,6 +31,20 @@ The model is intentionally configured through `CONTENT_AI_MODEL` rather than har
 - The editor must explicitly append/copy the result, then use Save draft or Publish.
 - Comparison prompts require factual, neutral language and tell the model not to invent competitor claims.
 
+## Feature-branch testing
+
+The publishing workflow writes to the branch named by `GITHUB_REPO_BRANCH`.
+
+When testing this feature branch locally or in a Vercel Preview deployment, set:
+
+```env
+GITHUB_REPO_BRANCH=feat/comparisons-resources-admin
+```
+
+This prevents a test Save draft or Publish action from committing content directly to `main`.
+
+Restore `GITHUB_REPO_BRANCH=main` only after this branch has passed testing and is merged.
+
 ## Vercel setup
 
-In the Vercel project, open **Settings → Environment Variables** and add both variables for Preview and Production as appropriate. Redeploy after adding or changing them.
+In the Vercel project, open **Settings → Environment Variables** and add both AI variables for Preview and Production as appropriate. For the feature-branch Preview environment, also set `GITHUB_REPO_BRANCH=feat/comparisons-resources-admin`. Redeploy after adding or changing them.
