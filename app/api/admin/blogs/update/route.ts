@@ -6,7 +6,7 @@ import { githubCommitUrl, saveRemotePost } from "@/lib/editor-github";
 
 export const runtime = "nodejs";
 
-export async function POST(request: Request) {
+async function save(request: Request, currentSlug?: string) {
   const editor = await currentEditor();
   if (!editor) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
   if (request.headers.get("origin") !== new URL(request.url).origin) {
@@ -14,12 +14,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = (await request.json()) as { article?: unknown; currentSlug?: string };
-    const article = parseBlogPostInput(body.article);
-    const commit = await saveRemotePost(article, body.currentSlug);
+    const article = parseBlogPostInput(await request.json());
+    const commit = await saveRemotePost(article, currentSlug);
     return NextResponse.json({ slug: article.slug, commitUrl: githubCommitUrl(commit.sha) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "The article could not be saved.";
     return NextResponse.json({ error: message }, { status: error instanceof BlogInputError ? 400 : 500 });
   }
+}
+
+export async function PATCH(request: Request) {
+  return save(request, new URL(request.url).searchParams.get("currentSlug") ?? undefined);
 }
