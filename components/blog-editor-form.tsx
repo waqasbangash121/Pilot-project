@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { BlogAuditPanel } from "@/components/blog-audit-panel";
 import type { BlogPostInput } from "@/lib/blog-admin-types";
 
 type BlogEditorFormProps = {
@@ -49,6 +50,16 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
   const [success, setSuccess] = useState("");
 
   const publicUrl = useMemo(() => `/blog/${post.slug || "your-article-slug"}`, [post.slug]);
+  const auditArticle = useMemo<BlogPostInput>(
+    () => ({
+      ...post,
+      tags: tagsText
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    }),
+    [post, tagsText],
+  );
 
   function update<K extends keyof BlogPostInput>(key: K, value: BlogPostInput[K]) {
     setPost((current) => ({ ...current, [key]: value }));
@@ -284,6 +295,8 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
             </button>
           </div>
         </div>
+
+        <BlogAuditPanel article={auditArticle} />
 
         {error ? <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-700 dark:text-red-300">{error}</p> : null}
         {success ? <p className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:text-emerald-200">{success}</p> : null}
