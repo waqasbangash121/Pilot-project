@@ -55,40 +55,44 @@ type BlogKeywordIdeasProps = {
   ideas: KeywordIdea[];
 };
 
-function statusClass(status: AuditStatus): string {
+type ReviewPalette = {
+  backgroundColor: string;
+  borderColor: string;
+  color: string;
+  badgeBackground: string;
+};
+
+function reviewPalette(status: AuditStatus): ReviewPalette {
   if (status === "pass") {
-    return "border-emerald-600/30 bg-emerald-50 text-emerald-950 shadow-sm dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-100";
+    return {
+      backgroundColor: "#ecfdf5",
+      borderColor: "#6ee7b7",
+      color: "#065f46",
+      badgeBackground: "#d1fae5",
+    };
   }
 
   if (status === "error") {
-    return "border-rose-600/30 bg-rose-50 text-rose-950 shadow-sm dark:border-rose-400/25 dark:bg-rose-400/10 dark:text-rose-100";
+    return {
+      backgroundColor: "#fff1f2",
+      borderColor: "#fda4af",
+      color: "#881337",
+      badgeBackground: "#ffe4e6",
+    };
   }
 
-  return "border-amber-600/35 bg-amber-50 text-amber-950 shadow-sm dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100";
+  return {
+    backgroundColor: "#fffbeb",
+    borderColor: "#fcd34d",
+    color: "#78350f",
+    badgeBackground: "#fef3c7",
+  };
 }
 
-function statusBadgeClass(status: AuditStatus): string {
-  if (status === "pass") {
-    return "bg-emerald-600/10 text-emerald-900 dark:bg-emerald-300/15 dark:text-emerald-100";
-  }
-
-  if (status === "error") {
-    return "bg-rose-600/10 text-rose-900 dark:bg-rose-300/15 dark:text-rose-100";
-  }
-
-  return "bg-amber-600/10 text-amber-900 dark:bg-amber-300/15 dark:text-amber-100";
-}
-
-function potentialClass(label: BlogAuditResult["onPagePotential"]["label"]): string {
-  if (label === "Strong") {
-    return "border-emerald-600/30 bg-emerald-50 text-emerald-950 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-100";
-  }
-
-  if (label === "Needs work") {
-    return "border-rose-600/30 bg-rose-50 text-rose-950 dark:border-rose-400/25 dark:bg-rose-400/10 dark:text-rose-100";
-  }
-
-  return "border-amber-600/35 bg-amber-50 text-amber-950 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100";
+function potentialStatus(label: BlogAuditResult["onPagePotential"]["label"]): AuditStatus {
+  if (label === "Strong") return "pass";
+  if (label === "Needs work") return "error";
+  return "warning";
 }
 
 function statusLabel(status: AuditStatus): string {
@@ -102,17 +106,36 @@ export function BlogAuditFeedback({ checks }: BlogAuditFeedbackProps) {
 
   return (
     <div className="grid gap-2" aria-live="polite">
-      {checks.map((check) => (
-        <div key={check.id} className={`rounded-lg border px-3 py-3 ${statusClass(check.status)}`}>
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-xs font-bold tracking-[0.01em]">{check.label}</p>
-            <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${statusBadgeClass(check.status)}`}>
-              {statusLabel(check.status)}
-            </span>
+      {checks.map((check) => {
+        const palette = reviewPalette(check.status);
+
+        return (
+          <div
+            key={check.id}
+            className="rounded-lg border px-3 py-3 shadow-sm"
+            style={{
+              backgroundColor: palette.backgroundColor,
+              borderColor: palette.borderColor,
+              color: palette.color,
+            }}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-bold tracking-[0.01em]" style={{ color: "inherit" }}>
+                {check.label}
+              </p>
+              <span
+                className="rounded-full px-2 py-0.5 text-[11px] font-bold"
+                style={{ backgroundColor: palette.badgeBackground, color: palette.color }}
+              >
+                {statusLabel(check.status)}
+              </span>
+            </div>
+            <p className="mt-1.5 text-xs leading-5" style={{ color: "inherit", opacity: 0.95 }}>
+              {check.message}
+            </p>
           </div>
-          <p className="mt-1.5 text-xs leading-5 opacity-95">{check.message}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -139,6 +162,8 @@ export function BlogKeywordIdeas({ title, description, ideas }: BlogKeywordIdeas
 export function BlogAuditPanel({ article, result, onResult }: BlogAuditPanelProps) {
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const potential = result ? potentialStatus(result.onPagePotential.label) : null;
+  const potentialPalette = potential ? reviewPalette(potential) : null;
 
   async function runAudit() {
     setRunning(true);
@@ -172,17 +197,35 @@ export function BlogAuditPanel({ article, result, onResult }: BlogAuditPanelProp
             Review keyword targeting, metadata, content depth, and answer coverage for this draft.
           </p>
         </div>
-        {result ? (
-          <span className={`rounded-full border px-2.5 py-1 text-xs font-bold ${potentialClass(result.onPagePotential.label)}`}>
+        {result && potentialPalette ? (
+          <span
+            className="rounded-full border px-2.5 py-1 text-xs font-bold"
+            style={{
+              backgroundColor: potentialPalette.backgroundColor,
+              borderColor: potentialPalette.borderColor,
+              color: potentialPalette.color,
+            }}
+          >
             {result.onPagePotential.score}/100
           </span>
         ) : null}
       </div>
 
-      {result ? (
-        <div className={`mt-4 rounded-lg border p-3 ${potentialClass(result.onPagePotential.label)}`}>
-          <p className="text-sm font-bold">{result.onPagePotential.label} on-page potential</p>
-          <p className="mt-1 text-xs leading-5 opacity-95">{result.onPagePotential.summary}</p>
+      {result && potentialPalette ? (
+        <div
+          className="mt-4 rounded-lg border p-3"
+          style={{
+            backgroundColor: potentialPalette.backgroundColor,
+            borderColor: potentialPalette.borderColor,
+            color: potentialPalette.color,
+          }}
+        >
+          <p className="text-sm font-bold" style={{ color: "inherit" }}>
+            {result.onPagePotential.label} on-page potential
+          </p>
+          <p className="mt-1 text-xs leading-5" style={{ color: "inherit", opacity: 0.95 }}>
+            {result.onPagePotential.summary}
+          </p>
         </div>
       ) : null}
 
@@ -201,7 +244,7 @@ export function BlogAuditPanel({ article, result, onResult }: BlogAuditPanelProp
         </p>
       ) : null}
       {error ? (
-        <p className="mt-4 rounded-lg border border-rose-600/30 bg-rose-50 p-3 text-sm font-medium text-rose-950 dark:border-rose-400/25 dark:bg-rose-400/10 dark:text-rose-100">
+        <p className="mt-4 rounded-lg border px-3 py-3 text-sm font-medium" style={{ backgroundColor: "#fff1f2", borderColor: "#fda4af", color: "#881337" }}>
           {error}
         </p>
       ) : null}
