@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { primaryNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { getAllBlogPosts } from "@/lib/blog";
+import { getAllComparisons } from "@/lib/comparisons";
+import { getAllResources } from "@/lib/resources";
 
 const appPages = [
   "/apps",
@@ -12,7 +14,7 @@ const appPages = [
 ];
 
 const legalPages = ["/privacy", "/terms", "/cookie-policy"];
-const standardPages = ["/", "/about", "/services", "/search"];
+const standardPages = ["/", "/about", "/services", "/search", "/blog", "/comparisons", "/resources"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -45,5 +47,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...blogEntries];
+  const comparisonEntries: MetadataRoute.Sitemap = getAllComparisons().map((comparison) => ({
+    url: new URL(`/comparisons/${comparison.slug}`, siteConfig.url).toString(),
+    lastModified: new Date(`${comparison.updatedAt ?? comparison.publishedAt}T12:00:00.000Z`),
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
+  const resourceEntries: MetadataRoute.Sitemap = getAllResources().map((resource) => ({
+    url: new URL(`/resources/${resource.slug}`, siteConfig.url).toString(),
+    lastModified: new Date(`${resource.updatedAt ?? resource.publishedAt}T12:00:00.000Z`),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...blogEntries, ...comparisonEntries, ...resourceEntries];
 }
