@@ -1,8 +1,6 @@
 import type { ComponentType } from "react";
 
-import AiSearchArticle, {
-  metadata as aiSearchArticleMetadata,
-} from "./how-ai-search-improves-shopify-product-discovery.mdx";
+import AiSearchArticle, * as aiSearchArticleModule from "./how-ai-search-improves-shopify-product-discovery.mdx";
 
 export type BlogPostMetadata = {
   title: string;
@@ -24,9 +22,13 @@ export type BlogPostEntry = BlogPostMetadata & {
   Content: ComponentType;
 };
 
+const aiSearchArticleMetadata = (
+  aiSearchArticleModule as unknown as { metadata: BlogPostMetadata }
+).metadata;
+
 export const blogPostEntries: BlogPostEntry[] = [
   {
-    ...(aiSearchArticleMetadata as BlogPostMetadata),
+    ...aiSearchArticleMetadata,
     Content: AiSearchArticle,
   },
 ];
