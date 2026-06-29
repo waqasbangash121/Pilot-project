@@ -1,6 +1,8 @@
 import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const editorSessionName = "hyper_blog_editor";
 export const editorStateName = "hyper_blog_state";
@@ -65,6 +67,27 @@ export function readEditorIdentity(value?: string): EditorIdentity | null {
   } catch {
     return null;
   }
+}
+
+export async function currentEditor(): Promise<EditorIdentity | null> {
+  const store = await cookies();
+  return readEditorIdentity(store.get(editorSessionName)?.value);
+}
+
+export async function requireEditor(): Promise<EditorIdentity> {
+  const identity = await currentEditor();
+  if (!identity) redirect("/admin/login");
+  return identity;
+}
+
+export function editorCookieOptions(maxAge = editorSessionSeconds) {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge,
+  };
 }
 
 export type { EditorIdentity };
