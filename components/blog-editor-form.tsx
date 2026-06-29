@@ -9,6 +9,7 @@ import {
   BlogKeywordIdeas,
   type BlogAuditResult,
 } from "@/components/blog-audit-panel";
+import { ContentAiAssistant } from "@/components/content-ai-assistant";
 import type { BlogPostInput } from "@/lib/blog-admin-types";
 
 type BlogEditorFormProps = {
@@ -82,6 +83,11 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
 
   function update<K extends keyof BlogPostInput>(key: K, value: BlogPostInput[K]) {
     setPost((current) => ({ ...current, [key]: value }));
+  }
+
+  function appendGeneratedContent(text: string) {
+    update("content", `${post.content.trim()}\n\n${text.trim()}`.trim());
+    setSuccess("AI suggestion added to the article draft. Review it before saving or publishing.");
   }
 
   async function save(mode: "draft" | "publish") {
@@ -347,6 +353,14 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
             </button>
           </div>
         </div>
+
+        <ContentAiAssistant
+          module="blog"
+          title={post.title}
+          focusKeyword={post.focusKeyword}
+          existingContent={post.content}
+          onAppendToContent={appendGeneratedContent}
+        />
 
         <BlogAuditPanel article={auditArticle} result={auditResult} onResult={setAuditResult} />
 
