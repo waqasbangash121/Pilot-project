@@ -6,6 +6,7 @@ import {
   AdminEmptyState,
   AdminMetric,
 } from "@/components/admin/admin-ui";
+import { DeleteContentButton } from "@/components/admin/delete-content-button";
 import { listRemoteManagedContent } from "@/lib/editor-github";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,7 @@ export default async function ComparisonDashboardPage() {
                 ...(comparison.focusKeyword ? [`Keyword: ${comparison.focusKeyword}`] : []),
               ]}
               Icon={Scale}
+              secondaryAction={<DeleteContentButton compact type="comparison" slug={comparison.slug} title={comparison.title} redirectTo="/admin/comparisons" />}
             />
           ))
         ) : (
