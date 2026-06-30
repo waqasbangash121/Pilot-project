@@ -327,6 +327,50 @@ export async function saveRemoteManagedContent(
   return { sha: await createCommit(`${action}: ${nextItem.title}`, changes) };
 }
 
+export async function deleteRemotePost(slug: string): Promise<{ sha: string; title: string }> {
+  const existingPosts = await listRemotePosts();
+  const post = existingPosts.find((entry) => entry.slug === slug);
+
+  if (!post) {
+    throw new BlogInputError("This article no longer exists in the repository.");
+  }
+
+  const remainingPosts = existingPosts
+    .filter((entry) => entry.slug !== slug)
+    .map(({ sourcePath: _sourcePath, ...entry }) => entry);
+
+  const sha = await createCommit(`Delete article: ${post.title}`, [
+    { path: `content/blog/${slug}.mdx` },
+    { path: "content/blog/posts.ts", content: createBlogRegistry(remainingPosts) },
+  ]);
+
+  return { sha, title: post.title };
+}
+
+export async function deleteRemoteManagedContent(
+  type: ManagedContentType,
+  slug: string,
+): Promise<{ sha: string; title: string }> {
+  const existingItems = await listRemoteManagedContent(type);
+  const item = existingItems.find((entry) => entry.slug === slug);
+
+  if (!item) {
+    throw new ManagedContentInputError(`This ${type} no longer exists in the repository.`);
+  }
+
+  const remainingItems = existingItems
+    .filter((entry) => entry.slug !== slug)
+    .map(({ sourcePath: _sourcePath, ...entry }) => entry);
+  const directory = contentDirectory(type);
+
+  const sha = await createCommit(`Delete ${type}: ${item.title}`, [
+    { path: `${directory}/${slug}.mdx` },
+    { path: contentRegistryPath(type), content: createManagedContentRegistry(type, remainingItems) },
+  ]);
+
+  return { sha, title: item.title };
+}
+
 export function githubCommitUrl(sha: string): string {
   const config = configuration();
   return `https://github.com/${config.owner}/${config.repository}/commit/${sha}`;
