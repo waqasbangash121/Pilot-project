@@ -26,11 +26,11 @@ openssl rand -base64 32
 
 ## Local setup
 
-Install the dependencies:
+Install the Neon serverless driver and Drizzle packages:
 
 ```bash
-pnpm add @neondatabase/serverless drizzle-orm
-pnpm add -D drizzle-kit dotenv
+pnpm add drizzle-orm@rc @neondatabase/serverless
+pnpm add -D drizzle-kit@rc dotenv
 ```
 
 Add the environment variables to `.env.local`. Never commit `.env.local`.
