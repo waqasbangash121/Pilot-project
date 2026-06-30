@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, FileText } from "lucide-react";
 
@@ -22,6 +23,7 @@ type AdminContentRowProps = {
   draft: boolean;
   meta: string[];
   Icon?: LucideIcon;
+  secondaryAction?: ReactNode;
 };
 
 type AdminEmptyStateProps = {
@@ -74,6 +76,7 @@ export function AdminContentRow({
   draft,
   meta,
   Icon = FileText,
+  secondaryAction,
 }: AdminContentRowProps) {
   return (
     <article className="group grid gap-4 border-b border-border px-4 py-4 last:border-b-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-5">
@@ -98,13 +101,16 @@ export function AdminContentRow({
         </div>
       </div>
 
-      <Link
-        href={href}
-        className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-muted/60 px-3 text-sm font-semibold text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        Edit
-        <ArrowRight aria-hidden="true" className="size-4" />
-      </Link>
+      <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+        <Link
+          href={href}
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-muted/60 px-3 text-sm font-semibold text-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Edit
+          <ArrowRight aria-hidden="true" className="size-4" />
+        </Link>
+        {secondaryAction}
+      </div>
     </article>
   );
 }
