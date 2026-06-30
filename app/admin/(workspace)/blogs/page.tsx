@@ -6,6 +6,7 @@ import {
   AdminEmptyState,
   AdminMetric,
 } from "@/components/admin/admin-ui";
+import { DeleteContentButton } from "@/components/admin/delete-content-button";
 import { listRemotePosts } from "@/lib/editor-github";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,7 @@ export default async function BlogDashboardPage() {
                 ...(post.focusKeyword ? [`Keyword: ${post.focusKeyword}`] : []),
               ]}
               Icon={BookOpenText}
+              secondaryAction={<DeleteContentButton compact type="blog" slug={post.slug} title={post.title} redirectTo="/admin/blogs" />}
             />
           ))
         ) : (
