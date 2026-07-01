@@ -14,6 +14,8 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatComparisonDate, getAllComparisons } from "@/lib/comparisons";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = createPageMetadata({
   title: "Shopify App Comparisons and Alternatives",
   description:
@@ -24,15 +26,18 @@ export const metadata = createPageMetadata({
 const comparisonPrinciples = [
   {
     title: "Use-case first",
-    description: "Start with the storefront problem, customer journey, and operational need you are solving.",
+    description:
+      "Start with the storefront problem, customer journey, and operational need you are solving.",
   },
   {
     title: "Clear trade-offs",
-    description: "Understand the meaningful differences without reducing a complex choice to a feature checklist.",
+    description:
+      "Understand the meaningful differences without reducing a complex choice to a feature checklist.",
   },
   {
     title: "Practical next steps",
-    description: "Leave with guidance that helps your team decide what to evaluate or implement next.",
+    description:
+      "Leave with guidance that helps your team decide what to evaluate or implement next.",
   },
 ];
 
@@ -75,8 +80,8 @@ export default async function ComparisonsPage() {
                   Compare Shopify solutions with more confidence.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Browse balanced versus and alternative guides built around buyer context, decision criteria,
-                  and the implementation factors that matter in a real storefront.
+                  Browse balanced versus and alternative guides built around buyer context, decision
+                  criteria, and the implementation factors that matter in a real storefront.
                 </p>
               </div>
 
@@ -99,12 +104,17 @@ export default async function ComparisonsPage() {
         <Container className="max-w-6xl">
           <div className="grid gap-4 md:grid-cols-3">
             {comparisonPrinciples.map((principle, index) => (
-              <article key={principle.title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+              <article
+                key={principle.title}
+                className="rounded-2xl border border-border bg-surface p-5 shadow-sm"
+              >
                 <span className="inline-flex size-9 items-center justify-center rounded-xl border border-border bg-background text-sm font-semibold text-primary">
                   0{index + 1}
                 </span>
                 <h2 className="mt-4 text-lg font-semibold tracking-tight">{principle.title}</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{principle.description}</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {principle.description}
+                </p>
               </article>
             ))}
           </div>
@@ -115,13 +125,16 @@ export default async function ComparisonsPage() {
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Comparison library</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Comparison library
+              </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Find the decision guide you need.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Each guide highlights the context behind a choice, with a focus on practical fit and trade-offs.
+              Each guide highlights the context behind a choice, with a focus on practical fit and
+              trade-offs.
             </p>
           </div>
 
@@ -175,7 +188,10 @@ export default async function ComparisonsPage() {
                       </span>
                       <span className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                         Read comparison
-                        <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight
+                          aria-hidden="true"
+                          className="size-4 transition-transform group-hover:translate-x-1"
+                        />
                       </span>
                     </div>
                   </Link>
@@ -187,9 +203,12 @@ export default async function ComparisonsPage() {
               <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-background text-primary">
                 <Scale aria-hidden="true" className="size-6" />
               </span>
-              <h3 className="mt-4 text-2xl font-semibold tracking-tight">Comparison guides are being prepared.</h3>
+              <h3 className="mt-4 text-2xl font-semibold tracking-tight">
+                Comparison guides are being prepared.
+              </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Practical alternatives and versus pages for Shopify decision-makers will appear here soon.
+                Practical alternatives and versus pages for Shopify decision-makers will appear here
+                soon.
               </p>
             </div>
           )}
@@ -201,7 +220,9 @@ export default async function ComparisonsPage() {
           <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
             <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Plan beyond the comparison</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                  Plan beyond the comparison
+                </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
                   Gather context, then take action.
                 </h2>
@@ -225,7 +246,10 @@ export default async function ComparisonsPage() {
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                     Continue exploring
-                    <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform group-hover:translate-x-1"
+                    />
                   </span>
                 </Link>
               ))}

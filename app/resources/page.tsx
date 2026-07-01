@@ -16,6 +16,8 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatResourceDate, getAllResources } from "@/lib/resources";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = createPageMetadata({
   title: "Shopify Ecommerce Guides, Playbooks, and Resources",
   description:
@@ -45,7 +47,8 @@ const relatedLinks = [
   {
     href: "/blog",
     label: "Read the blog",
-    description: "Get context and practical perspectives on AI commerce, discovery, and conversion.",
+    description:
+      "Get context and practical perspectives on AI commerce, discovery, and conversion.",
     Icon: BookOpenText,
   },
   {
@@ -80,8 +83,8 @@ export default async function ResourcesPage() {
                   Practical resources for better Shopify experiences.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Use focused guides, playbooks, checklists, and templates to improve product discovery,
-                  customer experience, and conversion with a clearer implementation plan.
+                  Use focused guides, playbooks, checklists, and templates to improve product
+                  discovery, customer experience, and conversion with a clearer implementation plan.
                 </p>
               </div>
 
@@ -104,7 +107,10 @@ export default async function ResourcesPage() {
         <Container className="max-w-6xl">
           <div className="grid gap-4 md:grid-cols-3">
             {resourceFormats.map(({ title, description, Icon }) => (
-              <article key={title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+              <article
+                key={title}
+                className="rounded-2xl border border-border bg-surface p-5 shadow-sm"
+              >
                 <span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-background text-primary">
                   <Icon aria-hidden="true" className="size-5" />
                 </span>
@@ -120,13 +126,16 @@ export default async function ResourcesPage() {
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Resource library</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Resource library
+              </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Pick a useful next step.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Choose a format that matches the work in front of you, then adapt it to your storefront and team.
+              Choose a format that matches the work in front of you, then adapt it to your
+              storefront and team.
             </p>
           </div>
 
@@ -153,7 +162,9 @@ export default async function ResourcesPage() {
                     <h3 className="mt-6 text-2xl font-semibold tracking-tight transition-colors group-hover:text-primary">
                       {resource.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground">{resource.excerpt}</p>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                      {resource.excerpt}
+                    </p>
 
                     {resource.audience ? (
                       <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground">
@@ -178,14 +189,20 @@ export default async function ResourcesPage() {
                         <Clock3 aria-hidden="true" className="size-4" />
                         {resource.readingTime} min read
                       </span>
-                      <time dateTime={displayDate} className="text-sm font-medium text-muted-foreground">
+                      <time
+                        dateTime={displayDate}
+                        className="text-sm font-medium text-muted-foreground"
+                      >
                         {formatResourceDate(displayDate)}
                       </time>
                     </div>
 
                     <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                       Open resource
-                      <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="size-4 transition-transform group-hover:translate-x-1"
+                      />
                     </span>
                   </Link>
                 );
@@ -196,9 +213,12 @@ export default async function ResourcesPage() {
               <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-background text-primary">
                 <FileText aria-hidden="true" className="size-6" />
               </span>
-              <h3 className="mt-4 text-2xl font-semibold tracking-tight">New resources are on the way.</h3>
+              <h3 className="mt-4 text-2xl font-semibold tracking-tight">
+                New resources are on the way.
+              </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Actionable ecommerce guides, templates, and implementation playbooks will appear here soon.
+                Actionable ecommerce guides, templates, and implementation playbooks will appear
+                here soon.
               </p>
             </div>
           )}
@@ -210,7 +230,9 @@ export default async function ResourcesPage() {
           <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
             <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Keep moving</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                  Keep moving
+                </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
                   Pair resources with context and evaluation.
                 </h2>
@@ -234,7 +256,10 @@ export default async function ResourcesPage() {
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                     Continue exploring
-                    <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform group-hover:translate-x-1"
+                    />
                   </span>
                 </Link>
               ))}
