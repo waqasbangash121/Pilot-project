@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { and, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { randomUUID } from "node:crypto";
+import type { Dirent } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
@@ -222,7 +223,7 @@ function parseMdx(source: string, type: ContentType): ParsedMdxContent {
 }
 
 async function findMdxFiles(directory: string): Promise<string[]> {
-  let entries: Awaited<ReturnType<typeof readdir>>;
+  let entries: Dirent<string>[];
 
   try {
     entries = await readdir(directory, { withFileTypes: true });

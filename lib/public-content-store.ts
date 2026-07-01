@@ -41,5 +41,5 @@ export async function getPublishedManagedContentBySlug(
   type: ManagedContentType,
   slug: string,
 ): Promise<ManagedContentInput | null> {
-  return getStoredManagedContent(type, slug);
+  return getStoredManagedContentBySlug(type, slug);
 }
