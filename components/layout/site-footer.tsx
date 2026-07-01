@@ -2,12 +2,18 @@ import Link from "next/link";
 
 import { footerNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
+import { getFooterSocialRouteItemsWithFallback } from "@/lib/footer-social-settings";
 
 import { BrandMark } from "./brand-mark";
 import { NewsletterForm } from "./newsletter-form";
 import { Container } from "../ui/container";
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const socialLinks = await getFooterSocialRouteItemsWithFallback();
+  const footerGroups = footerNavigation
+    .map((group) => (group.title === "Social" ? { ...group, links: socialLinks } : group))
+    .filter((group) => group.title !== "Social" || group.links.length > 0);
+
   return (
     <footer role="contentinfo" className="border-t border-border/70">
       <Container className="grid gap-10 py-10 md:grid-cols-[1.3fr_2fr] md:items-start">
@@ -30,7 +36,7 @@ export function SiteFooter() {
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {footerNavigation.map((group) => (
+          {footerGroups.map((group) => (
             <section key={group.title} aria-labelledby={`footer-${group.title.toLowerCase()}`}>
               <h2
                 id={`footer-${group.title.toLowerCase()}`}
