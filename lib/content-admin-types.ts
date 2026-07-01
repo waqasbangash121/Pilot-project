@@ -1,6 +1,7 @@
-export type ManagedContentType = "comparison" | "resource";
+export type ManagedContentType = "comparison" | "resource" | "case-study" | "tool";
 
 export type ResourceType = "Guide" | "Playbook" | "Checklist" | "Template" | "Case Study" | "Documentation";
+export type ToolType = "Calculator" | "Audit" | "Checklist" | "Generator" | "Template" | "Worksheet";
 
 export interface ManagedContentInput {
   type: ManagedContentType;
@@ -23,6 +24,12 @@ export interface ManagedContentInput {
   decisionSummary?: string;
   resourceType?: ResourceType;
   audience?: string;
+  customerName?: string;
+  industry?: string;
+  outcomeSummary?: string;
+  toolType?: ToolType;
+  toolUrl?: string;
+  useCase?: string;
 }
 
 export interface RemoteManagedContent extends ManagedContentInput {
@@ -39,4 +46,18 @@ export type ResourceContentInput = ManagedContentInput & {
   type: "resource";
   resourceType: ResourceType;
   audience: string;
+};
+
+export type CaseStudyContentInput = ManagedContentInput & {
+  type: "case-study";
+  customerName: string;
+  industry: string;
+  outcomeSummary: string;
+};
+
+export type ToolContentInput = ManagedContentInput & {
+  type: "tool";
+  toolType: ToolType;
+  useCase: string;
+  toolUrl?: string;
 };

@@ -10,7 +10,7 @@ import { contentItems, workspaces, workspaceSettings } from "../db/schema";
 config({ path: ".env.local" });
 config();
 
-type ContentType = "blog" | "comparison" | "resource";
+type ContentType = "blog" | "comparison" | "resource" | "case-study" | "tool";
 
 type LegacyMetadata = {
   title?: unknown;
@@ -31,6 +31,12 @@ type LegacyMetadata = {
   decisionSummary?: unknown;
   resourceType?: unknown;
   audience?: unknown;
+  customerName?: unknown;
+  industry?: unknown;
+  outcomeSummary?: unknown;
+  toolType?: unknown;
+  toolUrl?: unknown;
+  useCase?: unknown;
 };
 
 type ParsedMdxContent = {
@@ -183,6 +189,18 @@ function parseMdx(source: string, type: ContentType): ParsedMdxContent {
     details.audience = requiredString(metadata.audience, "Audience", 160);
   }
 
+  if (type === "case-study") {
+    details.customerName = requiredString(metadata.customerName, "Customer name", 120);
+    details.industry = requiredString(metadata.industry, "Industry", 120);
+    details.outcomeSummary = requiredString(metadata.outcomeSummary, "Outcome summary", 300);
+  }
+
+  if (type === "tool") {
+    details.toolType = optionalString(metadata.toolType, 80) ?? "Checklist";
+    details.toolUrl = optionalString(metadata.toolUrl, 500) ?? "";
+    details.useCase = requiredString(metadata.useCase, "Use case", 180);
+  }
+
   return {
     title: requiredString(metadata.title, "Title", 120),
     slug: requiredString(metadata.slug, "Slug", 120).toLowerCase(),
@@ -204,7 +222,17 @@ function parseMdx(source: string, type: ContentType): ParsedMdxContent {
 }
 
 async function findMdxFiles(directory: string): Promise<string[]> {
-  const entries = await readdir(directory, { withFileTypes: true });
+  let entries: Awaited<ReturnType<typeof readdir>>;
+
+  try {
+    entries = await readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+      return [];
+    }
+
+    throw error;
+  }
 
   const files = await Promise.all(
     entries.map(async (entry) => {
@@ -327,12 +355,22 @@ async function main() {
       type: "resource",
       directory: join(projectRoot, "content/resources"),
     },
+    {
+      type: "case-study",
+      directory: join(projectRoot, "content/case-studies"),
+    },
+    {
+      type: "tool",
+      directory: join(projectRoot, "content/tools"),
+    },
   ];
 
   const imported = {
     blog: 0,
     comparison: 0,
     resource: 0,
+    "case-study": 0,
+    tool: 0,
   };
 
   for (const source of sources) {
@@ -357,11 +395,15 @@ async function main() {
   console.log(`- Blogs: ${imported.blog}`);
   console.log(`- Comparisons: ${imported.comparison}`);
   console.log(`- Resources: ${imported.resource}`);
+  console.log(`- Case studies: ${imported["case-study"]}`);
+  console.log(`- Tools: ${imported.tool}`);
 
   console.log("\nCurrent Neon totals:");
   console.log(`- Blogs: ${await countImportedContent("blog")}`);
   console.log(`- Comparisons: ${await countImportedContent("comparison")}`);
   console.log(`- Resources: ${await countImportedContent("resource")}`);
+  console.log(`- Case studies: ${await countImportedContent("case-study")}`);
+  console.log(`- Tools: ${await countImportedContent("tool")}`);
 }
 
 main().catch((error) => {

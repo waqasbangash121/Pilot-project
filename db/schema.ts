@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  check,
   index,
   integer,
   jsonb,
@@ -9,7 +10,7 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
-export const contentTypes = ["blog", "comparison", "resource"] as const;
+export const contentTypes = ["blog", "comparison", "resource", "case-study", "tool"] as const;
 export type ContentType = (typeof contentTypes)[number];
 
 export const contentStatuses = ["draft", "published", "archived"] as const;
@@ -84,6 +85,10 @@ export const contentItems = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
+    check(
+      "content_items_type_check",
+      sql`${table.type} in ('blog', 'comparison', 'resource', 'case-study', 'tool')`,
+    ),
     uniqueIndex("content_items_workspace_type_slug_idx").on(table.workspaceId, table.type, table.slug),
     index("content_items_public_index").on(table.workspaceId, table.type, table.status, table.publishedAt),
   ],

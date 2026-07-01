@@ -3,8 +3,10 @@ import type { MetadataRoute } from "next";
 import { primaryNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { getAllBlogPosts } from "@/lib/blog";
+import { getAllCaseStudies } from "@/lib/case-studies";
 import { getAllComparisons } from "@/lib/comparisons";
 import { getAllResources } from "@/lib/resources";
+import { getAllTools } from "@/lib/tools";
 
 const appPages = [
   "/apps",
@@ -14,15 +16,27 @@ const appPages = [
 ];
 
 const legalPages = ["/privacy", "/terms", "/cookie-policy"];
-const standardPages = ["/", "/about", "/services", "/search", "/blog", "/comparisons", "/resources"];
+const standardPages = [
+  "/",
+  "/about",
+  "/services",
+  "/search",
+  "/blog",
+  "/comparisons",
+  "/resources",
+  "/case-studies",
+  "/tools",
+];
 
 export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, comparisons, resources] = await Promise.all([
+  const [posts, comparisons, resources, caseStudies, tools] = await Promise.all([
     getAllBlogPosts(),
     getAllComparisons(),
     getAllResources(),
+    getAllCaseStudies(),
+    getAllTools(),
   ]);
 
   const routes = [
@@ -69,5 +83,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...blogEntries, ...comparisonEntries, ...resourceEntries];
+  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((caseStudy) => ({
+    url: new URL(`/case-studies/${caseStudy.slug}`, siteConfig.url).toString(),
+    lastModified: new Date(`${caseStudy.updatedAt || caseStudy.publishedAt}T12:00:00.000Z`),
+    changeFrequency: "monthly",
+    priority: 0.72,
+  }));
+
+  const toolEntries: MetadataRoute.Sitemap = tools.map((tool) => ({
+    url: new URL(`/tools/${tool.slug}`, siteConfig.url).toString(),
+    lastModified: new Date(`${tool.updatedAt || tool.publishedAt}T12:00:00.000Z`),
+    changeFrequency: "monthly",
+    priority: 0.68,
+  }));
+
+  return [
+    ...staticEntries,
+    ...blogEntries,
+    ...comparisonEntries,
+    ...resourceEntries,
+    ...caseStudyEntries,
+    ...toolEntries,
+  ];
 }

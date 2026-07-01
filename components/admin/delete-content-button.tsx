@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Loader2, Trash2, X } from "lucide-react";
 
-type ContentType = "blog" | "comparison" | "resource";
+type ContentType = "blog" | "comparison" | "resource" | "case-study" | "tool";
 
 type DeleteContentButtonProps = {
   type: ContentType;
@@ -16,6 +16,7 @@ type DeleteContentButtonProps = {
 
 function contentLabel(type: ContentType): string {
   if (type === "blog") return "article";
+  if (type === "case-study") return "case study";
   return type;
 }
 

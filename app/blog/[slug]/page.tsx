@@ -15,11 +15,13 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 60;
-
-export async function generateStaticParams() {
-  return [];
-}
+/**
+ * Blog posts are created after deployment from the admin panel.
+ * Always render this route at request time instead of trying to
+ * statically generate blog slugs during the build.
+ */
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -27,16 +29,20 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   if (!post) {
     return {
+      title: "Article not found",
       robots: {
         index: false,
         follow: false,
       },
-      title: "Article not found",
     };
   }
 
-  const title = post.seoTitle ?? post.title;
-  const description = post.seoDescription ?? post.excerpt;
+  const title = post.seoTitle || post.title;
+  const description =
+    post.seoDescription ||
+    post.excerpt ||
+    "Read Shopify, ecommerce, SEO, and AI search insights from Hyper.";
+
   const path = `/blog/${post.slug}`;
 
   return {
@@ -52,9 +58,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description,
       siteName: siteConfig.name,
       publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt ?? post.publishedAt,
-      authors: [post.author],
-      tags: post.tags,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      authors: post.author ? [post.author] : undefined,
+      tags: Array.isArray(post.tags) ? post.tags : [],
       images: post.coverImage
         ? [
             {
@@ -81,18 +87,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const tags = Array.isArray(post.tags) ? post.tags : [];
+
   const articleUrl = new URL(`/blog/${post.slug}`, siteConfig.url).toString();
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    description: post.seoDescription ?? post.excerpt,
+    description:
+      post.seoDescription ||
+      post.excerpt ||
+      "Read Shopify, ecommerce, SEO, and AI search insights from Hyper.",
     datePublished: post.publishedAt,
-    dateModified: post.updatedAt ?? post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: articleUrl,
     author: {
       "@type": "Organization",
-      name: post.author,
+      name: post.author || siteConfig.name,
     },
     publisher: {
       "@type": "Organization",
@@ -106,7 +118,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+        }}
       />
 
       <Section className="pb-12 pt-20 sm:pt-28">
@@ -120,28 +134,40 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
 
           <div className="mt-10">
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-primary">
-              {post.category}
-            </p>
+            {post.category ? (
+              <p className="text-sm font-medium uppercase tracking-[0.28em] text-primary">
+                {post.category}
+              </p>
+            ) : null}
 
             <h1 className="mt-4 type-display">{post.title}</h1>
 
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">{post.excerpt}</p>
+            {post.excerpt ? (
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
+                {post.excerpt}
+              </p>
+            ) : null}
 
             <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-              <span>By {post.author}</span>
-              <span aria-hidden="true">•</span>
+              {post.author ? <span>By {post.author}</span> : null}
+
+              {post.author ? <span aria-hidden="true">•</span> : null}
+
               <time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time>
-              <span aria-hidden="true">•</span>
-              <span className="inline-flex items-center gap-2">
-                <Clock3 aria-hidden="true" className="size-4" />
-                {post.readingTime} min read
-              </span>
+
+              {post.readingTime ? <span aria-hidden="true">•</span> : null}
+
+              {post.readingTime ? (
+                <span className="inline-flex items-center gap-2">
+                  <Clock3 aria-hidden="true" className="size-4" />
+                  {post.readingTime} min read
+                </span>
+              ) : null}
             </div>
 
-            {post.tags.length > 0 ? (
+            {tags.length > 0 ? (
               <div className="mt-6 flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
+                {tags.map((tag) => (
                   <span
                     key={tag}
                     className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground"
@@ -159,7 +185,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Container className="max-w-4xl">
           <article className="rounded-[10px] border border-border bg-surface p-6 sm:p-10 lg:p-12">
             <div className={styles.prose}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
             </div>
           </article>
         </Container>

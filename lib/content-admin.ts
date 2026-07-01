@@ -4,6 +4,7 @@ import type {
   ManagedContentInput,
   ManagedContentType,
   ResourceType,
+  ToolType,
 } from "@/lib/content-admin-types";
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -16,6 +17,44 @@ const resourceTypes = new Set<ResourceType>([
   "Case Study",
   "Documentation",
 ]);
+const toolTypes = new Set<ToolType>([
+  "Calculator",
+  "Audit",
+  "Checklist",
+  "Generator",
+  "Template",
+  "Worksheet",
+]);
+
+const contentLocations: Record<
+  ManagedContentType,
+  { directory: string; registryPath: string; publicRoot: string; entriesName: string }
+> = {
+  comparison: {
+    directory: "content/comparisons",
+    registryPath: "content/comparisons/posts.ts",
+    publicRoot: "/comparisons",
+    entriesName: "comparisonEntries",
+  },
+  resource: {
+    directory: "content/resources",
+    registryPath: "content/resources/posts.ts",
+    publicRoot: "/resources",
+    entriesName: "resourceEntries",
+  },
+  "case-study": {
+    directory: "content/case-studies",
+    registryPath: "content/case-studies/posts.ts",
+    publicRoot: "/case-studies",
+    entriesName: "caseStudyEntries",
+  },
+  tool: {
+    directory: "content/tools",
+    registryPath: "content/tools/posts.ts",
+    publicRoot: "/tools",
+    entriesName: "toolEntries",
+  },
+};
 
 export class ManagedContentInputError extends Error {}
 
@@ -57,16 +96,27 @@ function normalizeTags(value: unknown): string[] {
   return [...new Set(values.map((tag) => requiredString(tag, "Each tag", 40)))];
 }
 
+function normalizePathOrUrl(value: unknown, label: string): string {
+  const path = optionalString(value, label, 500);
+  if (!path) return "";
+  if (path.startsWith("/") || path.startsWith("https://")) return path;
+  throw new ManagedContentInputError(`${label} must start with / or https://.`);
+}
+
 function normalizeImage(value: unknown): string {
-  const image = optionalString(value, "Cover image", 500);
-  if (!image) return "";
-  if (image.startsWith("/") || image.startsWith("https://")) return image;
-  throw new ManagedContentInputError("Cover image must start with / or https://.");
+  return normalizePathOrUrl(value, "Cover image");
 }
 
 function getType(value: unknown): ManagedContentType {
-  if (value === "comparison" || value === "resource") return value;
-  throw new ManagedContentInputError("Content type must be comparison or resource.");
+  if (
+    value === "comparison" ||
+    value === "resource" ||
+    value === "case-study" ||
+    value === "tool"
+  ) {
+    return value;
+  }
+  throw new ManagedContentInputError("Choose a valid managed content type.");
 }
 
 function getResourceType(value: unknown): ResourceType {
@@ -77,16 +127,24 @@ function getResourceType(value: unknown): ResourceType {
   throw new ManagedContentInputError("Choose a valid resource type.");
 }
 
+function getToolType(value: unknown): ToolType {
+  if (typeof value === "string" && toolTypes.has(value as ToolType)) {
+    return value as ToolType;
+  }
+
+  throw new ManagedContentInputError("Choose a valid tool type.");
+}
+
 export function contentDirectory(type: ManagedContentType): string {
-  return type === "comparison" ? "content/comparisons" : "content/resources";
+  return contentLocations[type].directory;
 }
 
 export function contentRegistryPath(type: ManagedContentType): string {
-  return type === "comparison" ? "content/comparisons/posts.ts" : "content/resources/posts.ts";
+  return contentLocations[type].registryPath;
 }
 
 export function publicContentPath(type: ManagedContentType, slug: string): string {
-  return type === "comparison" ? `/comparisons/${slug}` : `/resources/${slug}`;
+  return `${contentLocations[type].publicRoot}/${slug}`;
 }
 
 export function parseManagedContentInput(value: unknown, expectedType?: ManagedContentType): ManagedContentInput {
@@ -137,10 +195,28 @@ export function parseManagedContentInput(value: unknown, expectedType?: ManagedC
     };
   }
 
+  if (type === "resource") {
+    return {
+      ...common,
+      resourceType: getResourceType(input.resourceType),
+      audience: requiredString(input.audience, "Audience", 160),
+    };
+  }
+
+  if (type === "case-study") {
+    return {
+      ...common,
+      customerName: requiredString(input.customerName, "Customer name", 120),
+      industry: requiredString(input.industry, "Industry", 120),
+      outcomeSummary: requiredString(input.outcomeSummary, "Outcome summary", 300),
+    };
+  }
+
   return {
     ...common,
-    resourceType: getResourceType(input.resourceType),
-    audience: requiredString(input.audience, "Audience", 160),
+    toolType: getToolType(input.toolType),
+    toolUrl: normalizePathOrUrl(input.toolUrl, "Tool URL"),
+    useCase: requiredString(input.useCase, "Use case", 180),
   };
 }
 
@@ -165,6 +241,12 @@ export function serializeManagedContent(item: ManagedContentInput): string {
     decisionSummary: item.type === "comparison" ? item.decisionSummary : undefined,
     resourceType: item.type === "resource" ? item.resourceType : undefined,
     audience: item.type === "resource" ? item.audience : undefined,
+    customerName: item.type === "case-study" ? item.customerName : undefined,
+    industry: item.type === "case-study" ? item.industry : undefined,
+    outcomeSummary: item.type === "case-study" ? item.outcomeSummary : undefined,
+    toolType: item.type === "tool" ? item.toolType : undefined,
+    toolUrl: item.type === "tool" ? item.toolUrl || undefined : undefined,
+    useCase: item.type === "tool" ? item.useCase : undefined,
   };
 
   return `export const metadata = ${JSON.stringify(metadata, null, 2)};\n\n${item.content.trim()}\n`;
@@ -215,7 +297,7 @@ export function createManagedContentRegistry(type: ManagedContentType, items: Ma
       return `  { ...${identifier}Metadata, Content: ${identifier} },`;
     })
     .join("\n");
-  const typeName = type === "comparison" ? "comparisonEntries" : "resourceEntries";
+  const typeName = contentLocations[type].entriesName;
 
-  return `import type { ComponentType } from "react";\n\n${imports}\n\nexport type ManagedContentMetadata = {\n  type: "${type}";\n  title: string;\n  slug: string;\n  excerpt: string;\n  publishedAt: string;\n  updatedAt?: string;\n  author: string;\n  category: string;\n  tags: string[];\n  focusKeyword?: string;\n  seoTitle?: string;\n  seoDescription?: string;\n  coverImage?: string;\n  readingTime: number;\n  draft?: boolean;\n  competitorName?: string;\n  decisionSummary?: string;\n  resourceType?: "Guide" | "Playbook" | "Checklist" | "Template" | "Case Study" | "Documentation";\n  audience?: string;\n};\n\nexport type ManagedContentEntry = ManagedContentMetadata & {\n  Content: ComponentType;\n};\n\n${metadata}\n\nexport const ${typeName}: ManagedContentEntry[] = [\n${entries}\n];\n`;
+  return `import type { ComponentType } from "react";\n\n${imports}\n\nexport type ManagedContentMetadata = {\n  type: "${type}";\n  title: string;\n  slug: string;\n  excerpt: string;\n  publishedAt: string;\n  updatedAt?: string;\n  author: string;\n  category: string;\n  tags: string[];\n  focusKeyword?: string;\n  seoTitle?: string;\n  seoDescription?: string;\n  coverImage?: string;\n  readingTime: number;\n  draft?: boolean;\n  competitorName?: string;\n  decisionSummary?: string;\n  resourceType?: "Guide" | "Playbook" | "Checklist" | "Template" | "Case Study" | "Documentation";\n  audience?: string;\n  customerName?: string;\n  industry?: string;\n  outcomeSummary?: string;\n  toolType?: "Calculator" | "Audit" | "Checklist" | "Generator" | "Template" | "Worksheet";\n  toolUrl?: string;\n  useCase?: string;\n};\n\nexport type ManagedContentEntry = ManagedContentMetadata & {\n  Content: ComponentType;\n};\n\n${metadata}\n\nexport const ${typeName}: ManagedContentEntry[] = [\n${entries}\n];\n`;
 }

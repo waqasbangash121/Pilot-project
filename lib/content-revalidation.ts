@@ -7,7 +7,9 @@ import type { ContentType } from "@/db/schema";
 function rootPath(type: ContentType): string {
   if (type === "blog") return "/blog";
   if (type === "comparison") return "/comparisons";
-  return "/resources";
+  if (type === "resource") return "/resources";
+  if (type === "case-study") return "/case-studies";
+  return "/tools";
 }
 
 export function revalidateContentRoutes(

@@ -2,7 +2,7 @@ import "server-only";
 
 import { AiSettingsError, getOpenAiWorkspaceConfiguration } from "@/lib/ai-settings";
 
-type ContentModule = "blog" | "comparison" | "resource";
+type ContentModule = "blog" | "comparison" | "resource" | "case-study" | "tool";
 type GenerationTask = "outline" | "metadata" | "faq" | "section";
 
 type ContentGenerationRequest = {
@@ -24,7 +24,7 @@ type OpenAIResponse = {
   output?: OpenAIOutputItem[];
 };
 
-const modules = new Set<ContentModule>(["blog", "comparison", "resource"]);
+const modules = new Set<ContentModule>(["blog", "comparison", "resource", "case-study", "tool"]);
 const tasks = new Set<GenerationTask>(["outline", "metadata", "faq", "section"]);
 
 function optionalString(value: unknown, maxLength: number): string | undefined {
@@ -94,6 +94,14 @@ function moduleInstruction(module: ContentModule): string {
 
   if (module === "resource") {
     return "For resources, make the output practical, structured, and implementation-focused.";
+  }
+
+  if (module === "case-study") {
+    return "For case studies, focus on customer context, implementation story, and outcomes. Do not invent metrics, quotes, customer identities, or before-and-after claims.";
+  }
+
+  if (module === "tool") {
+    return "For tools, make the output practical, action-oriented, and clear about when to use the tool. Do not imply automated functionality that is not described in the draft.";
   }
 
   return "For blog content, prioritize reader intent, originality, clear examples, and answer-first writing.";

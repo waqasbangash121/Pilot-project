@@ -53,7 +53,7 @@ function detailString(details: Record<string, unknown>, key: string): string {
 }
 
 function isManagedType(type: PublicContentType): type is ManagedContentType {
-  return type === "comparison" || type === "resource";
+  return type === "comparison" || type === "resource" || type === "case-study" || type === "tool";
 }
 
 function isPubliclyAvailable(item: ContentItem): boolean {
@@ -103,12 +103,32 @@ function toManagedContent(item: ContentItem, type: ManagedContentType): ManagedC
     };
   }
 
+  if (type === "resource") {
+    return {
+      ...common,
+      type: "resource",
+      resourceType: detailString(item.details, "resourceType") as ManagedContentInput["resourceType"],
+      audience: detailString(item.details, "audience"),
+    };
+  }
+
+  if (type === "case-study") {
+    return {
+      ...common,
+      type: "case-study",
+      customerName: detailString(item.details, "customerName"),
+      industry: detailString(item.details, "industry"),
+      outcomeSummary: detailString(item.details, "outcomeSummary"),
+    };
+  }
+
   return {
     ...common,
-    type: "resource",
-    resourceType: detailString(item.details, "resourceType") as ManagedContentInput["resourceType"],
-    audience: detailString(item.details, "audience"),
-  } as ManagedContentInput;
+    type: "tool",
+    toolType: detailString(item.details, "toolType") as ManagedContentInput["toolType"],
+    toolUrl: detailString(item.details, "toolUrl"),
+    useCase: detailString(item.details, "useCase"),
+  };
 }
 
 async function ensureWorkspace(): Promise<void> {
@@ -227,7 +247,19 @@ function valuesForContent(input: StoredContentInput, type: PublicContentType) {
             resourceType: managedInput.resourceType ?? "Guide",
             audience: managedInput.audience ?? "",
           }
-        : {};
+        : type === "case-study"
+          ? {
+              customerName: managedInput.customerName ?? "",
+              industry: managedInput.industry ?? "",
+              outcomeSummary: managedInput.outcomeSummary ?? "",
+            }
+          : type === "tool"
+            ? {
+                toolType: managedInput.toolType ?? "Checklist",
+                toolUrl: managedInput.toolUrl ?? "",
+                useCase: managedInput.useCase ?? "",
+              }
+            : {};
 
   return {
     workspaceId: CONTENT_WORKSPACE_ID,
@@ -318,7 +350,7 @@ export async function saveManagedContent(
   originalSlug?: string,
 ): Promise<SavedContentItem> {
   if (!isManagedType(input.type)) {
-    throw new ContentStoreError("Only comparisons and resources can be saved as managed content.");
+    throw new ContentStoreError("Only managed content types can be saved here.");
   }
 
   return saveContent(input.type, input, editorLogin, originalSlug);

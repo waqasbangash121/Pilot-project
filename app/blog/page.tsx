@@ -1,18 +1,13 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  BookOpenText,
-  FileText,
-  Layers3,
-  Scale,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, BookOpenText, FileText, Layers3, Scale, Sparkles } from "lucide-react";
 
 import { BlogCard } from "@/components/blog/blog-card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { getAllBlogPosts } from "@/lib/blog";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Hyper Blog | AI Shopify & Ecommerce Insights",
@@ -69,8 +64,8 @@ export default async function BlogPage() {
                   Practical ideas for AI-powered ecommerce growth.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Explore clear, useful perspectives on product discovery, customer experience, Shopify growth,
-                  and the systems that help more shoppers find the right next step.
+                  Explore clear, useful perspectives on product discovery, customer experience,
+                  Shopify growth, and the systems that help more shoppers find the right next step.
                 </p>
               </div>
 
@@ -102,7 +97,9 @@ export default async function BlogPage() {
                   Start with the area of ecommerce experience you are improving right now.
                 </p>
               </div>
-              <span className="text-sm font-medium text-muted-foreground">{categories.length} focus areas</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                {categories.length} focus areas
+              </span>
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2.5">
@@ -123,13 +120,16 @@ export default async function BlogPage() {
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Latest reading</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Latest reading
+              </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Ideas you can put to work.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Every article is written to help teams make a clearer product, content, or conversion decision.
+              Every article is written to help teams make a clearer product, content, or conversion
+              decision.
             </p>
           </div>
 
@@ -144,9 +144,12 @@ export default async function BlogPage() {
               <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-background text-primary">
                 <BookOpenText aria-hidden="true" className="size-6" />
               </span>
-              <h3 className="mt-4 text-2xl font-semibold tracking-tight">Articles are on the way.</h3>
+              <h3 className="mt-4 text-2xl font-semibold tracking-tight">
+                Articles are on the way.
+              </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                New perspectives on AI commerce, discovery, and conversion will appear here as they are published.
+                New perspectives on AI commerce, discovery, and conversion will appear here as they
+                are published.
               </p>
             </div>
           )}
@@ -158,7 +161,9 @@ export default async function BlogPage() {
           <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
             <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Keep exploring</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                  Keep exploring
+                </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
                   More ways to plan your next move.
                 </h2>
@@ -184,7 +189,10 @@ export default async function BlogPage() {
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                     Explore {label.toLowerCase()}
-                    <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform group-hover:translate-x-1"
+                    />
                   </span>
                 </Link>
               ))}

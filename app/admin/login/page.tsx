@@ -58,7 +58,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
           </p>
           <h1 className="mt-3 max-w-xl text-4xl font-semibold tracking-tight">Hyper Content Studio</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Sign in to manage articles, comparisons, resources, SEO metadata, reviews, and GitHub-backed publishing.
+            Sign in to manage articles, comparisons, resources, case studies, tools, SEO metadata, and reviews.
           </p>
 
           <div className="mt-8 grid gap-3">
@@ -183,10 +183,3 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
     </main>
   );
 }
-
-
-
-
-
-
-

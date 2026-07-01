@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   LogOut,
   Scale,
+  SearchCheck,
   Settings2,
 } from "lucide-react";
 
@@ -45,6 +46,18 @@ const modules = [
     label: "Resources",
     description: "Guides, playbooks, and templates",
     Icon: FileText,
+  },
+  {
+    href: "/admin/case-studies",
+    label: "Case Studies",
+    description: "Customer stories and outcomes",
+    Icon: FileText,
+  },
+  {
+    href: "/admin/tools",
+    label: "Tools",
+    description: "Audits, calculators, and utilities",
+    Icon: SearchCheck,
   },
   {
     href: "/admin/settings",

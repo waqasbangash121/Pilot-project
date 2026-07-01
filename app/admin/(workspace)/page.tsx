@@ -44,6 +44,26 @@ const modules = [
     Icon: FileText,
     accent: "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-50",
   },
+  {
+    href: "/admin/case-studies",
+    createHref: "/admin/case-studies/new",
+    title: "Create a case study",
+    eyebrow: "Customer proof",
+    description: "Document customer stories with implementation context, verified outcomes, and clear proof points.",
+    action: "New case study",
+    Icon: FileText,
+    accent: "border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-400/30 dark:bg-sky-400/15 dark:text-sky-50",
+  },
+  {
+    href: "/admin/tools",
+    createHref: "/admin/tools/new",
+    title: "Publish a tool",
+    eyebrow: "Utility assets",
+    description: "Create audits, calculators, checklists, worksheets, and practical utility pages.",
+    action: "New tool",
+    Icon: SearchCheck,
+    accent: "border-violet-200 bg-violet-50 text-violet-950 dark:border-violet-400/30 dark:bg-violet-400/15 dark:text-violet-50",
+  },
 ];
 
 const workflow = [
@@ -109,9 +129,9 @@ export default function AdminHomePage() {
       </section>
 
       <section aria-label="Workspace metrics" className="grid gap-3 sm:grid-cols-3">
-        <AdminMetric label="Content modules" value="3" tone="blue" />
+        <AdminMetric label="Content modules" value="5" tone="blue" />
         <AdminMetric label="Unified review flow" value="1" tone="green" />
-        <AdminMetric label="Guided creation paths" value="3" tone="violet" />
+        <AdminMetric label="Guided creation paths" value="5" tone="violet" />
       </section>
 
       <section aria-label="Content modules" className="grid gap-4 xl:grid-cols-3">

@@ -1,7 +1,5 @@
 import "server-only";
 
-import { unstable_noStore as noStore } from "next/cache";
-
 import type { BlogPostInput } from "@/lib/blog-admin-types";
 import type { ManagedContentInput, ManagedContentType } from "@/lib/content-admin-types";
 import {
@@ -11,20 +9,31 @@ import {
   listPublishedManagedContent as listStoredManagedContent,
 } from "@/lib/content-store";
 
+/**
+ * Public content repository.
+ *
+ * This file must remain database/content-only:
+ * - no cookies()
+ * - no headers()
+ * - no draftMode()
+ * - no auth/session helpers
+ * - no noStore() or route rendering configuration
+ *
+ * Pages and route handlers decide whether a route is dynamic,
+ * cached, or revalidated.
+ */
+
 export async function listPublishedBlogPosts(): Promise<BlogPostInput[]> {
-  noStore();
   return listStoredBlogPosts();
 }
 
 export async function getPublishedBlogPostBySlug(slug: string): Promise<BlogPostInput | null> {
-  noStore();
   return getStoredBlogPostBySlug(slug);
 }
 
 export async function listPublishedManagedContent(
   type: ManagedContentType,
 ): Promise<ManagedContentInput[]> {
-  noStore();
   return listStoredManagedContent(type);
 }
 
@@ -32,6 +41,5 @@ export async function getPublishedManagedContentBySlug(
   type: ManagedContentType,
   slug: string,
 ): Promise<ManagedContentInput | null> {
-  noStore();
-  return getStoredManagedContentBySlug(type, slug);
+  return getStoredManagedContent(type, slug);
 }

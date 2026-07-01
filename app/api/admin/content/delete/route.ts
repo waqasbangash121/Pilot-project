@@ -6,7 +6,7 @@ import { currentEditor } from "@/lib/editor-session";
 
 export const runtime = "nodejs";
 
-type ContentType = "blog" | "comparison" | "resource";
+type ContentType = "blog" | "comparison" | "resource" | "case-study" | "tool";
 
 function sameOrigin(request: Request): boolean {
   return request.headers.get("origin") === new URL(request.url).origin;
@@ -17,7 +17,13 @@ function validSlug(value: unknown): value is string {
 }
 
 function validType(value: unknown): value is ContentType {
-  return value === "blog" || value === "comparison" || value === "resource";
+  return (
+    value === "blog" ||
+    value === "comparison" ||
+    value === "resource" ||
+    value === "case-study" ||
+    value === "tool"
+  );
 }
 
 export async function POST(request: Request) {

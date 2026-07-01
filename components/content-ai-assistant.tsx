@@ -13,7 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-type ContentModule = "blog" | "comparison" | "resource";
+type ContentModule = "blog" | "comparison" | "resource" | "case-study" | "tool";
 type GenerationTask = "outline" | "metadata" | "faq" | "section";
 
 type ContentAiAssistantProps = {
@@ -151,4 +151,3 @@ export function ContentAiAssistant({
     </section>
   );
 }
-
