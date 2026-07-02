@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
     "Hyper Apps is a Shopify AI commerce suite that powers product discovery, customer support automation, and shoppable video experiences using AI search, chat, and intent-based merchandising.",
 
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagarat.com",
-  email: "waqas@niagarat.com",
+  email: "support@niagarat.com",
   locale: "en_US",
 
   keywords: [
@@ -48,7 +48,7 @@ export const siteConfig: SiteConfig = {
     "increase Shopify conversion rate",
     "reduce cart abandonment Shopify",
     "ecommerce personalization AI",
-    "retail AI optimization"
+    "retail AI optimization",
   ],
 
   iconPath: "/icon.svg",
