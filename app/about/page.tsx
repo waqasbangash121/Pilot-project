@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { ArrowRight, Bot, Search, ShoppingBag, Sparkles, Video } from "lucide-react";
+
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
@@ -9,99 +12,134 @@ export const metadata = createPageMetadata({
   path: "/about",
 });
 
+const productAreas = [
+  {
+    title: "AI-powered product discovery",
+    description:
+      "Hyper Search & Filter helps Shopify stores deliver faster search, sharper filtering, and easier product exploration across modern catalogs.",
+    Icon: Search,
+  },
+  {
+    title: "AI customer support",
+    description:
+      "Hyper AI Chat and FAQs helps merchants answer common questions, reduce support pressure, and guide shoppers toward confident buying decisions.",
+    Icon: Bot,
+  },
+  {
+    title: "Shop through video",
+    description:
+      "Hyper Shoppable Videos turns product video into interactive shopping moments that connect discovery with action.",
+    Icon: Video,
+  },
+];
+
+const principles = [
+  "Practical AI that fits real merchant workflows.",
+  "Customer experiences that reduce friction before purchase.",
+  "Tools that help Shopify teams stay visible as commerce discovery changes.",
+];
+
 export default function AboutPage() {
   return (
     <>
-      <Section className="pb-12 pt-20 sm:pt-28 lg:pt-32">
-        <Container className="max-w-4xl space-y-6">
-          <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">
-            About Hyper
-          </p>
+      <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16">
+        <Container className="max-w-6xl">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9">
+            <div className="pointer-events-none absolute -left-24 -top-28 size-72 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-32 right-1/4 size-72 rounded-full bg-[hsl(var(--brand-end)/0.1)] blur-3xl" />
 
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Hyper builds AI-powered Shopify apps that help merchants sell more.
-          </h1>
+            <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-end">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
+                  About Hyper
+                </div>
+                <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                  AI commerce apps for Shopify
+                </p>
+                <h1 className="mt-3 max-w-4xl type-display">
+                  Hyper builds practical AI tools for better shopping experiences.
+                </h1>
+                <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                  We help Shopify merchants improve product discovery, automate customer support,
+                  and create engaging shopping paths with AI-powered commerce apps.
+                </p>
+              </div>
 
-          <p className="text-lg leading-8 text-muted-foreground">
-            Hyper develops intelligent Shopify solutions designed to improve product discovery,
-            automate customer support, and create engaging shopping experiences. Our mission is to
-            help ecommerce businesses increase conversions, improve customer satisfaction, and grow
-            revenue through practical AI technology.
-          </p>
-
-          <p className="text-lg leading-8 text-muted-foreground">
-            Whether customers are searching for products, asking questions before purchasing, or
-            discovering products through interactive videos, Hyper helps merchants deliver fast,
-            personalized, and frictionless shopping experiences.
-          </p>
+              <aside className="rounded-2xl border border-border bg-background/75 p-5 backdrop-blur sm:p-6">
+                <ShoppingBag aria-hidden="true" className="size-5 text-primary" />
+                <p className="mt-4 text-4xl font-semibold tracking-tight">3</p>
+                <p className="mt-1 text-sm font-semibold text-foreground">core commerce areas</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Discovery, support, and video commerce working toward smoother buying journeys.
+                </p>
+              </aside>
+            </div>
+          </div>
         </Container>
       </Section>
 
-      <Section aria-labelledby="hyper-platform" className="pb-20 sm:pb-24">
-        <Container className="grid gap-6 md:grid-cols-2">
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 id="hyper-platform" className="text-2xl font-semibold tracking-tight">
-              AI-powered product discovery
-            </h2>
-
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Hyper Search & Filter helps Shopify stores deliver instant product search and advanced
-              filtering. Customers can quickly find products by attributes such as size, color,
-              category, and other custom options, improving shopping experiences while increasing
-              conversion rates and average order value.
-            </p>
-          </article>
-
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 className="text-2xl font-semibold tracking-tight">AI customer support</h2>
-
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Hyper AI Chat and FAQs provides automated customer assistance around the clock.
-              Merchants can deploy AI chatbots and searchable FAQ pages to answer common questions,
-              reduce support tickets, and help shoppers make confident buying decisions.
-            </p>
-          </article>
-
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 className="text-2xl font-semibold tracking-tight">Shop through video</h2>
-
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Hyper Shopable Videos transforms product videos into interactive shopping experiences.
-              Merchants can showcase products with engaging video content that encourages discovery
-              and simplifies the path from inspiration to purchase.
-            </p>
-          </article>
-
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 className="text-2xl font-semibold tracking-tight">Built for modern ecommerce</h2>
-
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Hyper is designed for Shopify merchants who want to combine AI, automation, and
-              customer experience into a single growth strategy. Our apps are easy to install,
-              require minimal setup, and help businesses compete in both traditional search engines
-              and AI-driven shopping experiences.
-            </p>
-          </article>
+      <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="grid gap-4 md:grid-cols-3">
+            {productAreas.map(({ title, description, Icon }) => (
+              <article key={title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-background text-primary">
+                  <Icon aria-hidden="true" className="size-5" />
+                </span>
+                <h2 className="mt-4 text-lg font-semibold tracking-tight">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+              </article>
+            ))}
+          </div>
         </Container>
       </Section>
 
-      <Section className="pb-20">
-        <Container className="max-w-4xl">
-          <h2 className="text-3xl font-semibold tracking-tight">Why merchants choose Hyper</h2>
+      <Section spacing="none" className="pb-12 sm:pb-16">
+        <Container className="max-w-6xl">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Why merchants choose Hyper
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Built for the work behind modern ecommerce growth.
+              </h2>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
+                <p>
+                  Hyper combines artificial intelligence with practical ecommerce workflows to solve
+                  common challenges for Shopify stores. From helping shoppers find products faster
+                  to providing instant support, our apps are built to improve key moments in the
+                  customer journey.
+                </p>
+                <p>
+                  As ecommerce discovery evolves through AI search and conversational shopping, we
+                  focus on tools that help merchants stay visible, accessible, and ready for how
+                  shoppers make decisions next.
+                </p>
+              </div>
+              <Link
+                href="/apps"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+              >
+                Explore Hyper apps
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            </article>
 
-          <div className="mt-6 space-y-4 text-muted-foreground leading-8">
-            <p>
-              Hyper combines artificial intelligence with practical ecommerce workflows to solve
-              common challenges for Shopify stores. From helping shoppers find products faster to
-              providing instant customer support and interactive product discovery, our apps are
-              built to improve every stage of the customer journey.
-            </p>
-
-            <p>
-              As ecommerce continues to evolve with AI-powered search and conversational shopping,
-              Hyper is committed to building tools that help merchants stay visible, accessible, and
-              ready for the future of online retail.
-            </p>
+            <aside className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Our focus
+              </p>
+              <ul className="mt-5 space-y-3">
+                {principles.map((principle) => (
+                  <li key={principle} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{principle}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
           </div>
         </Container>
       </Section>

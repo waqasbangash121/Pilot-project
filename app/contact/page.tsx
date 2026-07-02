@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, Bot, Mail, MessageSquare, Search, Sparkles, Video } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -12,123 +13,136 @@ export const metadata = createPageMetadata({
   path: "/contact",
 });
 
+const supportTopics = [
+  {
+    title: "Product discovery",
+    description: "Talk through search, filters, merchandising, and storefront discovery goals.",
+    Icon: Search,
+  },
+  {
+    title: "AI support",
+    description: "Explore chat, FAQs, and automation for common customer questions.",
+    Icon: Bot,
+  },
+  {
+    title: "Video commerce",
+    description: "Plan interactive product video experiences that shorten the path to purchase.",
+    Icon: Video,
+  },
+];
+
+const contactReasons = [
+  "Find the right Hyper solution for your Shopify store.",
+  "Ask about implementation, workflows, or app capabilities.",
+  "Discuss ways to improve customer experience and conversions.",
+  "Share partnership, support, or general business questions.",
+];
+
 export default function ContactPage() {
   return (
     <>
-      <Section className="pb-12 pt-20 sm:pt-28 lg:pt-32">
-        <Container className="max-w-4xl space-y-6">
-          <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">
-            Contact Hyper
-          </p>
+      <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16">
+        <Container className="max-w-6xl">
+          <div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9">
+            <div className="pointer-events-none absolute -right-24 -top-28 size-72 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-32 left-1/4 size-72 rounded-full bg-[hsl(var(--brand-end)/0.1)] blur-3xl" />
 
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-            Lets Build Better Shopify Shopping Experiences Together.
-          </h1>
+            <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-end">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
+                  Contact Hyper
+                </div>
+                <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                  Shopify AI commerce support
+                </p>
+                <h1 className="mt-3 max-w-4xl type-display">
+                  Let&apos;s build better Shopify shopping experiences.
+                </h1>
+                <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                  Reach out to discuss Hyper apps, AI product discovery, customer support
+                  automation, or practical ways to improve your storefront experience.
+                </p>
+              </div>
 
-          <p className="text-lg leading-8 text-muted-foreground">
-            Hyper helps Shopify merchants improve product discovery, automate customer support, and
-            create engaging shopping experiences through AI-powered commerce solutions. Whether you
-            have questions about our apps or want to explore how Hyper can help grow your business,
-            our team would love to hear from you.
-          </p>
-        </Container>
-      </Section>
-
-      <Section aria-labelledby="contact-details" className="pb-12 sm:pb-16">
-        <Container className="grid gap-6 md:grid-cols-2">
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 id="contact-details" className="text-2xl font-semibold tracking-tight">
-              Get in Touch
-            </h2>
-
-            <p className="mt-4 text-sm leading-7 text-muted-foreground">
-              Whether youre looking for AI-powered product search, intelligent customer support,
-              shoppable video solutions, or general Shopify growth strategies, Hyper is here to
-              help.
-            </p>
-
-            <p className="mt-6 text-sm font-medium text-muted-foreground">Email</p>
-
-            <Link
-              href={`mailto:${siteConfig.email}`}
-              className="mt-2 inline-flex text-base font-medium text-foreground underline decoration-border underline-offset-4"
-            >
-              {siteConfig.email}
-            </Link>
-          </article>
-
-          <article className="rounded-[10px] border border-border bg-surface p-6">
-            <h2 className="text-2xl font-semibold tracking-tight">How We Can Help</h2>
-
-            <ul className="mt-4 space-y-4 text-sm leading-7 text-muted-foreground">
-              <li>• Learn about Hyper Search & Filters for Shopify.</li>
-
-              <li>• Explore AI Chat and FAQ automation.</li>
-
-              <li>• Discover interactive shoppable video commerce.</li>
-
-              <li>• Improve customer experience and conversions.</li>
-
-              <li>• Find the right Hyper solution for your business.</li>
-            </ul>
-          </article>
-        </Container>
-      </Section>
-
-      <Section className="pb-12 sm:pb-16">
-        <Container className="max-w-5xl">
-          <div className="rounded-[10px] border border-border bg-surface p-8 sm:p-10">
-            <h2 className="text-3xl font-semibold tracking-tight">Why Contact Hyper?</h2>
-
-            <div className="mt-6 space-y-5 text-muted-foreground leading-8">
-              <p>
-                Hyper develops AI-powered Shopify apps designed to help ecommerce businesses grow
-                through better customer experiences. Our solutions focus on helping shoppers find
-                products faster, receive instant support, and engage with interactive shopping
-                experiences.
-              </p>
-
-              <p>
-                We believe that modern ecommerce should combine artificial intelligence with
-                practical merchant workflows. Our platform helps reduce friction throughout the
-                buying journey while improving customer satisfaction and business performance.
-              </p>
-
-              <p>
-                Whether youre launching a new Shopify store or scaling an established brand, Hyper
-                provides intelligent commerce tools built for the future of online shopping.
-              </p>
+              <aside className="rounded-2xl border border-border bg-background/75 p-5 backdrop-blur sm:p-6">
+                <Mail aria-hidden="true" className="size-5 text-primary" />
+                <p className="mt-4 text-sm font-semibold text-foreground">Email us directly</p>
+                <Link
+                  href={`mailto:${siteConfig.email}`}
+                  className="mt-2 inline-flex break-all text-sm font-semibold text-primary underline decoration-border underline-offset-4 transition-colors hover:text-foreground"
+                >
+                  {siteConfig.email}
+                </Link>
+                <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                  Tell us what you are trying to improve and which Shopify workflow needs help.
+                </p>
+              </aside>
             </div>
           </div>
         </Container>
       </Section>
 
-      <Section className="pb-20 sm:pb-24">
-        <Container>
-          <div className="rounded-[10px] border border-border bg-surface p-8 text-center sm:p-12">
-            <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">
-              Hyper Commerce Platform
-            </p>
+      <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="grid gap-4 md:grid-cols-3">
+            {supportTopics.map(({ title, description, Icon }) => (
+              <article key={title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-background text-primary">
+                  <Icon aria-hidden="true" className="size-5" />
+                </span>
+                <h2 className="mt-4 text-lg font-semibold tracking-tight">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </Section>
 
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
-              AI-Powered Solutions for Modern Shopify Stores
-            </h2>
-
-            <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
-              Hyper combines intelligent product discovery, AI customer support, and interactive
-              video commerce to help merchants create exceptional shopping experiences. Contact us
-              to learn how Hyper can help your Shopify business increase engagement, improve
-              conversions, and build long-term customer relationships.
-            </p>
-
-            <div className="mt-8">
+      <Section spacing="none" className="pb-12 sm:pb-16">
+        <Container className="max-w-6xl">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <div className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+                <MessageSquare aria-hidden="true" className="size-4 text-primary" />
+                How we can help
+              </div>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Share the work in front of you.
+              </h2>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
+                <p>
+                  Hyper develops AI-powered Shopify apps for product discovery, support, and
+                  interactive commerce. We can help you understand fit, implementation, and where a
+                  tool can reduce friction in the buying journey.
+                </p>
+                <p>
+                  Whether you are launching a new store or improving an established one, send a
+                  short note with your goals and the storefront experience you want to improve.
+                </p>
+              </div>
               <Link
                 href={`mailto:${siteConfig.email}`}
-                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,hsl(var(--brand-start))_0%,hsl(var(--brand-end))_100%)] px-7 py-3 text-sm font-medium text-primary-foreground shadow-[0_18px_36px_-18px_hsl(var(--primary)/0.7)] transition-transform duration-200 hover:-translate-y-0.5"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_18px_36px_-20px_hsl(var(--primary)/0.8)] transition-transform hover:-translate-y-0.5"
               >
                 Contact Hyper
+                <ArrowRight aria-hidden="true" className="size-4" />
               </Link>
-            </div>
+            </article>
+
+            <aside className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Good reasons to reach out
+              </p>
+              <ul className="mt-5 space-y-3">
+                {contactReasons.map((reason) => (
+                  <li key={reason} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-primary" />
+                    <span>{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
           </div>
         </Container>
       </Section>
