@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Clock3, FileText } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock3, Tag, UserRound } from "lucide-react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -59,6 +59,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
   const resource = await getResourceBySlug(slug);
   if (!resource) notFound();
 
+  const tags = Array.isArray(resource.tags) ? resource.tags : [];
   const pageUrl = new URL(`/resources/${resource.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -71,6 +72,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
     author: { "@type": "Organization", name: resource.author },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     audience: { "@type": "Audience", audienceType: resource.audience },
+    image: resource.coverImage ? [new URL(resource.coverImage, siteConfig.url).toString()] : undefined,
   };
 
   return (
@@ -80,8 +82,8 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
       />
 
-      <Section className="pb-12 pt-20 sm:pt-28">
-        <Container className="max-w-4xl">
+      <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
+        <Container className="max-w-6xl">
           <Link
             href="/resources"
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:rounded-sm"
@@ -90,62 +92,107 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
             Back to resources
           </Link>
 
-          <div className="mt-10">
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-primary">
-              {resource.resourceType}
-            </p>
-            <h1 className="mt-4 type-display">{resource.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
-              {resource.excerpt}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-              <span>By {resource.author}</span>
-              <span aria-hidden="true">•</span>
-              <time dateTime={resource.publishedAt}>
-                {formatResourceDate(resource.publishedAt)}
-              </time>
-              <span aria-hidden="true">•</span>
-              <span className="inline-flex items-center gap-2">
-                <Clock3 aria-hidden="true" className="size-4" />
-                {resource.readingTime} min read
-              </span>
+          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                {resource.resourceType}
+              </p>
+              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                {resource.title}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                {resource.excerpt}
+              </p>
             </div>
-          </div>
 
-          <aside className="mt-8 rounded-2xl border border-border bg-surface p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <span className="rounded-xl border border-border bg-background p-2 text-primary">
-                <FileText aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold">Built for</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">{resource.audience}</p>
+            <div className="grid gap-3 border-l-0 border-border text-sm text-muted-foreground sm:grid-cols-3 lg:block lg:border-l lg:pl-6">
+              <div className="flex items-center gap-2 lg:mb-3">
+                <UserRound aria-hidden="true" className="size-4 text-primary" />
+                <span>{resource.author}</span>
+              </div>
+              <div className="flex items-center gap-2 lg:mb-3">
+                <CalendarDays aria-hidden="true" className="size-4 text-primary" />
+                <time dateTime={resource.publishedAt}>{formatResourceDate(resource.publishedAt)}</time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock3 aria-hidden="true" className="size-4 text-primary" />
+                <span>{resource.readingTime} min read</span>
               </div>
             </div>
-          </aside>
-
-          {resource.tags.length ? (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {resource.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
+          </div>
         </Container>
       </Section>
 
-      <Section className="pb-20 sm:pb-24">
-        <Container className="max-w-4xl">
-          <article className="rounded-[10px] border border-border bg-surface p-6 sm:p-10 lg:p-12">
-            <div className={styles.prose}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{resource.content}</ReactMarkdown>
+      <Section spacing="none" className="py-8 sm:py-10">
+        <Container className="max-w-6xl">
+          {resource.coverImage ? (
+            <div className="mb-8 overflow-hidden rounded-[10px] border border-border bg-surface">
+              <img
+                src={resource.coverImage}
+                alt={resource.title}
+                className="aspect-[16/7] w-full object-cover"
+              />
             </div>
-          </article>
+          ) : null}
+
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,44rem)_18rem] lg:justify-between">
+            <article className="min-w-0">
+              <div className={styles.prose}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{resource.content}</ReactMarkdown>
+              </div>
+            </article>
+
+            <aside className="lg:sticky lg:top-24 lg:self-start">
+              <div className="border-t border-border pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                <p className="text-sm font-semibold text-foreground">Resource details</p>
+                <dl className="mt-4 grid gap-3 text-sm text-muted-foreground">
+                  <div>
+                    <dt className="font-medium text-foreground">Format</dt>
+                    <dd className="mt-1">{resource.resourceType}</dd>
+                  </div>
+                  {resource.audience ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Built for</dt>
+                      <dd className="mt-1 leading-6">{resource.audience}</dd>
+                    </div>
+                  ) : null}
+                  {resource.updatedAt && resource.updatedAt !== resource.publishedAt ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Updated</dt>
+                      <dd className="mt-1">{formatResourceDate(resource.updatedAt)}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+
+                {tags.length > 0 ? (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                      <Tag aria-hidden="true" className="size-4 text-primary" />
+                      Topics
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                <Link
+                  href="/resources"
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
+                >
+                  More resources
+                  <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
+                </Link>
+              </div>
+            </aside>
+          </div>
         </Container>
       </Section>
     </>

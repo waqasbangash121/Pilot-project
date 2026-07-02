@@ -150,6 +150,17 @@ export default async function ResourcesPage() {
                     href={`/resources/${resource.slug}`}
                     className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_24px_54px_-38px_hsl(var(--shadow)/0.78)]"
                   >
+                    {resource.coverImage ? (
+                      <div className="-mx-6 -mt-6 mb-6 overflow-hidden border-b border-border bg-muted">
+                        <img
+                          src={resource.coverImage}
+                          alt={resource.title}
+                          className="aspect-[16/9] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : null}
+
                     <div className="flex items-start justify-between gap-4">
                       <span className="inline-flex size-11 items-center justify-center rounded-xl border border-border bg-muted/60 text-primary">
                         <FileText aria-hidden="true" className="size-5" />

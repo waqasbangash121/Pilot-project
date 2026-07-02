@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Clock3, Scale } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock3, Tag, UserRound } from "lucide-react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -61,6 +61,7 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
   const comparison = await getComparisonBySlug(slug);
   if (!comparison) notFound();
 
+  const tags = Array.isArray(comparison.tags) ? comparison.tags : [];
   const pageUrl = new URL(`/comparisons/${comparison.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -76,6 +77,9 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
       { "@type": "Thing", name: siteConfig.name },
       { "@type": "Thing", name: comparison.competitorName },
     ],
+    image: comparison.coverImage
+      ? [new URL(comparison.coverImage, siteConfig.url).toString()]
+      : undefined,
   };
 
   return (
@@ -85,8 +89,8 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
       />
 
-      <Section className="pb-12 pt-20 sm:pt-28">
-        <Container className="max-w-4xl">
+      <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
+        <Container className="max-w-6xl">
           <Link
             href="/comparisons"
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:rounded-sm"
@@ -95,64 +99,111 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
             Back to comparisons
           </Link>
 
-          <div className="mt-10">
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-primary">
-              {comparison.category}
-            </p>
-            <h1 className="mt-4 type-display">{comparison.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">
-              {comparison.excerpt}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-              <span>By {comparison.author}</span>
-              <span aria-hidden="true">•</span>
-              <time dateTime={comparison.publishedAt}>
-                {formatComparisonDate(comparison.publishedAt)}
-              </time>
-              <span aria-hidden="true">•</span>
-              <span className="inline-flex items-center gap-2">
-                <Clock3 aria-hidden="true" className="size-4" />
-                {comparison.readingTime} min read
-              </span>
+          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                {comparison.category}
+              </p>
+              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                {comparison.title}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                {comparison.excerpt}
+              </p>
             </div>
-          </div>
 
-          <aside className="mt-8 rounded-2xl border border-border bg-surface p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <span className="rounded-xl border border-border bg-background p-2 text-primary">
-                <Scale aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold">Decision summary</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  {comparison.decisionSummary}
-                </p>
+            <div className="grid gap-3 border-l-0 border-border text-sm text-muted-foreground sm:grid-cols-3 lg:block lg:border-l lg:pl-6">
+              <div className="flex items-center gap-2 lg:mb-3">
+                <UserRound aria-hidden="true" className="size-4 text-primary" />
+                <span>{comparison.author}</span>
+              </div>
+              <div className="flex items-center gap-2 lg:mb-3">
+                <CalendarDays aria-hidden="true" className="size-4 text-primary" />
+                <time dateTime={comparison.publishedAt}>
+                  {formatComparisonDate(comparison.publishedAt)}
+                </time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock3 aria-hidden="true" className="size-4 text-primary" />
+                <span>{comparison.readingTime} min read</span>
               </div>
             </div>
-          </aside>
-
-          {comparison.tags.length ? (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {comparison.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
+          </div>
         </Container>
       </Section>
 
-      <Section className="pb-20 sm:pb-24">
-        <Container className="max-w-4xl">
-          <article className="rounded-[10px] border border-border bg-surface p-6 sm:p-10 lg:p-12">
-            <div className={styles.prose}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{comparison.content}</ReactMarkdown>
+      <Section spacing="none" className="py-8 sm:py-10">
+        <Container className="max-w-6xl">
+          {comparison.coverImage ? (
+            <div className="mb-8 overflow-hidden rounded-[10px] border border-border bg-surface">
+              <img
+                src={comparison.coverImage}
+                alt={comparison.title}
+                className="aspect-[16/7] w-full object-cover"
+              />
             </div>
-          </article>
+          ) : null}
+
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,44rem)_18rem] lg:justify-between">
+            <article className="min-w-0">
+              <div className={styles.prose}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{comparison.content}</ReactMarkdown>
+              </div>
+            </article>
+
+            <aside className="lg:sticky lg:top-24 lg:self-start">
+              <div className="border-t border-border pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                <p className="text-sm font-semibold text-foreground">Comparison details</p>
+                <dl className="mt-4 grid gap-3 text-sm text-muted-foreground">
+                  {comparison.competitorName ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Compared with</dt>
+                      <dd className="mt-1">{comparison.competitorName}</dd>
+                    </div>
+                  ) : null}
+                  {comparison.decisionSummary ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Decision summary</dt>
+                      <dd className="mt-1 leading-6">{comparison.decisionSummary}</dd>
+                    </div>
+                  ) : null}
+                  {comparison.updatedAt && comparison.updatedAt !== comparison.publishedAt ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Updated</dt>
+                      <dd className="mt-1">{formatComparisonDate(comparison.updatedAt)}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+
+                {tags.length > 0 ? (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                      <Tag aria-hidden="true" className="size-4 text-primary" />
+                      Topics
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                <Link
+                  href="/comparisons"
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
+                >
+                  More comparisons
+                  <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
+                </Link>
+              </div>
+            </aside>
+          </div>
         </Container>
       </Section>
     </>

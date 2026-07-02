@@ -97,10 +97,20 @@ function normalizeTags(value: unknown): string[] {
 }
 
 function normalizePathOrUrl(value: unknown, label: string): string {
-  const path = optionalString(value, label, 500);
+  const path = optionalString(value, label, 2000);
   if (!path) return "";
-  if (path.startsWith("/") || path.startsWith("https://")) return path;
-  throw new ManagedContentInputError(`${label} must start with / or https://.`);
+  if (path.startsWith("/")) return path;
+
+  try {
+    const url = new URL(path);
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return url.toString();
+    }
+  } catch {
+    // Fall through to the user-facing validation error below.
+  }
+
+  throw new ManagedContentInputError(`${label} must be a root-relative path or an http(s) URL.`);
 }
 
 function normalizeImage(value: unknown): string {

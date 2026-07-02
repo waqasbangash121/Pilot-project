@@ -58,17 +58,26 @@ function normalizeTags(value: unknown): string[] {
 }
 
 function normalizeImage(value: unknown): string {
-  const image = optionalString(value, "Cover image", 500);
+  const image = optionalString(value, "Cover image", 2000);
 
   if (!image) {
     return "";
   }
 
-  if (image.startsWith("/") || image.startsWith("https://")) {
+  if (image.startsWith("/")) {
     return image;
   }
 
-  throw new BlogInputError("Cover image must start with / or https://.");
+  try {
+    const url = new URL(image);
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return url.toString();
+    }
+  } catch {
+    // Fall through to the user-facing validation error below.
+  }
+
+  throw new BlogInputError("Cover image must be a root-relative path or an http(s) URL.");
 }
 
 export function parseBlogPostInput(value: unknown): BlogPostInput {

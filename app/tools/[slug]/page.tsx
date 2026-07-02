@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Clock3, FileText } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Clock3,
+  Tag,
+  UserRound,
+} from "lucide-react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -57,6 +64,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const tool = await getToolBySlug(slug);
   if (!tool) notFound();
 
+  const tags = Array.isArray(tool.tags) ? tool.tags : [];
   const pageUrl = new URL(`/tools/${tool.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -69,6 +77,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
     author: { "@type": "Organization", name: tool.author },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     about: [{ "@type": "Thing", name: tool.toolType }],
+    image: tool.coverImage ? [new URL(tool.coverImage, siteConfig.url).toString()] : undefined,
   };
 
   return (
@@ -77,8 +86,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
       />
-      <Section className="pb-12 pt-20 sm:pt-28">
-        <Container className="max-w-4xl">
+
+      <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
+        <Container className="max-w-6xl">
           <Link
             href="/tools"
             className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:rounded-sm"
@@ -86,66 +96,118 @@ export default async function ToolPage({ params }: ToolPageProps) {
             <ArrowLeft aria-hidden="true" className="size-4" />
             Back to tools
           </Link>
-          <div className="mt-10">
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-primary">
-              {tool.toolType}
-            </p>
-            <h1 className="mt-4 type-display">{tool.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-muted-foreground">{tool.excerpt}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-              <span>By {tool.author}</span>
-              <span aria-hidden="true">&middot;</span>
-              <time dateTime={tool.publishedAt}>{formatToolDate(tool.publishedAt)}</time>
-              <span aria-hidden="true">&middot;</span>
-              <span className="inline-flex items-center gap-2">
-                <Clock3 aria-hidden="true" className="size-4" />
-                {tool.readingTime} min read
-              </span>
+
+          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                {tool.toolType}
+              </p>
+              <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                {tool.title}
+              </h1>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                {tool.excerpt}
+              </p>
+            </div>
+
+            <div className="grid gap-3 border-l-0 border-border text-sm text-muted-foreground sm:grid-cols-3 lg:block lg:border-l lg:pl-6">
+              <div className="flex items-center gap-2 lg:mb-3">
+                <UserRound aria-hidden="true" className="size-4 text-primary" />
+                <span>{tool.author}</span>
+              </div>
+              <div className="flex items-center gap-2 lg:mb-3">
+                <CalendarDays aria-hidden="true" className="size-4 text-primary" />
+                <time dateTime={tool.publishedAt}>{formatToolDate(tool.publishedAt)}</time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock3 aria-hidden="true" className="size-4 text-primary" />
+                <span>{tool.readingTime} min read</span>
+              </div>
             </div>
           </div>
-          <aside className="mt-8 rounded-2xl border border-border bg-surface p-5 sm:p-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="flex items-start gap-3">
-                <span className="rounded-xl border border-border bg-background p-2 text-primary">
-                  <FileText aria-hidden="true" className="size-5" />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold">Use case</p>
-                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{tool.useCase}</p>
-                </div>
-              </div>
-              {tool.toolUrl ? (
-                <a
-                  href={tool.toolUrl}
-                  className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
-                >
-                  Launch
-                  <ArrowRight aria-hidden="true" className="size-4" />
-                </a>
-              ) : null}
-            </div>
-          </aside>
-          {tool.tags.length ? (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {tool.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border bg-surface px-3 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
         </Container>
       </Section>
-      <Section className="pb-20 sm:pb-24">
-        <Container className="max-w-4xl">
-          <article className="rounded-[10px] border border-border bg-surface p-6 sm:p-10 lg:p-12">
-            <div className={styles.prose}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{tool.content}</ReactMarkdown>
+
+      <Section spacing="none" className="py-8 sm:py-10">
+        <Container className="max-w-6xl">
+          {tool.coverImage ? (
+            <div className="mb-8 overflow-hidden rounded-[10px] border border-border bg-surface">
+              <img
+                src={tool.coverImage}
+                alt={tool.title}
+                className="aspect-[16/7] w-full object-cover"
+              />
             </div>
-          </article>
+          ) : null}
+
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,44rem)_18rem] lg:justify-between">
+            <article className="min-w-0">
+              <div className={styles.prose}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{tool.content}</ReactMarkdown>
+              </div>
+            </article>
+
+            <aside className="lg:sticky lg:top-24 lg:self-start">
+              <div className="border-t border-border pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                <p className="text-sm font-semibold text-foreground">Tool details</p>
+                <dl className="mt-4 grid gap-3 text-sm text-muted-foreground">
+                  <div>
+                    <dt className="font-medium text-foreground">Type</dt>
+                    <dd className="mt-1">{tool.toolType}</dd>
+                  </div>
+                  {tool.useCase ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Use case</dt>
+                      <dd className="mt-1 leading-6">{tool.useCase}</dd>
+                    </div>
+                  ) : null}
+                  {tool.updatedAt && tool.updatedAt !== tool.publishedAt ? (
+                    <div>
+                      <dt className="font-medium text-foreground">Updated</dt>
+                      <dd className="mt-1">{formatToolDate(tool.updatedAt)}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+
+                {tool.toolUrl ? (
+                  <a
+                    href={tool.toolUrl}
+                    className="mt-6 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
+                  >
+                    Launch tool
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </a>
+                ) : null}
+
+                {tags.length > 0 ? (
+                  <div className="mt-6">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                      <Tag aria-hidden="true" className="size-4 text-primary" />
+                      Topics
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                <Link
+                  href="/tools"
+                  className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
+                >
+                  More tools
+                  <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
+                </Link>
+              </div>
+            </aside>
+          </div>
         </Container>
       </Section>
     </>
