@@ -4,7 +4,7 @@ export const primaryNavigation: RouteItem[] = [
   { label: "Home", href: "/", description: "Hyper homepage" },
   { label: "Apps", href: "/apps", description: "Shopify apps and product suite" },
   //{ label: "Industries", href: "/industries", description: "Industry playbooks" },
-  { label: "Comparisons", href: "/comparisons", description: "Compare Hyper against alternatives" },
+  { label: "Our Team", href: "/team", description: "Our dedicated team members" },
   { label: "Resources", href: "/resources", description: "Guides and documentation" },
   { label: "Blog", href: "/blog", description: "Hyper insights and updates" },
   //{ label: "Case Studies", href: "/case-studies", description: "Customer results and proof" },

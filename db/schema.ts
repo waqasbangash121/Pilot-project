@@ -108,8 +108,30 @@ export const contentRevisions = pgTable(
   (table) => [index("content_revisions_item_created_idx").on(table.contentItemId, table.createdAt)],
 );
 
+export const teamMembers = pgTable(
+  "team_members",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    designation: text("designation").notNull(),
+    quote: text("quote").notNull().default(""),
+    photoUrl: text("photo_url"),
+    displayOrder: integer("display_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("team_members_workspace_order_idx").on(table.workspaceId, table.displayOrder, table.createdAt),
+  ],
+);
+
 export type Workspace = typeof workspaces.$inferSelect;
 export type WorkspaceSettings = typeof workspaceSettings.$inferSelect;
 export type WorkspaceSecret = typeof workspaceSecrets.$inferSelect;
 export type ContentItem = typeof contentItems.$inferSelect;
 export type ContentRevision = typeof contentRevisions.$inferSelect;
+export type TeamMember = typeof teamMembers.$inferSelect;
+

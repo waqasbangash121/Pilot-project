@@ -9,6 +9,7 @@ import {
   Scale,
   SearchCheck,
   Sparkles,
+  UsersRound,
 } from "lucide-react";
 
 import { AdminMetric } from "@/components/admin/admin-ui";
@@ -63,6 +64,16 @@ const modules = [
     action: "New tool",
     Icon: SearchCheck,
     accent: "border-violet-200 bg-violet-50 text-violet-950 dark:border-violet-400/30 dark:bg-violet-400/15 dark:text-violet-50",
+  },
+  {
+    href: "/admin/team",
+    createHref: "/admin/team/new",
+    title: "Manage the team",
+    eyebrow: "People profiles",
+    description: "Add team members, roles, quotes, photos, and display order for the public team page.",
+    action: "New member",
+    Icon: UsersRound,
+    accent: "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-50",
   },
 ];
 
@@ -129,9 +140,9 @@ export default function AdminHomePage() {
       </section>
 
       <section aria-label="Workspace metrics" className="grid gap-3 sm:grid-cols-3">
-        <AdminMetric label="Content modules" value="5" tone="blue" />
+        <AdminMetric label="Content modules" value="6" tone="blue" />
         <AdminMetric label="Unified review flow" value="1" tone="green" />
-        <AdminMetric label="Guided creation paths" value="5" tone="violet" />
+        <AdminMetric label="Guided creation paths" value="6" tone="violet" />
       </section>
 
       <section aria-label="Content modules" className="grid gap-4 xl:grid-cols-3">
@@ -181,3 +192,6 @@ export default function AdminHomePage() {
     </div>
   );
 }
+
+
+

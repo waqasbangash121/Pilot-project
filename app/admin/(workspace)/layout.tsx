@@ -8,6 +8,7 @@ import {
   Scale,
   SearchCheck,
   Settings2,
+  UsersRound,
 } from "lucide-react";
 
 import { ThemeSwitcher } from "@/components/layout/theme-switcher";
@@ -58,6 +59,12 @@ const modules = [
     label: "Tools",
     description: "Audits, calculators, and utilities",
     Icon: SearchCheck,
+  },
+  {
+    href: "/admin/team",
+    label: "Team",
+    description: "People and public profiles",
+    Icon: UsersRound,
   },
   {
     href: "/admin/settings",
@@ -199,3 +206,6 @@ export default async function ContentStudioLayout({ children }: { children: Reac
     </main>
   );
 }
+
+
+

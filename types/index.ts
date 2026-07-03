@@ -1,3 +1,5 @@
+export type { TeamMemberInput, TeamMemberRecord } from "./team";
+
 export type {
   FooterNavigationGroup,
   MegaMenuColumn,
@@ -5,3 +7,4 @@ export type {
   RouteItem,
   SiteConfig,
 } from "./site";
+
