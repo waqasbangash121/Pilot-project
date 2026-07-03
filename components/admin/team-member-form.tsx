@@ -194,20 +194,23 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
       <aside className="h-fit space-y-4 xl:sticky xl:top-24">
         <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
           <h2 className="font-semibold">Preview</h2>
-          <div className="mt-4 overflow-hidden rounded-lg border border-border bg-background">
-            <div className="grid aspect-[4/5] place-items-center bg-muted">
-              {canPreview ? (
-                <img src={previewUrl} alt={member.name || "Team member preview"} className="h-full w-full object-cover" onError={() => setImageFailed(true)} />
-              ) : (
+          <div tabIndex={0} className="group relative mt-4 aspect-[4/5] overflow-hidden rounded-lg border border-border bg-muted outline-none ring-ring transition focus-visible:ring-2">
+            {canPreview ? (
+              <img src={previewUrl} alt={member.name || "Team member preview"} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03] group-focus-visible:scale-[1.03]" onError={() => setImageFailed(true)} />
+            ) : (
+              <div className="grid h-full w-full place-items-center bg-muted">
                 <span className="inline-flex size-20 items-center justify-center rounded-full border border-border bg-surface text-xl font-semibold text-primary">
                   {getInitials(member.name) || "H"}
                 </span>
-              )}
-            </div>
-            <div className="p-4">
-              <p className="text-lg font-semibold tracking-tight">{member.name || "Full name"}</p>
-              <p className="mt-1 text-sm font-semibold text-primary">{member.designation || "Designation"}</p>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">{member.quote || "Short quote appears here."}</p>
+              </div>
+            )}
+
+            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-950/88 via-slate-950/42 to-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+              <div className="translate-y-4 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                <p className="text-lg font-semibold tracking-tight text-white">{member.name || "Full name"}</p>
+                <p className="mt-1 text-sm font-semibold text-orange-100">{member.designation || "Designation"}</p>
+                <p className="mt-3 text-sm leading-6 text-white/82">{member.quote || "Short quote appears here."}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -232,5 +235,6 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
     </div>
   );
 }
+
 
 
