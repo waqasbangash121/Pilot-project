@@ -1,33 +1,142 @@
+import Link from "next/link";
+
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
+import { getAllBlogPosts } from "@/lib/blog";
+import { getAllCaseStudies } from "@/lib/case-studies";
+import { getAllComparisons } from "@/lib/comparisons";
+import { getAllResources } from "@/lib/resources";
+import { getAllTools } from "@/lib/tools";
 
 export const metadata = createPageMetadata({
   title: "Search",
-  description:
-    "Placeholder search route for the Hyper foundation, ready for future site-search implementation.",
+  description: "Search Hyper Apps articles, resources, comparisons, case studies, and tools.",
   path: "/search",
 });
 
-export default function SearchPage() {
+type SearchPageProps = {
+  searchParams: Promise<{ q?: string }>;
+};
+
+type SearchResult = {
+  title: string;
+  description: string;
+  href: string;
+  type: string;
+  keywords: string[];
+};
+
+function normalizeQuery(value: string | undefined): string {
+  return (value || "").trim().replace(/\s+/g, " ").slice(0, 80);
+}
+
+function compactStrings(values: Array<string | undefined>): string[] {
+  return values.filter((value): value is string => Boolean(value));
+}
+
+function matchesQuery(result: SearchResult, query: string): boolean {
+  const haystack = [result.title, result.description, result.type, ...result.keywords]
+    .join(" ")
+    .toLowerCase();
+
+  return query
+    .toLowerCase()
+    .split(" ")
+    .every((term) => haystack.includes(term));
+}
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const { q } = await searchParams;
+  const query = normalizeQuery(q);
+  const [posts, resources, comparisons, caseStudies, tools] = await Promise.all([
+    getAllBlogPosts(),
+    getAllResources(),
+    getAllComparisons(),
+    getAllCaseStudies(),
+    getAllTools(),
+  ]);
+
+  const results: SearchResult[] = [
+    ...posts.map((post) => ({
+      title: post.title,
+      description: post.excerpt,
+      href: `/blog/${post.slug}`,
+      type: "Article",
+      keywords: compactStrings([...(post.tags || []), post.category]),
+    })),
+    ...resources.map((resource) => ({
+      title: resource.title,
+      description: resource.excerpt,
+      href: `/resources/${resource.slug}`,
+      type: "Resource",
+      keywords: compactStrings([...(resource.tags || []), resource.category, resource.resourceType, resource.audience]),
+    })),
+    ...comparisons.map((comparison) => ({
+      title: comparison.title,
+      description: comparison.excerpt,
+      href: `/comparisons/${comparison.slug}`,
+      type: "Comparison",
+      keywords: compactStrings([...(comparison.tags || []), comparison.category, comparison.competitorName]),
+    })),
+    ...caseStudies.map((caseStudy) => ({
+      title: caseStudy.title,
+      description: caseStudy.excerpt,
+      href: `/case-studies/${caseStudy.slug}`,
+      type: "Case Study",
+      keywords: compactStrings([...(caseStudy.tags || []), caseStudy.category, caseStudy.customerName, caseStudy.industry]),
+    })),
+    ...tools.map((tool) => ({
+      title: tool.title,
+      description: tool.excerpt,
+      href: `/tools/${tool.slug}`,
+      type: "Tool",
+      keywords: compactStrings([...(tool.tags || []), tool.category, tool.toolType, tool.useCase]),
+    })),
+  ];
+
+  const filteredResults = query ? results.filter((result) => matchesQuery(result, query)).slice(0, 24) : [];
+
   return (
     <Section className="pb-20 pt-20 sm:pt-28 lg:pt-32">
-      <Container className="max-w-3xl space-y-6">
-        <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">
-          Search
+      <Container className="max-w-4xl">
+        <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">Search</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">Search Hyper Apps</h1>
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-muted-foreground">
+          Find articles, resources, comparisons, case studies, and tools from the Hyper Apps library.
         </p>
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-          Search is reserved for the next phase of the Hyper platform.
-        </h1>
-        <p className="text-lg leading-8 text-muted-foreground">
-          The route exists so the site architecture can point to a dedicated search experience once
-          content indexing is introduced.
-        </p>
-        <div className="rounded-[10px] border border-border bg-surface p-6">
-          <p className="text-sm leading-7 text-muted-foreground">
-            No search logic has been added yet. This page is only a structural placeholder.
-          </p>
-        </div>
+
+        <form action="/search" className="mt-8 flex flex-col gap-3 rounded-[10px] border border-border bg-surface p-4 shadow-sm sm:flex-row">
+          <input
+            type="search"
+            name="q"
+            defaultValue={query}
+            placeholder="Search AI commerce, Shopify tools, product discovery..."
+            className="h-12 min-w-0 flex-1 rounded-md border border-border bg-background px-4 text-sm text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2"
+          />
+          <button type="submit" className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
+            Search
+          </button>
+        </form>
+
+        {query ? (
+          <div className="mt-8">
+            <p className="text-sm font-semibold text-muted-foreground">
+              {filteredResults.length ? `${filteredResults.length} result${filteredResults.length === 1 ? "" : "s"} for "${query}"` : `No results for "${query}"`}
+            </p>
+            {filteredResults.length ? (
+              <div className="mt-4 grid gap-3">
+                {filteredResults.map((result) => (
+                  <Link key={result.href} href={result.href} className="rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                    <span className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{result.type}</span>
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight">{result.title}</h2>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{result.description}</p>
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </Container>
     </Section>
   );

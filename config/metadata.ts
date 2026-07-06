@@ -2,6 +2,16 @@ import type { Metadata, Viewport } from "next";
 
 import { siteConfig } from "./site";
 
+const normalizedSiteUrl = siteConfig.url.replace(/\/$/, "");
+
+export function canonicalUrl(path = "/"): string {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  const [pathname] = cleanPath.split(/[?#]/);
+  const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
+
+  return new URL(normalizedPath, `${normalizedSiteUrl}/`).toString();
+}
+
 export const defaultViewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -9,7 +19,7 @@ export const defaultViewport: Viewport = {
 };
 
 export const defaultMetadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(`${normalizedSiteUrl}/`),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
@@ -19,12 +29,12 @@ export const defaultMetadata: Metadata = {
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
   alternates: {
-    canonical: "/",
+    canonical: canonicalUrl("/"),
   },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
-    url: siteConfig.url,
+    url: canonicalUrl("/"),
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
@@ -62,13 +72,13 @@ export function createPageMetadata({ title, description, path }: PageMetadataInp
     title,
     description,
     alternates: {
-      canonical: path,
+      canonical: canonicalUrl(path),
     },
     openGraph: {
       ...defaultMetadata.openGraph,
       title,
       description,
-      url: new URL(path, siteConfig.url).toString(),
+      url: canonicalUrl(path),
     },
     twitter: {
       ...defaultMetadata.twitter,

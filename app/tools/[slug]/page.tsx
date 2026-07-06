@@ -15,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { canonicalUrl } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatToolDate, getToolBySlug } from "@/lib/tools";
 
@@ -33,14 +34,15 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
   const title = tool.seoTitle ?? tool.title;
   const description = tool.seoDescription ?? tool.excerpt;
   const path = `/tools/${tool.slug}`;
+  const canonical = canonicalUrl(path);
 
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical },
     openGraph: {
       type: "article",
-      url: new URL(path, siteConfig.url).toString(),
+      url: canonical,
       title,
       description,
       siteName: siteConfig.name,

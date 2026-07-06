@@ -106,7 +106,13 @@ body {
     radial-gradient(circle at top left, hsl(var(--brand-start) / 0.1), transparent 28%),
     radial-gradient(circle at top right, hsl(var(--brand-end) / 0.09), transparent 24%),
     linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
-  background-attachment: fixed;
+  background-attachment: scroll;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 html.dark body {

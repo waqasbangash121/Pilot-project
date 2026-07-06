@@ -61,25 +61,25 @@ export default async function TeamPage() {
 
           {members.length ? (
             <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {members.map((member) => (
-                <article key={member.id} tabIndex={0} className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm outline-none ring-ring transition-all hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_24px_54px_-38px_hsl(var(--shadow)/0.78)] focus-visible:ring-2">
+              {members.map((member, index) => (
+                <article key={member.id} tabIndex={0} className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-muted shadow-sm outline-none ring-ring transition-all sm:hover:-translate-y-1 sm:hover:border-primary/45 sm:hover:shadow-[0_24px_54px_-38px_hsl(var(--shadow)/0.78)] focus-visible:ring-2">
                   {member.photoUrl ? (
-                    <img src={member.photoUrl} alt={member.name} className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03] group-focus-visible:scale-[1.03]" loading="lazy" />
+                    <img src={member.photoUrl} alt={member.name} width={640} height={800} decoding="async" loading={index === 0 ? "eager" : "lazy"} fetchPriority={index === 0 ? "high" : "auto"} sizes="(min-width: 1280px) 352px, (min-width: 640px) calc((100vw - 5rem) / 2), calc(100vw - 2rem)" className="h-full w-full object-cover transition duration-300 sm:group-hover:scale-[1.03] group-focus-visible:scale-[1.03]" />
                   ) : (
                     <div className="grid h-full w-full place-items-center bg-muted">
                       <span className="inline-flex size-24 items-center justify-center rounded-full border border-border bg-surface text-2xl font-semibold text-primary">{getInitials(member.name) || "H"}</span>
                     </div>
                   )}
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent opacity-100 transition duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
                     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
-                      <div className="min-w-0 translate-y-4 pr-2 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                      <div className="min-w-0 translate-y-0 pr-2 transition duration-300 sm:translate-y-4 sm:group-hover:translate-y-0 sm:group-focus-visible:translate-y-0">
                         <h3 className="text-2xl font-semibold tracking-tight text-white">{member.name}</h3>
                         <p className="mt-2 text-sm font-semibold text-orange-100">{member.designation}</p>
                         {member.quote ? <p className="mt-4 text-sm leading-7 text-white/86">{member.quote}</p> : null}
                       </div>
                       {member.linkedinUrl ? (
-                        <a href={member.linkedinUrl} target="_blank" rel="noreferrer" aria-label={member.name + " on LinkedIn"} className="mb-1 inline-flex size-12 shrink-0 translate-y-4 items-center justify-center rounded-lg border-4 border-sky-400 bg-slate-950/25 text-base font-bold leading-none text-sky-200 shadow-[0_10px_30px_-18px_rgba(14,165,233,0.95)] backdrop-blur-sm transition duration-300 hover:bg-sky-400 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                        <a href={member.linkedinUrl} target="_blank" rel="noreferrer" aria-label={member.name + " on LinkedIn"} className="mb-1 inline-flex size-12 shrink-0 translate-y-0 items-center justify-center rounded-lg border-4 border-sky-400 bg-slate-950/25 text-base font-bold leading-none text-sky-200 shadow-[0_10px_30px_-18px_rgba(14,165,233,0.95)] backdrop-blur-sm transition duration-300 hover:bg-sky-400 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 sm:translate-y-4 sm:group-hover:translate-y-0 sm:group-focus-visible:translate-y-0">
                           in
                         </a>
                       ) : null}
@@ -102,5 +102,3 @@ export default async function TeamPage() {
     </>
   );
 }
-
-

@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { canonicalUrl } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatComparisonDate, getComparisonBySlug } from "@/lib/comparisons";
 
@@ -28,14 +29,15 @@ export async function generateMetadata({ params }: ComparisonPageProps): Promise
   const title = comparison.seoTitle ?? comparison.title;
   const description = comparison.seoDescription ?? comparison.excerpt;
   const path = `/comparisons/${comparison.slug}`;
+  const canonical = canonicalUrl(path);
 
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical },
     openGraph: {
       type: "article",
-      url: new URL(path, siteConfig.url).toString(),
+      url: canonical,
       title,
       description,
       siteName: siteConfig.name,
