@@ -16,12 +16,8 @@ type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-/**
- * Blog posts are created after deployment from the admin panel.
- * Always render this route at request time instead of trying to
- * statically generate blog slugs during the build.
- */
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {

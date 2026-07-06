@@ -16,7 +16,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatResourceDate, getAllResources } from "@/lib/resources";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
   title: "Shopify Ecommerce Guides, Playbooks, and Resources",

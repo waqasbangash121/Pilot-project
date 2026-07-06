@@ -15,7 +15,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatToolDate, getAllTools } from "@/lib/tools";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
   title: "Tools",

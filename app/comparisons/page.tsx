@@ -14,7 +14,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatComparisonDate, getAllComparisons } from "@/lib/comparisons";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
   title: "Shopify App Comparisons and Alternatives",

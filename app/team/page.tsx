@@ -6,7 +6,7 @@ import { createPageMetadata } from "@/config/metadata";
 import { listTeamMembers } from "@/lib/team";
 import { getInitials } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
   title: "Our Team",
