@@ -186,11 +186,47 @@ const faqs = [
     q: "Is coding required to use Hyper Shoppable Videos?",
     a: "No. Hyper Shoppable Videos is designed as a plug-and-play Shopify app with an easy setup process.",
   },
+  {
+    q: "Can merchants tag multiple products inside one video?",
+    a: "Yes. Paid plans support multiple product tags per video, making it easier to connect outfits, bundles, tutorials, demos, and UGC clips to the products featured on screen.",
+  },
+  {
+    q: "Can Hyper Shoppable Videos use TikTok or Instagram-style content?",
+    a: "Yes. Merchants can use short-form product videos, social commerce clips, tutorials, and UGC-style content to create interactive storefront experiences.",
+  },
+  {
+    q: "Where can shoppable video widgets appear on a Shopify store?",
+    a: "Shoppable video widgets can be used across product pages, home pages, landing pages, and campaign pages where merchants want to combine storytelling with direct product discovery.",
+  },
+  {
+    q: "What types of products work best with shoppable videos?",
+    a: "Fashion, beauty, home goods, electronics, accessories, and products that benefit from demos, styling, tutorials, or before-and-after content are strong fits for shoppable video commerce.",
+  },
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
 
 export default function HyperShoppableVideosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       {/* HERO */}
       <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
         <Container className="max-w-5xl text-center">

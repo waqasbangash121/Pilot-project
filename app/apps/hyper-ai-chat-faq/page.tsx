@@ -197,11 +197,47 @@ const faqs = [
     q: "Is coding required to use Hyper AI Chat & FAQs?",
     a: "No. Hyper AI Chat & FAQs is designed as a plug-and-play Shopify app with an easy setup process.",
   },
+  {
+    q: "What store data can Hyper AI Chat use to answer customers?",
+    a: "Hyper AI Chat can use store-specific content such as FAQs, product information, policies, and support guidance to answer questions with context that matches your Shopify store.",
+  },
+  {
+    q: "Can Hyper AI Chat answer product and policy questions?",
+    a: "Yes. The assistant can respond to common product, shipping, return, sizing, availability, and policy questions so customers can keep moving toward purchase.",
+  },
+  {
+    q: "How does Hyper AI Chat reduce support tickets?",
+    a: "It handles repetitive questions instantly, gives customers self-service answers, and keeps common requests out of the support queue so teams can focus on higher-value conversations.",
+  },
+  {
+    q: "Is Hyper AI Chat useful for small Shopify stores?",
+    a: "Yes. Smaller stores can use it to provide 24/7 support without hiring extra agents, while growing stores can scale support coverage as order volume increases.",
+  },
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
 
 export default function HyperAIChatFAQPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       {/* HERO */}
       <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
         <Container className="max-w-5xl text-center">

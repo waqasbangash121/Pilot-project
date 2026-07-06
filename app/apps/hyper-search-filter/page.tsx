@@ -197,6 +197,22 @@ const faqs = [
     q: "Does Hyper AI Search work on mobile devices?",
     a: "Yes. The search experience is fully responsive and optimized for mobile commerce.",
   },
+  {
+    q: "Can Hyper AI Search filter by Shopify metafields and variants?",
+    a: "Yes. Hyper AI Search can create filters from metafields, variants, tags, collections, prices, vendors, and custom product attributes so shoppers can narrow large catalogs quickly.",
+  },
+  {
+    q: "How quickly does Hyper AI Search sync product changes?",
+    a: "Product updates, inventory changes, new variants, and catalog edits sync automatically through Shopify webhooks, helping search results stay accurate without manual reindexing.",
+  },
+  {
+    q: "Can merchants control search result ranking?",
+    a: "Yes. Merchants can use merchandising controls such as pinned products, boost rules, synonyms, and zero-results insights to improve search relevance for high-value queries.",
+  },
+  {
+    q: "What Shopify stores benefit most from semantic search?",
+    a: "Stores with large catalogs, technical product names, many variants, seasonal collections, or shoppers who use natural-language queries benefit most from semantic search and smart filtering.",
+  },
 ];
 
 const softwareApplicationSchema = {
