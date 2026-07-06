@@ -8,6 +8,8 @@ const IMMUTABLE_ASSET_CACHE = `public, max-age=${ONE_YEAR_SECONDS}, immutable`;
 const OPTIMIZED_IMAGE_CACHE = `public, max-age=${ONE_DAY_SECONDS}, s-maxage=${ONE_YEAR_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`;
 const PUBLIC_PAGE_CACHE = `public, max-age=${ONE_HOUR_SECONDS}, s-maxage=${ONE_DAY_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`;
 const PRIVATE_CACHE = "private, no-store, max-age=0, must-revalidate";
+const CANONICAL_HOST = "niagarat.com";
+const WWW_HOST = `www.${CANONICAL_HOST}`;
 
 const staticAssetPattern = /\.(?:avif|css|gif|ico|jpg|jpeg|js|map|mjs|png|svg|webp|woff|woff2)$/i;
 const metadataAssetPattern = /\.(?:json|txt|webmanifest|xml)$/i;
@@ -33,6 +35,18 @@ function cacheValueForPath(pathname: string): string {
 }
 
 export function middleware(request: NextRequest) {
+  const host = request.headers.get("host")?.split(":")[0].toLowerCase();
+
+  if (host === WWW_HOST) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.protocol = "https:";
+    redirectUrl.hostname = CANONICAL_HOST;
+    redirectUrl.port = "";
+    const response = NextResponse.redirect(redirectUrl, 308);
+    response.headers.set("Cache-Control", PUBLIC_PAGE_CACHE);
+    return response;
+  }
+
   const response = NextResponse.next();
   const cacheControl = cacheValueForPath(request.nextUrl.pathname);
 
