@@ -21,7 +21,7 @@ export const metadata = createPageMetadata({
   title: "Hyper AI Search - Semantic Search & Smart Filters for Shopify",
   description:
     "Replace Shopify's default keyword search with semantic product discovery. Hyper AI Search indexes up to 200,000 products, returns typo-tolerant results, and filters by any metafield - no code required.",
-  path: "/apps/hyper-ai-search",
+  path: "/apps/hyper-search-filter",
 });
 
 /* DATA */

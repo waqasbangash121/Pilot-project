@@ -1,1 +1,1 @@
-export { homeContent, servicePreview } from "./site";
+export { homeContent } from "./site";

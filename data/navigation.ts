@@ -3,7 +3,6 @@ import type { FooterNavigationGroup, MegaMenuColumn, RouteItem } from "@/types";
 export const primaryNavigation: RouteItem[] = [
   { label: "Home", href: "/", description: "Hyper homepage" },
   { label: "Apps", href: "/apps", description: "Shopify apps and product suite" },
-  //{ label: "Industries", href: "/industries", description: "Industry playbooks" },
   { label: "Our Team", href: "/team", description: "Our dedicated team members" },
   { label: "Resources", href: "/resources", description: "Guides and documentation" },
   { label: "Blog", href: "/blog", description: "Hyper insights and updates" },

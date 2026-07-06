@@ -1,9 +1,9 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
-import { and, desc, eq, lte, ne } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
-import { getDb } from "@/db";
+import { getDb, getSql } from "@/db";
 import {
   contentItems,
   contentRevisions,
@@ -22,6 +22,28 @@ type StoredContentInput = BlogPostInput | ManagedContentInput;
 
 export class ContentStoreError extends Error {}
 
+type ContentItemRow = {
+  id: string;
+  workspace_id: string;
+  type: PublicContentType;
+  status: ContentItem["status"];
+  slug: string;
+  title: string;
+  excerpt: string;
+  body_markdown: string;
+  author_name: string;
+  category: string;
+  tags: string[] | null;
+  focus_keyword: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  cover_image_url: string | null;
+  reading_time: number;
+  details: Record<string, unknown> | null;
+  published_at: string | Date | null;
+  created_at: string | Date;
+  updated_at: string | Date;
+};
 export type SavedContentItem = {
   id: string;
   type: PublicContentType;
@@ -45,6 +67,35 @@ function endOfTodayUtc(): Date {
 
 function formatDate(value: Date): string {
   return value.toISOString().slice(0, 10);
+}
+
+function toDate(value: string | Date): Date {
+  return value instanceof Date ? value : new Date(value);
+}
+
+function toContentItem(row: ContentItemRow): ContentItem {
+  return {
+    id: row.id,
+    workspaceId: row.workspace_id,
+    type: row.type,
+    status: row.status,
+    slug: row.slug,
+    title: row.title,
+    excerpt: row.excerpt,
+    bodyMarkdown: row.body_markdown,
+    authorName: row.author_name,
+    category: row.category,
+    tags: row.tags ?? [],
+    focusKeyword: row.focus_keyword,
+    seoTitle: row.seo_title,
+    seoDescription: row.seo_description,
+    coverImageUrl: row.cover_image_url,
+    readingTime: row.reading_time,
+    details: row.details ?? {},
+    publishedAt: row.published_at ? toDate(row.published_at) : null,
+    createdAt: toDate(row.created_at),
+    updatedAt: toDate(row.updated_at),
+  };
 }
 
 function detailString(details: Record<string, unknown>, key: string): string {
@@ -148,46 +199,109 @@ async function getStoredItem(
   type: PublicContentType,
   slug: string,
 ): Promise<ContentItem | null> {
-  const db = getDb();
-  const [item] = await db
-    .select()
-    .from(contentItems)
-    .where(
-      and(
-        eq(contentItems.workspaceId, CONTENT_WORKSPACE_ID),
-        eq(contentItems.type, type),
-        eq(contentItems.slug, slug),
-      ),
-    )
-    .limit(1);
+  const sql = getSql();
+  const rows = await sql`
+    select
+      "id",
+      "workspace_id",
+      "type",
+      "status",
+      "slug",
+      "title",
+      "excerpt",
+      "body_markdown",
+      "author_name",
+      "category",
+      "tags",
+      "focus_keyword",
+      "seo_title",
+      "seo_description",
+      "cover_image_url",
+      "reading_time",
+      "details",
+      "published_at",
+      "created_at",
+      "updated_at"
+    from "content_items"
+    where
+      "workspace_id" = ${CONTENT_WORKSPACE_ID}
+      and "type" = ${type}
+      and "slug" = ${slug}
+    limit 1
+  ` as ContentItemRow[];
 
-  return item ?? null;
+  return rows[0] ? toContentItem(rows[0]) : null;
 }
 
 async function listStoredItems(
   type: PublicContentType,
   publishedOnly: boolean,
 ): Promise<ContentItem[]> {
-  const db = getDb();
-  const conditions = [
-    eq(contentItems.workspaceId, CONTENT_WORKSPACE_ID),
-    eq(contentItems.type, type),
-  ];
+  const sql = getSql();
 
-  if (publishedOnly) {
-    conditions.push(eq(contentItems.status, "published"));
-    conditions.push(lte(contentItems.publishedAt, endOfTodayUtc()));
-  } else {
-    conditions.push(ne(contentItems.status, "archived"));
-  }
+  const rows = publishedOnly
+    ? await sql`
+        select
+          "id",
+          "workspace_id",
+          "type",
+          "status",
+          "slug",
+          "title",
+          "excerpt",
+          "body_markdown",
+          "author_name",
+          "category",
+          "tags",
+          "focus_keyword",
+          "seo_title",
+          "seo_description",
+          "cover_image_url",
+          "reading_time",
+          "details",
+          "published_at",
+          "created_at",
+          "updated_at"
+        from "content_items"
+        where
+          "workspace_id" = ${CONTENT_WORKSPACE_ID}
+          and "type" = ${type}
+          and "status" = ${"published"}
+          and "published_at" <= ${endOfTodayUtc()}
+        order by "published_at" desc, "created_at" desc
+      ` as ContentItemRow[]
+    : await sql`
+        select
+          "id",
+          "workspace_id",
+          "type",
+          "status",
+          "slug",
+          "title",
+          "excerpt",
+          "body_markdown",
+          "author_name",
+          "category",
+          "tags",
+          "focus_keyword",
+          "seo_title",
+          "seo_description",
+          "cover_image_url",
+          "reading_time",
+          "details",
+          "published_at",
+          "created_at",
+          "updated_at"
+        from "content_items"
+        where
+          "workspace_id" = ${CONTENT_WORKSPACE_ID}
+          and "type" = ${type}
+          and "status" <> ${"archived"}
+        order by "published_at" desc, "created_at" desc
+      ` as ContentItemRow[];
 
-  return db
-    .select()
-    .from(contentItems)
-    .where(and(...conditions))
-    .orderBy(desc(contentItems.publishedAt), desc(contentItems.createdAt));
+  return rows.map(toContentItem);
 }
-
 export async function listPublishedBlogPosts(): Promise<BlogPostInput[]> {
   return (await listStoredItems("blog", true)).map(toBlogPost);
 }

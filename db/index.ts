@@ -1,5 +1,6 @@
 import "server-only";
 
+import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 function databaseUrl(): string {
@@ -16,8 +17,17 @@ function createDatabase() {
   return drizzle(databaseUrl());
 }
 
+function createSqlClient() {
+  return neon(databaseUrl());
+}
+
 let database: ReturnType<typeof createDatabase> | undefined;
+let sqlClient: ReturnType<typeof createSqlClient> | undefined;
 
 export function getDb() {
   return (database ??= createDatabase());
+}
+
+export function getSql() {
+  return (sqlClient ??= createSqlClient());
 }
