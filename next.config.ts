@@ -11,7 +11,7 @@ const withMDX = createMDX();
 const ONE_YEAR_SECONDS = 31536000;
 const ONE_DAY_SECONDS = 86400;
 const ONE_HOUR_SECONDS = 3600;
-const FIVE_MINUTES_SECONDS = 300;
+const PUBLIC_PAGE_BROWSER_SECONDS = 3600;
 
 const immutableAssetHeaders = [
   {
@@ -34,7 +34,7 @@ const optimizedImageHeaders = [
 const publicPageHeaders = [
   {
     key: "Cache-Control",
-    value: `public, max-age=${FIVE_MINUTES_SECONDS}, s-maxage=${ONE_HOUR_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`,
+    value: `public, max-age=${PUBLIC_PAGE_BROWSER_SECONDS}, s-maxage=${ONE_DAY_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`,
   },
 ];
 
@@ -78,7 +78,7 @@ const nextConfig: NextConfig = {
         headers: optimizedImageHeaders,
       },
       {
-        source: "/:path*.(avif|css|gif|ico|jpg|jpeg|js|mjs|png|svg|webp|woff|woff2)",
+        source: "/:path*.(avif|css|gif|ico|jpg|jpeg|js|map|mjs|png|svg|webp|woff|woff2)",
         headers: immutableAssetHeaders,
       },
       {
