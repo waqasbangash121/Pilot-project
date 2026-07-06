@@ -3,6 +3,7 @@ export type TeamMemberInput = {
   designation: string;
   quote: string;
   photoUrl: string;
+  linkedinUrl: string;
   displayOrder: number;
 };
 

@@ -17,6 +17,7 @@ const emptyMember: TeamMemberInput = {
   designation: "",
   quote: "",
   photoUrl: "",
+  linkedinUrl: "",
   displayOrder: 0,
 };
 
@@ -113,7 +114,7 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Team editor</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight">{initialMember ? "Edit team member" : "Create team member"}</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-            Add the person, role, quote, ordering, and a photo path or URL that can be shown on the public team page.
+            Add the person, role, LinkedIn profile, quote, ordering, and a photo path or URL that can be shown on the public team page.
           </p>
         </section>
 
@@ -146,6 +147,10 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
               Display order
               <input type="number" min="0" max="9999" value={member.displayOrder} onChange={(event) => update("displayOrder", Number(event.target.value))} className={inputClass} />
               <span className="text-xs font-normal text-muted-foreground">Lower numbers appear first.</span>
+            </label>
+            <label className={fieldLabelClass}>
+              LinkedIn profile
+              <input value={member.linkedinUrl} onChange={(event) => update("linkedinUrl", event.target.value)} className={inputClass} maxLength={2000} placeholder="https://www.linkedin.com/in/jane-cooper" />
             </label>
           </div>
         </section>
@@ -205,11 +210,18 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
               </div>
             )}
 
-            <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-950/88 via-slate-950/42 to-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-              <div className="translate-y-4 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
-                <p className="text-lg font-semibold tracking-tight text-white">{member.name || "Full name"}</p>
-                <p className="mt-1 text-sm font-semibold text-orange-100">{member.designation || "Designation"}</p>
-                <p className="mt-3 text-sm leading-6 text-white/82">{member.quote || "Short quote appears here."}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
+                <div className="min-w-0 translate-y-4 pr-2 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                  <p className="text-lg font-semibold tracking-tight text-white">{member.name || "Full name"}</p>
+                  <p className="mt-1 text-sm font-semibold text-orange-100">{member.designation || "Designation"}</p>
+                  <p className="mt-3 text-sm leading-6 text-white/86">{member.quote || "Short quote appears here."}</p>
+                </div>
+                {member.linkedinUrl ? (
+                  <span className="mb-1 inline-flex size-11 shrink-0 translate-y-4 items-center justify-center rounded-lg border-4 border-sky-400 bg-slate-950/25 text-base font-bold leading-none text-sky-200 shadow-[0_10px_30px_-18px_rgba(14,165,233,0.95)] backdrop-blur-sm transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                    in
+                  </span>
+                ) : null}
               </div>
             </div>
           </div>
@@ -235,6 +247,5 @@ export function TeamMemberForm({ initialMember }: TeamMemberFormProps) {
     </div>
   );
 }
-
 
 

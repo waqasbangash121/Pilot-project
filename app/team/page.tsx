@@ -71,11 +71,18 @@ export default async function TeamPage() {
                     </div>
                   )}
 
-                  <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-950/88 via-slate-950/42 to-transparent p-5 opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:p-6">
-                    <div className="translate-y-4 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
-                      <h3 className="text-2xl font-semibold tracking-tight text-white">{member.name}</h3>
-                      <p className="mt-2 text-sm font-semibold text-orange-100">{member.designation}</p>
-                      {member.quote ? <p className="mt-4 text-sm leading-7 text-white/82">{member.quote}</p> : null}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+                      <div className="min-w-0 translate-y-4 pr-2 transition duration-300 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                        <h3 className="text-2xl font-semibold tracking-tight text-white">{member.name}</h3>
+                        <p className="mt-2 text-sm font-semibold text-orange-100">{member.designation}</p>
+                        {member.quote ? <p className="mt-4 text-sm leading-7 text-white/86">{member.quote}</p> : null}
+                      </div>
+                      {member.linkedinUrl ? (
+                        <a href={member.linkedinUrl} target="_blank" rel="noreferrer" aria-label={member.name + " on LinkedIn"} className="mb-1 inline-flex size-12 shrink-0 translate-y-4 items-center justify-center rounded-lg border-4 border-sky-400 bg-slate-950/25 text-base font-bold leading-none text-sky-200 shadow-[0_10px_30px_-18px_rgba(14,165,233,0.95)] backdrop-blur-sm transition duration-300 hover:bg-sky-400 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 group-hover:translate-y-0 group-focus-visible:translate-y-0">
+                          in
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                 </article>
@@ -95,4 +102,5 @@ export default async function TeamPage() {
     </>
   );
 }
+
 

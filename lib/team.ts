@@ -55,6 +55,24 @@ function normalizePhoto(value: unknown): string {
   throw new TeamInputError("Photo must be a root-relative path, an http(s) URL, or an uploaded image.");
 }
 
+function normalizeLinkedInUrl(value: unknown): string {
+  const normalized = optionalString(value, "LinkedIn profile", 2000);
+  if (!normalized) return "";
+
+  try {
+    const url = new URL(normalized);
+    const hostname = url.hostname.toLowerCase();
+
+    if ((url.protocol === "http:" || url.protocol === "https:") && (hostname === "linkedin.com" || hostname.endsWith(".linkedin.com"))) {
+      return url.toString();
+    }
+  } catch {
+    // Fall through to the user-facing validation error below.
+  }
+
+  throw new TeamInputError("LinkedIn profile must be a valid linkedin.com URL.");
+}
+
 function normalizeDisplayOrder(value: unknown): number {
   const order = Number(value ?? 0);
   if (!Number.isInteger(order) || order < 0 || order > 9999) {
@@ -71,6 +89,7 @@ function toRecord(member: TeamMember): TeamMemberRecord {
     designation: member.designation,
     quote: member.quote,
     photoUrl: member.photoUrl ?? "",
+    linkedinUrl: member.linkedinUrl ?? "",
     displayOrder: member.displayOrder,
     createdAt: member.createdAt.toISOString(),
     updatedAt: member.updatedAt.toISOString(),
@@ -100,6 +119,7 @@ export function parseTeamMemberInput(value: unknown): TeamMemberInput {
     designation: requiredString(input.designation, "Designation", 140),
     quote: optionalString(input.quote, "Quote", 220),
     photoUrl: normalizePhoto(input.photoUrl),
+    linkedinUrl: normalizeLinkedInUrl(input.linkedinUrl),
     displayOrder: normalizeDisplayOrder(input.displayOrder),
   };
 }
@@ -137,6 +157,7 @@ export async function saveTeamMember(input: TeamMemberInput, id?: string): Promi
     designation: input.designation,
     quote: input.quote,
     photoUrl: input.photoUrl || null,
+    linkedinUrl: input.linkedinUrl || null,
     displayOrder: input.displayOrder,
     updatedAt: now,
   };
@@ -175,7 +196,3 @@ export async function deleteTeamMember(id: string): Promise<{ id: string; name: 
 
   return deleted[0];
 }
-
-
-
-

@@ -3,6 +3,7 @@ import { ArrowRight, Plus, UsersRound } from "lucide-react";
 
 import { AdminEmptyState, AdminMetric } from "@/components/admin/admin-ui";
 import { DeleteTeamMemberButton } from "@/components/admin/delete-team-member-button";
+import { LinkedInIcon } from "@/components/ui/linkedin-icon";
 import { listTeamMembers } from "@/lib/team";
 import { getInitials } from "@/lib/utils";
 
@@ -11,6 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function TeamDashboardPage() {
   const members = await listTeamMembers();
   const withPhotos = members.filter((member) => member.photoUrl).length;
+  const withLinkedIn = members.filter((member) => member.linkedinUrl).length;
 
   return (
     <div className="space-y-6">
@@ -19,7 +21,7 @@ export default async function TeamDashboardPage() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Team library</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">Team</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Manage the people shown on the public team page, including profile photos, roles, quotes, and display order.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Manage the people shown on the public team page, including profile photos, LinkedIn profiles, roles, quotes, and display order.</p>
           </div>
           <Link href="/admin/team/new" className="inline-flex h-10 w-fit items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <Plus aria-hidden="true" className="size-4" />
@@ -31,7 +33,7 @@ export default async function TeamDashboardPage() {
       <section aria-label="Team stats" className="grid gap-3 sm:grid-cols-3">
         <AdminMetric label="Team members" value={members.length} tone="blue" />
         <AdminMetric label="With photos" value={withPhotos} tone="green" />
-        <AdminMetric label="Ordered profiles" value={members.length} tone="violet" />
+        <AdminMetric label="With LinkedIn" value={withLinkedIn} tone="violet" />
       </section>
 
       <section className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
@@ -59,6 +61,12 @@ export default async function TeamDashboardPage() {
                     <span className="rounded-md border border-border bg-muted/60 px-2 py-1 text-xs font-medium text-foreground/80">Order {member.displayOrder}</span>
                   </div>
                   <p className="mt-1 truncate text-sm text-muted-foreground">{member.designation}</p>
+                  {member.linkedinUrl ? (
+                    <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="mt-2 inline-flex max-w-full items-center gap-1.5 truncate text-xs font-semibold text-primary hover:underline">
+                      <LinkedInIcon className="size-3.5 shrink-0" />
+                      LinkedIn profile
+                    </a>
+                  ) : null}
                   {member.quote ? <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{member.quote}</p> : null}
                 </div>
               </div>
@@ -79,3 +87,4 @@ export default async function TeamDashboardPage() {
     </div>
   );
 }
+

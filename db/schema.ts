@@ -119,6 +119,7 @@ export const teamMembers = pgTable(
     designation: text("designation").notNull(),
     quote: text("quote").notNull().default(""),
     photoUrl: text("photo_url"),
+    linkedinUrl: text("linkedin_url"),
     displayOrder: integer("display_order").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -134,4 +135,3 @@ export type WorkspaceSecret = typeof workspaceSecrets.$inferSelect;
 export type ContentItem = typeof contentItems.$inferSelect;
 export type ContentRevision = typeof contentRevisions.$inferSelect;
 export type TeamMember = typeof teamMembers.$inferSelect;
-
