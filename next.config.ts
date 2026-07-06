@@ -8,8 +8,46 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const withMDX = createMDX();
 
+const ONE_YEAR_SECONDS = 31536000;
+const ONE_DAY_SECONDS = 86400;
+const ONE_HOUR_SECONDS = 3600;
+const FIVE_MINUTES_SECONDS = 300;
+
+const immutableAssetHeaders = [
+  {
+    key: "Cache-Control",
+    value: `public, max-age=${ONE_YEAR_SECONDS}, immutable`,
+  },
+  {
+    key: "Expires",
+    value: "Thu, 31 Dec 2037 23:55:55 GMT",
+  },
+];
+
+const optimizedImageHeaders = [
+  {
+    key: "Cache-Control",
+    value: `public, max-age=${ONE_DAY_SECONDS}, s-maxage=${ONE_YEAR_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`,
+  },
+];
+
+const publicPageHeaders = [
+  {
+    key: "Cache-Control",
+    value: `public, max-age=${FIVE_MINUTES_SECONDS}, s-maxage=${ONE_HOUR_SECONDS}, stale-while-revalidate=${ONE_DAY_SECONDS}`,
+  },
+];
+
+const noStoreHeaders = [
+  {
+    key: "Cache-Control",
+    value: "private, no-store, max-age=0, must-revalidate",
+  },
+];
+
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: true,
+  generateEtags: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -20,31 +58,36 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/admin/:path*",
+        headers: noStoreHeaders,
+      },
+      {
+        source: "/api/:path*",
+        headers: noStoreHeaders,
+      },
+      {
         source: "/_next/static/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
+        headers: immutableAssetHeaders,
       },
       {
-        source: "/:path*.(avif|css|gif|ico|jpg|jpeg|js|png|svg|webp|woff|woff2)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
+        source: "/_next/image",
+        headers: optimizedImageHeaders,
       },
       {
-        source: "/((?!api|admin|_next/static|_next/image).*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=600, stale-while-revalidate=86400",
-          },
-        ],
+        source: "/_next/image/:path*",
+        headers: optimizedImageHeaders,
+      },
+      {
+        source: "/:path*.(avif|css|gif|ico|jpg|jpeg|js|mjs|png|svg|webp|woff|woff2)",
+        headers: immutableAssetHeaders,
+      },
+      {
+        source: "/:path*.(txt|xml|json|webmanifest)",
+        headers: publicPageHeaders,
+      },
+      {
+        source: "/((?!admin|api|_next/static|_next/image).*)",
+        headers: publicPageHeaders,
       },
     ];
   },
