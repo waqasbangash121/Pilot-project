@@ -98,9 +98,9 @@ const productAccents = [
   {
     logo: "/hyper-videos.svg",
     label: "Shoppable Videos",
-    color: "text-[hsl(var(--brand-end))]",
-    bg: "bg-[hsl(var(--brand-end)/0.12)]",
-    border: "border-[hsl(var(--brand-end)/0.25)]",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
   {
     logo: "/hyper-search.svg",
@@ -273,7 +273,7 @@ function HeroOrbit() {
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-[hsl(var(--brand-end))]">Shoppable Videos</p>
+                  <p className="text-sm font-bold text-primary">Shoppable Videos</p>
                   <p className="text-xs text-muted-foreground">Engage. Inspire. Sell.</p>
                 </div>
               </div>
