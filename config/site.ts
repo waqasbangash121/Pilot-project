@@ -1,12 +1,16 @@
 import type { SiteConfig } from "@/types";
 
+const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagarat.com")
+  .replace("://www.", "://")
+  .replace(/\/$/, "");
+
 export const siteConfig: SiteConfig = {
   name: "Hyper Apps",
   shortName: "Hyper Apps",
   description:
     "Hyper Apps is a Shopify AI commerce suite that powers product discovery, customer support automation, and shoppable video experiences using AI search, chat, and intent-based merchandising.",
 
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagarat.com",
+  url: canonicalSiteUrl,
   email: "support@niagarat.com",
   locale: "en_US",
 
