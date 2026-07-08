@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { recordContentAnalyticsEvent } from "@/lib/content-analytics";
+import { recordContentAnalyticsEvent, type RecordContentAnalyticsInput } from "@/lib/content-analytics";
 
 export const runtime = "nodejs";
 
@@ -29,6 +29,20 @@ async function readJson(request: NextRequest): Promise<JsonBody | null> {
   }
 }
 
+function toAnalyticsInput(body: JsonBody): RecordContentAnalyticsInput {
+  return {
+    contentType: body.contentType,
+    slug: body.slug,
+    eventType: body.eventType,
+    visitorId: body.visitorId,
+    sessionId: body.sessionId,
+    path: body.path,
+    targetUrl: body.targetUrl,
+    targetText: body.targetText,
+    referrer: body.referrer,
+  };
+}
+
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request)) {
     return NextResponse.json({ ok: false }, { status: 403 });
@@ -40,7 +54,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const result = await recordContentAnalyticsEvent(body, request);
+    const result = await recordContentAnalyticsEvent(toAnalyticsInput(body), request);
     return NextResponse.json({ ok: true, recorded: result.recorded });
   } catch (error) {
     console.error("Failed to record content analytics event", error);

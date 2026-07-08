@@ -371,7 +371,7 @@ export async function getContentAnalyticsOverview(limit = 8): Promise<ContentAna
       visitors: toCount(row?.visitors),
       sessions: toCount(row?.sessions),
       trackedContent: toCount(row?.tracked_content),
-      rows: await querySummaryRows(null, null, limit),
+      rows: limit > 0 ? await querySummaryRows(null, null, limit) : [],
     };
   } catch (error) {
     if (analyticsStorageUnavailable(error)) {
@@ -380,8 +380,3 @@ export async function getContentAnalyticsOverview(limit = 8): Promise<ContentAna
     throw error;
   }
 }
-
-
-
-
-

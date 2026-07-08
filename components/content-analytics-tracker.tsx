@@ -101,16 +101,16 @@ export function ContentAnalyticsTracker({ contentType, slug, path }: ContentAnal
     }
 
     function handleClick(event: MouseEvent) {
-      const target = event.target instanceof Element ? event.target.closest("a") : null;
-      if (!target) return;
-      if (!target.closest('[data-content-analytics-root="true"]')) return;
+      const link = event.target instanceof Element ? event.target.closest("a") : null;
+      if (!link) return;
+      if (!link.closest('[data-content-analytics-root="true"]')) return;
 
-      const href = target instanceof HTMLAnchorElement ? target.href : target.getAttribute("href");
+      const href = link.href;
       if (!href) return;
 
       send("click", {
         targetUrl: href,
-        targetText: clippedText(target.textContent, 180),
+        targetText: clippedText(link.textContent, 180),
       });
     }
 
