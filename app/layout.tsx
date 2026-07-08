@@ -49,6 +49,7 @@ export default function RootLayout({
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ZC5XNC1VDY"
           strategy="lazyOnload"
+          defer
         />
         <Script id="gtag-init" strategy="lazyOnload">
           {`

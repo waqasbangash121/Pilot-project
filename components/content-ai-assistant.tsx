@@ -26,12 +26,35 @@ type ContentAiAssistantProps = {
   onAppendToContent?: (text: string) => void;
 };
 
+type GenerationBrief = {
+  searchIntent: string;
+  funnelStage: string;
+  primaryCta: string;
+  proofPoints: string;
+  internalLinks: string;
+  productFocus: string;
+  mustAvoidClaims: string;
+};
+
 const actions: Array<{ task: GenerationTask; label: string; description: string; Icon: LucideIcon }> = [
   { task: "outline", label: "Outline", description: "Create a structured H2 flow.", Icon: PanelTop },
   { task: "metadata", label: "Metadata", description: "Draft title, description, excerpt, and tags.", Icon: FileText },
   { task: "faq", label: "FAQs", description: "Suggest direct-answer questions.", Icon: HelpCircle },
   { task: "section", label: "Section", description: "Write one grounded Markdown section.", Icon: PlusCircle },
 ];
+
+const funnelStages = ["Awareness", "Consideration", "Decision", "Retention"];
+const briefLabelClass = "grid gap-1.5 text-xs font-semibold text-foreground";
+const briefInputClass = "h-9 rounded-md border border-border bg-background px-2.5 text-xs text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2";
+const briefTextareaClass = "min-h-20 rounded-md border border-border bg-background px-2.5 py-2 text-xs leading-5 text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2";
+
+function defaultProductFocus(module: ContentModule): string {
+  if (module === "comparison") return "Hyper AI Search and relevant Shopify alternatives";
+  if (module === "resource") return "Hyper Shopify apps and ecommerce workflows";
+  if (module === "case-study") return "Hyper Shopify apps used in the customer story";
+  if (module === "tool") return "The tool workflow and related Hyper Shopify apps";
+  return "Hyper Shopify apps for product discovery, support, and conversion";
+}
 
 export function ContentAiAssistant({
   module,
@@ -46,11 +69,26 @@ export function ContentAiAssistant({
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [appended, setAppended] = useState(false);
+  const [brief, setBrief] = useState<GenerationBrief>({
+    searchIntent: "",
+    funnelStage: "Consideration",
+    primaryCta: "",
+    proofPoints: "",
+    internalLinks: "",
+    productFocus: defaultProductFocus(module),
+    mustAvoidClaims: "",
+  });
+
+  function updateBrief<K extends keyof GenerationBrief>(key: K, value: GenerationBrief[K]) {
+    setBrief((current) => ({ ...current, [key]: value }));
+  }
 
   async function generate(task: GenerationTask) {
     setRunningTask(task);
     setError("");
     setCopied(false);
+    setAppended(false);
 
     try {
       const response = await fetch("/api/admin/content/generate", {
@@ -63,6 +101,7 @@ export function ContentAiAssistant({
           focusKeyword,
           audience,
           competitorName,
+          ...brief,
           existingContent,
         }),
       });
@@ -82,6 +121,12 @@ export function ContentAiAssistant({
     setCopied(true);
   }
 
+  function appendResult() {
+    if (!result || !onAppendToContent) return;
+    onAppendToContent(result);
+    setAppended(true);
+  }
+
   return (
     <section className="rounded-lg border border-border bg-surface p-5 shadow-sm">
       <div className="flex items-start gap-3">
@@ -96,6 +141,84 @@ export function ContentAiAssistant({
           </p>
         </div>
       </div>
+
+      <details className="mt-5 rounded-md border border-border bg-background p-3">
+        <summary className="cursor-pointer text-sm font-semibold text-foreground">Content brief</summary>
+        <div className="mt-4 grid gap-3">
+          <label className={briefLabelClass}>
+            Search intent
+            <input
+              value={brief.searchIntent}
+              onChange={(event) => updateBrief("searchIntent", event.target.value)}
+              className={briefInputClass}
+              maxLength={160}
+              placeholder="Compare options, solve a problem, choose a tool..."
+            />
+          </label>
+          <label className={briefLabelClass}>
+            Funnel stage
+            <select
+              value={brief.funnelStage}
+              onChange={(event) => updateBrief("funnelStage", event.target.value)}
+              className={briefInputClass}
+            >
+              {funnelStages.map((stage) => (
+                <option key={stage} value={stage}>{stage}</option>
+              ))}
+            </select>
+          </label>
+          <label className={briefLabelClass}>
+            Product or app focus
+            <input
+              value={brief.productFocus}
+              onChange={(event) => updateBrief("productFocus", event.target.value)}
+              className={briefInputClass}
+              maxLength={160}
+              placeholder="Hyper AI Search, Hyper AI Chat, Hyper Shoppable Videos..."
+            />
+          </label>
+          <label className={briefLabelClass}>
+            Primary CTA
+            <input
+              value={brief.primaryCta}
+              onChange={(event) => updateBrief("primaryCta", event.target.value)}
+              className={briefInputClass}
+              maxLength={140}
+              placeholder="Book a demo, install the app, read the guide..."
+            />
+          </label>
+          <label className={briefLabelClass}>
+            Proof points
+            <textarea
+              value={brief.proofPoints}
+              onChange={(event) => updateBrief("proofPoints", event.target.value)}
+              className={briefTextareaClass}
+              maxLength={1200}
+              placeholder="Verified metrics, customer notes, feature details, screenshots to mention..."
+            />
+          </label>
+          <label className={briefLabelClass}>
+            Internal links
+            <textarea
+              value={brief.internalLinks}
+              onChange={(event) => updateBrief("internalLinks", event.target.value)}
+              className={briefTextareaClass}
+              maxLength={900}
+              placeholder="/apps/hyper-search-filter - Hyper AI Search overview"
+            />
+          </label>
+          <label className={briefLabelClass}>
+            Avoid
+            <textarea
+              value={brief.mustAvoidClaims}
+              onChange={(event) => updateBrief("mustAvoidClaims", event.target.value)}
+              className={briefTextareaClass}
+              maxLength={900}
+              placeholder="Unsupported pricing claims, competitor weaknesses, unverified rankings..."
+            />
+          </label>
+        </div>
+      </details>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
         {actions.map((action) => {
@@ -134,11 +257,11 @@ export function ContentAiAssistant({
               {onAppendToContent ? (
                 <button
                   type="button"
-                  onClick={() => onAppendToContent(result)}
+                  onClick={appendResult}
                   className="inline-flex h-8 items-center gap-2 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground"
                 >
-                  <PlusCircle aria-hidden="true" className="size-3.5" />
-                  Append
+                  {appended ? <Check aria-hidden="true" className="size-3.5" /> : <PlusCircle aria-hidden="true" className="size-3.5" />}
+                  {appended ? "Appended" : "Append"}
                 </button>
               ) : null}
             </div>

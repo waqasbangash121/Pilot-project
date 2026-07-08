@@ -5,6 +5,8 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
+import { toJsonLd } from "@/lib/schema";
+import { createLocalBusinessSchema } from "@/schemas";
 
 export const metadata = createPageMetadata({
   title: "Contact Hyper | AI Shopify Solutions",
@@ -38,9 +40,16 @@ const contactReasons = [
   "Share partnership, support, or general business questions.",
 ];
 
+const localBusinessSchema = createLocalBusinessSchema();
+
 export default function ContactPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: toJsonLd(localBusinessSchema) }}
+      />
+
       <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16">
         <Container className="max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9">

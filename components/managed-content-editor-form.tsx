@@ -21,6 +21,7 @@ import {
 import { AdminStatusBadge } from "@/components/admin/admin-ui";
 import { BlogAuditPanel, type BlogAuditResult } from "@/components/blog-audit-panel";
 import { ContentAiAssistant } from "@/components/content-ai-assistant";
+import { MarkdownBlockEditor } from "@/components/markdown-block-editor";
 import type {
   ManagedContentInput,
   ManagedContentType,
@@ -197,7 +198,10 @@ export function ManagedContentEditorForm({ type, initialItem, originalSlug }: Ma
   }
 
   function appendGeneratedContent(text: string) {
-    update("content", `${item.content.trim()}\n\n${text.trim()}`.trim());
+    setItem((current) => ({
+      ...current,
+      content: `${current.content.trim()}\n\n${text.trim()}`.trim(),
+    }));
     setSuccess("AI suggestion added to the editable draft. Review it before saving or publishing.");
   }
 
@@ -376,10 +380,10 @@ export function ManagedContentEditorForm({ type, initialItem, originalSlug }: Ma
 
           <section className={sectionClass}>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Markdown draft</p><h2 className="mt-1 text-xl font-semibold tracking-tight">{copy.contentLabel}</h2></div>
+              <div><p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">Visual draft</p><h2 className="mt-1 text-xl font-semibold tracking-tight">{copy.contentLabel}</h2></div>
               <span className="rounded-md border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-foreground">Direct answers help search</span>
             </div>
-            <label className={`${fieldLabelClass} mt-6`}>{copy.contentLabel}<textarea value={item.content} onChange={(event) => update("content", event.target.value)} className={`${textareaClass} min-h-[34rem] font-mono leading-7`} spellCheck={false} /></label>
+            <div className="mt-6"><MarkdownBlockEditor label={copy.contentLabel} value={item.content} onChange={(content) => update("content", content)} /></div>
           </section>
 
           <section className={sectionClass}>

@@ -26,6 +26,7 @@ import {
   type BlogAuditResult,
 } from "@/components/blog-audit-panel";
 import { ContentAiAssistant } from "@/components/content-ai-assistant";
+import { MarkdownBlockEditor } from "@/components/markdown-block-editor";
 import type { BlogPostInput } from "@/lib/blog-admin-types";
 
 type BlogEditorFormProps = {
@@ -114,7 +115,10 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
   }
 
   function appendGeneratedContent(text: string) {
-    update("content", `${post.content.trim()}\n\n${text.trim()}`.trim());
+    setPost((current) => ({
+      ...current,
+      content: `${current.content.trim()}\n\n${text.trim()}`.trim(),
+    }));
     setSuccess("AI suggestion added to the article draft. Review it before saving or publishing.");
   }
 
@@ -191,7 +195,7 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
               {originalSlug ? "Edit article" : "Create article"}
             </h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              Shape the brief, draft in Markdown, review on-page quality, and publish directly to
+              Shape the brief, draft visually, review on-page quality, and publish directly to
               Neon.
             </p>
           </div>
@@ -410,7 +414,7 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Markdown draft
+                  Visual draft
                 </p>
                 <h2 className="mt-1 text-xl font-semibold tracking-tight">Article content</h2>
               </div>
@@ -419,15 +423,13 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
               </span>
             </div>
 
-            <label className={`${fieldLabelClass} mt-6`}>
-              Article content
-              <textarea
+            <div className="mt-6">
+              <MarkdownBlockEditor
+                label="Article content"
                 value={post.content}
-                onChange={(event) => update("content", event.target.value)}
-                className={`${textareaClass} min-h-[34rem] font-mono leading-7`}
-                spellCheck={false}
+                onChange={(content) => update("content", content)}
               />
-            </label>
+            </div>
             <div className="mt-4">
               <BlogAuditFeedback
                 checks={feedbackFor(
