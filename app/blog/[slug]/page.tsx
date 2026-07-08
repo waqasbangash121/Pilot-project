@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -121,7 +122,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         }}
       />
 
-      <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
+      <ContentAnalyticsTracker contentType="blog" slug={post.slug} path={`/blog/${post.slug}`} />
+
+      <Section data-content-analytics-root="true" spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
         <Container className="max-w-6xl">
           <Link
             href="/blog"
@@ -172,7 +175,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </Container>
       </Section>
 
-      <Section spacing="none" className="py-8 sm:py-10">
+      <Section data-content-analytics-root="true" spacing="none" className="py-8 sm:py-10">
         <Container className="max-w-6xl">
           {post.coverImage ? (
             <div className="mb-8 overflow-hidden rounded-[10px] border border-border bg-surface">
@@ -243,3 +246,5 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     </>
   );
 }
+
+

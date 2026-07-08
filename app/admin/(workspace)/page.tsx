@@ -1,10 +1,13 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  BarChart3,
   BookOpenText,
   CheckCircle2,
+  Eye,
   FileText,
   Layers3,
+  MousePointerClick,
   PencilLine,
   Scale,
   SearchCheck,
@@ -12,7 +15,7 @@ import {
   UsersRound,
 } from "lucide-react";
 
-import { AdminMetric } from "@/components/admin/admin-ui";
+import { getContentAnalyticsOverview } from "@/lib/content-analytics";
 
 const modules = [
   {
@@ -77,13 +80,31 @@ const modules = [
   },
 ];
 
+export const dynamic = "force-dynamic";
+
 const workflow = [
   { label: "Draft", description: "Capture the angle, slug, and core content.", Icon: PencilLine },
   { label: "Review", description: "Run content checks and improve the page before publishing.", Icon: SearchCheck },
   { label: "Publish", description: "Save to Neon and refresh public routes immediately.", Icon: CheckCircle2 },
 ];
 
-export default function AdminHomePage() {
+const numberFormat = new Intl.NumberFormat("en");
+const compactNumberFormat = new Intl.NumberFormat("en", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
+function formatNumber(value: number): string {
+  return numberFormat.format(value);
+}
+
+function formatCompactNumber(value: number): string {
+  return compactNumberFormat.format(value);
+}
+
+export default async function AdminHomePage() {
+  const analytics = await getContentAnalyticsOverview(0);
+  const clickRate = analytics.views > 0 ? Math.round((analytics.clicks / analytics.views) * 100) : 0;
   return (
     <div className="space-y-6">
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
@@ -139,10 +160,43 @@ export default function AdminHomePage() {
         </aside>
       </section>
 
-      <section aria-label="Workspace metrics" className="grid gap-3 sm:grid-cols-3">
-        <AdminMetric label="Content modules" value="6" tone="blue" />
-        <AdminMetric label="Unified review flow" value="1" tone="green" />
-        <AdminMetric label="Guided creation paths" value="6" tone="violet" />
+      <section aria-label="Content analytics" className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+        <div className="flex flex-col gap-3 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+          <div>
+            <div className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              <BarChart3 aria-hidden="true" className="size-4 text-primary" />
+              Content analytics
+            </div>
+            <h2 className="mt-2 font-semibold tracking-tight">Combined performance</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Totals across articles, comparisons, resources, case studies, and tools.</p>
+          </div>
+          <span className="inline-flex w-fit shrink-0 items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm text-muted-foreground" title={`${formatNumber(analytics.trackedContent)} pages tracked`}>
+            <Layers3 aria-hidden="true" className="size-4" />
+            {formatCompactNumber(analytics.trackedContent)} pages tracked
+          </span>
+        </div>
+
+        <div className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:p-5">
+          {[
+            { label: "Total views", value: analytics.views, Icon: Eye },
+            { label: "Total clicks", value: analytics.clicks, Icon: MousePointerClick },
+            { label: "Visitors", value: analytics.visitors, Icon: UsersRound },
+            { label: "Sessions", value: analytics.sessions, Icon: BarChart3 },
+            { label: "Click rate", value: clickRate, suffix: "%", Icon: MousePointerClick },
+            { label: "Pages tracked", value: analytics.trackedContent, Icon: Layers3 },
+          ].map(({ label, value, suffix = "", Icon }) => (
+            <div key={label} className="rounded-md border border-border bg-background p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="truncate text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+                <Icon aria-hidden="true" className="size-4 shrink-0 text-primary" />
+              </div>
+              <p className="mt-3 truncate text-3xl font-semibold tabular-nums tracking-tight" title={`${formatNumber(value)}${suffix}`}>
+                {formatCompactNumber(value)}
+                {suffix}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section aria-label="Content modules" className="grid gap-4 xl:grid-cols-3">
@@ -192,6 +246,3 @@ export default function AdminHomePage() {
     </div>
   );
 }
-
-
-

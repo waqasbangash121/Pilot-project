@@ -22,7 +22,7 @@ const cookieTypes = [
   {
     title: "Analytics Cookies",
     description:
-      "These cookies help us understand how visitors interact with our website so we can improve performance and usability.",
+      "These cookies help us understand page views, content engagement, and link clicks so we can improve performance and usability.",
   },
   {
     title: "Functional Cookies",
@@ -40,6 +40,7 @@ const uses = [
   "Maintain website functionality and performance.",
   "Remember user preferences and settings.",
   "Analyze traffic and visitor behavior.",
+  "Measure article, comparison, resource, case study, and tool engagement.",
   "Measure marketing and campaign effectiveness.",
   "Detect security threats and prevent abuse.",
   "Improve user experience and site performance.",
@@ -60,7 +61,7 @@ export default function CookiePolicyPage() {
                   Website policy
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  Last updated: June 2026
+                  Last updated: July 2026
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">Cookie Policy</h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
@@ -143,6 +144,18 @@ export default function CookiePolicyPage() {
 
                 <section>
                   <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                    First-Party Content Analytics
+                  </h2>
+                  <p className="mt-3">
+                    We use first-party analytics cookies named <code>hyper_content_visitor_id</code>
+                    and <code>hyper_content_session_id</code> to count anonymous views and link
+                    clicks on articles, comparisons, resources, case studies, and tool pages. These
+                    cookies help us understand which content is useful without storing names, email
+                    addresses, or IP addresses in the content analytics events.
+                  </p>
+                </section>
+                <section>
+                  <h2 className="text-2xl font-semibold tracking-tight text-foreground">
                     Third-Party Services
                   </h2>
                   <p className="mt-3">
@@ -213,3 +226,4 @@ export default function CookiePolicyPage() {
     </>
   );
 }
+

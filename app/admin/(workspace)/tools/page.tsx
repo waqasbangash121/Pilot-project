@@ -3,6 +3,7 @@ import { FileText, Plus, SearchCheck } from "lucide-react";
 
 import { AdminContentRow, AdminEmptyState, AdminMetric } from "@/components/admin/admin-ui";
 import { DeleteContentButton } from "@/components/admin/delete-content-button";
+import { getContentAnalyticsByType } from "@/lib/content-analytics";
 import { listStudioManagedContent } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,10 @@ function formatDate(value: string) {
 }
 
 export default async function ToolsDashboardPage() {
-  const tools = await listStudioManagedContent("tool");
+  const [tools, analytics] = await Promise.all([
+    listStudioManagedContent("tool"),
+    getContentAnalyticsByType("tool"),
+  ]);
   const draftCount = tools.filter((tool) => tool.draft).length;
   const publishedCount = tools.length - draftCount;
 
@@ -69,6 +73,8 @@ export default async function ToolsDashboardPage() {
                 tool.toolType ?? tool.category,
                 `${tool.readingTime} min read`,
                 formatDate(tool.publishedAt),
+                `Views: ${analytics.get(tool.slug)?.views ?? 0}`,
+                `Clicks: ${analytics.get(tool.slug)?.clicks ?? 0}`,
                 ...(tool.toolUrl ? [`Launch: ${tool.toolUrl}`] : []),
               ]}
               Icon={FileText}
@@ -82,3 +88,4 @@ export default async function ToolsDashboardPage() {
     </div>
   );
 }
+

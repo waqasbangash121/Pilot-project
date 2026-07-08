@@ -7,6 +7,7 @@ import {
   AdminMetric,
 } from "@/components/admin/admin-ui";
 import { DeleteContentButton } from "@/components/admin/delete-content-button";
+import { getContentAnalyticsByType } from "@/lib/content-analytics";
 import { listStudioManagedContent } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,10 @@ function formatDate(value: string) {
 }
 
 export default async function ComparisonDashboardPage() {
-  const comparisons = await listStudioManagedContent("comparison");
+  const [comparisons, analytics] = await Promise.all([
+    listStudioManagedContent("comparison"),
+    getContentAnalyticsByType("comparison"),
+  ]);
   const draftCount = comparisons.filter((comparison) => comparison.draft).length;
   const publishedCount = comparisons.length - draftCount;
 
@@ -76,6 +80,8 @@ export default async function ComparisonDashboardPage() {
                 comparison.competitorName ? `Target: ${comparison.competitorName}` : comparison.category,
                 `${comparison.readingTime} min read`,
                 formatDate(comparison.publishedAt),
+                `Views: ${analytics.get(comparison.slug)?.views ?? 0}`,
+                `Clicks: ${analytics.get(comparison.slug)?.clicks ?? 0}`,
                 ...(comparison.focusKeyword ? [`Keyword: ${comparison.focusKeyword}`] : []),
               ]}
               Icon={Scale}
@@ -95,3 +101,4 @@ export default async function ComparisonDashboardPage() {
     </div>
   );
 }
+

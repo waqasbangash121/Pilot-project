@@ -16,6 +16,9 @@ export type ContentType = (typeof contentTypes)[number];
 export const contentStatuses = ["draft", "published", "archived"] as const;
 export type ContentStatus = (typeof contentStatuses)[number];
 
+export const contentAnalyticsEventTypes = ["view", "click"] as const;
+export type ContentAnalyticsEventType = (typeof contentAnalyticsEventTypes)[number];
+
 export const workspaces = pgTable("workspaces", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -108,6 +111,49 @@ export const contentRevisions = pgTable(
   (table) => [index("content_revisions_item_created_idx").on(table.contentItemId, table.createdAt)],
 );
 
+export const contentAnalyticsEvents = pgTable(
+  "content_analytics_events",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    contentItemId: text("content_item_id").references(() => contentItems.id, { onDelete: "set null" }),
+    contentType: text("content_type").$type<ContentType>().notNull(),
+    contentSlug: text("content_slug").notNull(),
+    eventType: text("event_type").$type<ContentAnalyticsEventType>().notNull(),
+    visitorId: text("visitor_id").notNull(),
+    sessionId: text("session_id").notNull(),
+    path: text("path").notNull(),
+    targetUrl: text("target_url"),
+    targetText: text("target_text"),
+    referrer: text("referrer"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    check(
+      "content_analytics_events_content_type_check",
+      sql`${table.contentType} in ('blog', 'comparison', 'resource', 'case-study', 'tool')`,
+    ),
+    check(
+      "content_analytics_events_event_type_check",
+      sql`${table.eventType} in ('view', 'click')`,
+    ),
+    index("content_analytics_events_workspace_content_idx").on(
+      table.workspaceId,
+      table.contentType,
+      table.contentSlug,
+      table.createdAt,
+    ),
+    index("content_analytics_events_content_item_idx").on(table.contentItemId, table.createdAt),
+    index("content_analytics_events_workspace_event_idx").on(
+      table.workspaceId,
+      table.eventType,
+      table.createdAt,
+    ),
+  ],
+);
+
 export const teamMembers = pgTable(
   "team_members",
   {
@@ -134,4 +180,13 @@ export type WorkspaceSettings = typeof workspaceSettings.$inferSelect;
 export type WorkspaceSecret = typeof workspaceSecrets.$inferSelect;
 export type ContentItem = typeof contentItems.$inferSelect;
 export type ContentRevision = typeof contentRevisions.$inferSelect;
+export type ContentAnalyticsEvent = typeof contentAnalyticsEvents.$inferSelect;
 export type TeamMember = typeof teamMembers.$inferSelect;
+
+
+
+
+
+
+
+

@@ -3,6 +3,7 @@ import { FileText, Plus, SearchCheck } from "lucide-react";
 
 import { AdminContentRow, AdminEmptyState, AdminMetric } from "@/components/admin/admin-ui";
 import { DeleteContentButton } from "@/components/admin/delete-content-button";
+import { getContentAnalyticsByType } from "@/lib/content-analytics";
 import { listStudioManagedContent } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,10 @@ function formatDate(value: string) {
 }
 
 export default async function CaseStudiesDashboardPage() {
-  const caseStudies = await listStudioManagedContent("case-study");
+  const [caseStudies, analytics] = await Promise.all([
+    listStudioManagedContent("case-study"),
+    getContentAnalyticsByType("case-study"),
+  ]);
   const draftCount = caseStudies.filter((caseStudy) => caseStudy.draft).length;
   const publishedCount = caseStudies.length - draftCount;
 
@@ -69,6 +73,8 @@ export default async function CaseStudiesDashboardPage() {
                 caseStudy.customerName ? `Customer: ${caseStudy.customerName}` : caseStudy.category,
                 caseStudy.industry ? `Industry: ${caseStudy.industry}` : `${caseStudy.readingTime} min read`,
                 formatDate(caseStudy.publishedAt),
+                `Views: ${analytics.get(caseStudy.slug)?.views ?? 0}`,
+                `Clicks: ${analytics.get(caseStudy.slug)?.clicks ?? 0}`,
                 ...(caseStudy.focusKeyword ? [`Keyword: ${caseStudy.focusKeyword}`] : []),
               ]}
               Icon={FileText}
@@ -82,3 +88,4 @@ export default async function CaseStudiesDashboardPage() {
     </div>
   );
 }
+

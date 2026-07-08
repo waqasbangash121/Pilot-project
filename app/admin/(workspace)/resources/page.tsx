@@ -7,6 +7,7 @@ import {
   AdminMetric,
 } from "@/components/admin/admin-ui";
 import { DeleteContentButton } from "@/components/admin/delete-content-button";
+import { getContentAnalyticsByType } from "@/lib/content-analytics";
 import { listStudioManagedContent } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,10 @@ function formatDate(value: string) {
 }
 
 export default async function ResourceDashboardPage() {
-  const resources = await listStudioManagedContent("resource");
+  const [resources, analytics] = await Promise.all([
+    listStudioManagedContent("resource"),
+    getContentAnalyticsByType("resource"),
+  ]);
   const draftCount = resources.filter((resource) => resource.draft).length;
   const publishedCount = resources.length - draftCount;
 
@@ -76,6 +80,8 @@ export default async function ResourceDashboardPage() {
                 resource.resourceType ?? resource.category,
                 `${resource.readingTime} min read`,
                 formatDate(resource.publishedAt),
+                `Views: ${analytics.get(resource.slug)?.views ?? 0}`,
+                `Clicks: ${analytics.get(resource.slug)?.clicks ?? 0}`,
                 ...(resource.audience ? [`Audience: ${resource.audience}`] : []),
               ]}
               Icon={FileText}
@@ -95,3 +101,4 @@ export default async function ResourceDashboardPage() {
     </div>
   );
 }
+

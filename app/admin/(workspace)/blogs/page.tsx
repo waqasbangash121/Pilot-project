@@ -7,6 +7,7 @@ import {
   AdminMetric,
 } from "@/components/admin/admin-ui";
 import { DeleteContentButton } from "@/components/admin/delete-content-button";
+import { getContentAnalyticsByType } from "@/lib/content-analytics";
 import { listStudioBlogPosts } from "@/lib/content-store";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,10 @@ function formatDate(value: string) {
 }
 
 export default async function BlogDashboardPage() {
-  const posts = await listStudioBlogPosts();
+  const [posts, analytics] = await Promise.all([
+    listStudioBlogPosts(),
+    getContentAnalyticsByType("blog"),
+  ]);
   const draftCount = posts.filter((post) => post.draft).length;
   const publishedCount = posts.length - draftCount;
 
@@ -76,6 +80,8 @@ export default async function BlogDashboardPage() {
                 post.category,
                 `${post.readingTime} min read`,
                 formatDate(post.publishedAt),
+                `Views: ${analytics.get(post.slug)?.views ?? 0}`,
+                `Clicks: ${analytics.get(post.slug)?.clicks ?? 0}`,
                 ...(post.focusKeyword ? [`Keyword: ${post.focusKeyword}`] : []),
               ]}
               Icon={BookOpenText}
@@ -95,3 +101,4 @@ export default async function BlogDashboardPage() {
     </div>
   );
 }
+

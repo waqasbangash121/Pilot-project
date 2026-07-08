@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -91,7 +92,9 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
       />
 
-      <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
+      <ContentAnalyticsTracker contentType="comparison" slug={comparison.slug} path={`/comparisons/${comparison.slug}`} />
+
+      <Section data-content-analytics-root="true" spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">
         <Container className="max-w-6xl">
           <Link
             href="/comparisons"
@@ -134,7 +137,7 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
         </Container>
       </Section>
 
-      <Section spacing="none" className="py-8 sm:py-10">
+      <Section data-content-analytics-root="true" spacing="none" className="py-8 sm:py-10">
         <Container className="max-w-6xl">
           {comparison.coverImage ? (
             <div className="mb-8 overflow-hidden rounded-[10px] border border-border bg-surface">
@@ -211,3 +214,5 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
     </>
   );
 }
+
+
