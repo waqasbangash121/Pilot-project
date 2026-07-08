@@ -27,17 +27,17 @@ export const metadata = createPageMetadata({
 const toolWorkflows = [
   {
     title: "Audit faster",
-    description: "Spot search, discovery, and conversion gaps without rebuilding your process.",
+    description: "Spot search, discovery, and conversion gaps without rebuilding your process or adding another heavy workflow.",
     Icon: BadgeCheck,
   },
   {
     title: "Prioritize work",
-    description: "Turn observations into clearer next steps for merchandising and CX teams.",
+    description: "Turn observations into clearer next steps for merchandising, support, and CX teams.",
     Icon: ListChecks,
   },
   {
     title: "Share decisions",
-    description: "Use practical outputs that make internal reviews and planning easier to align.",
+    description: "Use practical outputs that make internal reviews, planning conversations, and follow-up decisions easier to align.",
     Icon: FileText,
   },
 ];
@@ -120,7 +120,26 @@ export default async function ToolsPage() {
         </Container>
       </Section>
 
-      <Section spacing="none" className="pb-8 sm:pb-10">
+            <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">How to use the tools</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Use lightweight utilities to make better ecommerce decisions.</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">Tools work best when they support a focused task: auditing search quality, organizing support issues, reviewing merchandising opportunities, or prioritizing conversion improvements. Start with one workflow, capture the findings, and use the output to decide what deserves action next.</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Use audit tools to identify gaps in search, filtering, product discovery, or customer experience before changing your setup.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Use planning tools to turn scattered observations into a shortlist of tasks your team can compare and prioritize.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Use checklist-style tools before launches, app reviews, content updates, or theme changes that affect shoppers.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Pair tool outputs with blog context, resources, and comparisons so each recommendation has a clear reason behind it.</p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+<Section spacing="none" className="pb-8 sm:pb-10">
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -171,7 +190,7 @@ export default async function ToolsPage() {
                       {tool.title}
                     </h3>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                      {tool.useCase || tool.excerpt}
+                      {tool.useCase || tool.excerpt} Use it to organize the task, capture practical findings, and decide what your ecommerce team should inspect or improve next.
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-2">
@@ -218,7 +237,7 @@ export default async function ToolsPage() {
                 Tools are being prepared.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Audits, calculators, checklists, and practical utilities will appear here soon.
+                Audits, calculators, checklists, and practical utilities will appear here soon, with a focus on clear outputs that help teams inspect, prioritize, and act.
               </p>
             </div>
           )}
@@ -270,3 +289,5 @@ export default async function ToolsPage() {
     </>
   );
 }
+
+

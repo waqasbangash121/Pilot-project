@@ -94,7 +94,7 @@ export default async function BlogPage() {
                   Browse by topic
                 </div>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  Start with the area of ecommerce experience you are improving right now.
+                  Start with the area of ecommerce experience you are improving right now. Each topic points toward practical decisions, not abstract trends.
                 </p>
               </div>
               <span className="text-sm font-medium text-muted-foreground">
@@ -116,7 +116,26 @@ export default async function BlogPage() {
         </Container>
       </Section>
 
-      <Section spacing="none" className="pb-8 sm:pb-10">
+            <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">How to use the blog</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Turn ecommerce ideas into clearer next steps.</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">The blog is organized for Shopify teams that need practical context before they make changes to search, merchandising, support, content, or conversion workflows. Start with the problem you are trying to solve, then use the article to frame the next experiment, audit, or team discussion.</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For discovery work, look for ideas that help shoppers move from broad intent to the right product faster.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For support work, focus on questions that repeat often and block confident buying decisions.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For conversion work, connect page clarity, trust signals, product details, and checkout friction to measurable outcomes.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For planning work, pair each article with a comparison, checklist, or tool so the idea becomes easier to act on.</p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+<Section spacing="none" className="pb-8 sm:pb-10">
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -203,3 +222,5 @@ export default async function BlogPage() {
     </>
   );
 }
+
+

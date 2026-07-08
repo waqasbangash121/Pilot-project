@@ -30,17 +30,17 @@ export const metadata = createPageMetadata({
 const resourceFormats = [
   {
     title: "Guides",
-    description: "Learn a concept, understand the context, and see the next practical step.",
+    description: "Learn a concept, understand the context, and see the next practical step for your storefront.",
     Icon: BookOpenText,
   },
   {
     title: "Playbooks",
-    description: "Turn a goal into a repeatable process your team can actually follow.",
+    description: "Turn a goal into a repeatable process your team can actually follow, review, and improve.",
     Icon: ListChecks,
   },
   {
     title: "Checklists and templates",
-    description: "Move faster with structured prompts for planning, reviews, and implementation.",
+    description: "Move faster with structured prompts for planning, reviews, implementation, and team alignment.",
     Icon: CheckCircle2,
   },
 ];
@@ -65,56 +65,16 @@ export default async function ResourcesPage() {
   const resources = await getAllResources();
 
     const resourcesUrl = new URL("/resources", siteConfig.url).toString();
-  const resourceSchemas = resources.map((resource, index) => {
-    const url = new URL(`/resources/${resource.slug}`, siteConfig.url).toString();
-
-    return {
-      "@type": ["Article", "LearningResource"],
-      "@id": `${url}#resource`,
-      position: index + 1,
-      headline: resource.title,
-      name: resource.title,
-      description: resource.seoDescription || resource.excerpt,
-      url,
-      datePublished: resource.publishedAt,
-      dateModified: resource.updatedAt || resource.publishedAt,
-      author: { "@type": "Organization", name: resource.author || siteConfig.name },
-      publisher: { "@id": `${siteConfig.url}#organization` },
-      learningResourceType: resource.resourceType || "Guide",
-      audience: resource.audience ? { "@type": "Audience", audienceType: resource.audience } : undefined,
-      about: resource.tags,
-      timeRequired: `PT${resource.readingTime}M`,
-      image: resource.coverImage ? [new URL(resource.coverImage, siteConfig.url).toString()] : undefined,
-    };
-  });
   const resourcesSchema = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "CollectionPage",
-        "@id": `${resourcesUrl}#webpage`,
-        name: "Shopify Ecommerce Guides, Playbooks, and Resources",
-        description: "Practical Shopify guides, playbooks, checklists, templates, and documentation for product discovery and conversion growth.",
-        url: resourcesUrl,
-        isPartOf: { "@id": `${siteConfig.url}#website` },
-        publisher: { "@id": `${siteConfig.url}#organization` },
-        mainEntity: { "@id": `${resourcesUrl}#itemlist` },
-      },
-      {
-        "@type": "ItemList",
-        "@id": `${resourcesUrl}#itemlist`,
-        name: "Hyper resource library",
-        numberOfItems: resources.length,
-        itemListElement: resourceSchemas.map((resource) => ({
-          "@type": "ListItem",
-          position: resource.position,
-          item: { "@id": resource["@id"] },
-        })),
-      },
-      ...resourceSchemas,
-    ],
+    "@type": "CollectionPage",
+    "@id": `${resourcesUrl}#webpage`,
+    name: "Shopify Ecommerce Guides, Playbooks, and Resources",
+    description: "Practical Shopify guides, playbooks, checklists, templates, and documentation for product discovery and conversion growth.",
+    url: resourcesUrl,
+    isPartOf: { "@id": `${siteConfig.url}#website` },
+    publisher: { "@id": `${siteConfig.url}#organization` },
   };
-
   return (
     <>
       <script
@@ -179,7 +139,26 @@ export default async function ResourcesPage() {
         </Container>
       </Section>
 
-      <Section spacing="none" className="pb-8 sm:pb-10">
+            <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">How to use the library</p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">Choose the resource that matches the work in front of you.</h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">Use guides when your team needs context, playbooks when a repeatable workflow matters, and checklists or templates when you need a faster way to review decisions. The strongest resource is the one that helps your team move from an open question to a specific improvement in product discovery, support, merchandising, or conversion.</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Start with the store problem, then choose a resource format that matches the decision you need to make.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Use implementation notes to turn broad ecommerce goals into tasks your team can assign and review.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Pair planning resources with comparisons when you are evaluating apps, integrations, or workflow changes.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">Revisit resources after launch so you can measure what improved and decide what needs another pass.</p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+<Section spacing="none" className="pb-8 sm:pb-10">
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -338,3 +317,5 @@ export default async function ResourcesPage() {
     </>
   );
 }
+
+

@@ -27,18 +27,25 @@ const comparisonPrinciples = [
   {
     title: "Use-case first",
     description:
-      "Start with the storefront problem, customer journey, and operational need you are solving.",
+      "Start with the storefront problem, customer journey, and operational need you are solving. The clearest comparison begins with the job your store needs the app to do.",
   },
   {
     title: "Clear trade-offs",
     description:
-      "Understand the meaningful differences without reducing a complex choice to a feature checklist.",
+      "Understand meaningful differences without reducing a complex choice to a feature checklist. Consider setup effort, reporting, workflow fit, and daily usability.",
   },
   {
     title: "Practical next steps",
     description:
-      "Leave with guidance that helps your team decide what to evaluate or implement next.",
+      "Leave with guidance that helps your team decide what to evaluate, what to verify, and what to implement next for your Shopify storefront.",
   },
+];
+
+const evaluationGuidance = [
+  "Map each comparison to a real merchandising, support, search, or conversion goal before reviewing vendors.",
+  "Check how each app handles catalog size, product attributes, theme setup, analytics needs, and internal approval workflows.",
+  "Look for signs that the tool fits daily work: clear controls, useful reporting, manageable setup, and support for repeated decisions.",
+  "Use each guide as a research starting point, then verify current pricing, app listing details, integration requirements, and support expectations directly with each provider.",
 ];
 
 const relatedLinks = [
@@ -80,8 +87,7 @@ export default async function ComparisonsPage() {
                   Compare Shopify solutions with more confidence.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Browse balanced versus and alternative guides built around buyer context, decision
-                  criteria, and the implementation factors that matter in a real storefront.
+                  Browse balanced versus and alternative guides built around buyer context, decision criteria, and the implementation factors that matter in a real storefront. Hyper comparisons help Shopify merchants and ecommerce teams understand fit before they spend time on demos, migrations, or new app setup.
                 </p>
               </div>
 
@@ -123,6 +129,36 @@ export default async function ComparisonsPage() {
 
       <Section spacing="none" className="pb-8 sm:pb-10">
         <Container className="max-w-6xl">
+          <div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                  How to use these comparisons
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  Keep the decision connected to real store work.
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  A comparison page works best when the team already knows what needs to improve: search relevance, filter management, product discovery, repetitive support questions, conversion from high-intent visitors, or a merchandising workflow that takes too much manual effort.
+                </p>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  Use each guide to compare how the options support that problem. The right answer can depend on catalog complexity, theme setup, analytics needs, team size, and how much configuration your store can maintain.
+                </p>
+              </div>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {evaluationGuidance.map((item) => (
+                  <li key={item} className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
@@ -133,8 +169,7 @@ export default async function ComparisonsPage() {
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Each guide highlights the context behind a choice, with a focus on practical fit and
-              trade-offs.
+              Each guide highlights the context behind a choice, with a focus on practical fit, trade-offs, and the questions a Shopify team should answer before selecting an app.
             </p>
           </div>
 
@@ -180,6 +215,9 @@ export default async function ComparisonsPage() {
                       {comparison.title}
                     </h3>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{summary}</p>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                      Use this guide to frame the buying conversation, identify the assumptions your team needs to verify, and decide whether this Shopify app category deserves a closer look for your storefront.
+                    </p>
 
                     <div className="mt-5 flex flex-wrap gap-2">
                       {comparison.tags.slice(0, 3).map((tag) => (
@@ -218,8 +256,7 @@ export default async function ComparisonsPage() {
                 Comparison guides are being prepared.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Practical alternatives and versus pages for Shopify decision-makers will appear here
-                soon.
+                Practical alternatives and versus pages for Shopify decision-makers will appear here soon, with a focus on fair evaluation, verified claims, and implementation context.
               </p>
             </div>
           )}
@@ -237,6 +274,9 @@ export default async function ComparisonsPage() {
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
                   Gather context, then take action.
                 </h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
+                  Pair these guides with broader ecommerce strategy articles and implementation resources so research turns into a clear plan for product discovery, customer support, merchandising, and conversion work.
+                </p>
               </div>
               <BadgeCheck aria-hidden="true" className="size-6 text-primary" />
             </div>
