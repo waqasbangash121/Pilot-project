@@ -11,6 +11,7 @@ import { Section } from "@/components/ui/section";
 import { canonicalUrl } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatResourceDate, getResourceBySlug } from "@/lib/resources";
+import { toJsonLd } from "@/lib/schema";
 
 type ResourcePageProps = {
   params: Promise<{ slug: string }>;
@@ -65,15 +66,22 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
   const pageUrl = new URL(`/resources/${resource.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": ["Article", "LearningResource"],
+    "@id": `${pageUrl}#resource`,
     headline: resource.title,
+    name: resource.title,
     description: resource.seoDescription ?? resource.excerpt,
     datePublished: resource.publishedAt,
     dateModified: resource.updatedAt ?? resource.publishedAt,
     mainEntityOfPage: pageUrl,
-    author: { "@type": "Organization", name: resource.author },
+    url: pageUrl,
+    author: { "@type": "Organization", name: resource.author || siteConfig.name },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-    audience: { "@type": "Audience", audienceType: resource.audience },
+    learningResourceType: resource.resourceType || "Guide",
+    audience: resource.audience ? { "@type": "Audience", audienceType: resource.audience } : undefined,
+    about: tags,
+    keywords: tags.join(", "),
+    timeRequired: `PT${resource.readingTime}M`,
     image: resource.coverImage ? [new URL(resource.coverImage, siteConfig.url).toString()] : undefined,
   };
 
@@ -81,7 +89,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(schema) }}
       />
 
       <Section spacing="none" className="border-b border-border/80 pb-8 pt-10 sm:pb-10 sm:pt-14">

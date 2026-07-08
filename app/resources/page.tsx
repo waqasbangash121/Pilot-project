@@ -14,7 +14,9 @@ import {
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
+import { siteConfig } from "@/config/site";
 import { formatResourceDate, getAllResources } from "@/lib/resources";
+import { toJsonLd } from "@/lib/schema";
 
 export const revalidate = 3600;
 
@@ -62,8 +64,63 @@ const relatedLinks = [
 export default async function ResourcesPage() {
   const resources = await getAllResources();
 
+    const resourcesUrl = new URL("/resources", siteConfig.url).toString();
+  const resourceSchemas = resources.map((resource, index) => {
+    const url = new URL(`/resources/${resource.slug}`, siteConfig.url).toString();
+
+    return {
+      "@type": ["Article", "LearningResource"],
+      "@id": `${url}#resource`,
+      position: index + 1,
+      headline: resource.title,
+      name: resource.title,
+      description: resource.seoDescription || resource.excerpt,
+      url,
+      datePublished: resource.publishedAt,
+      dateModified: resource.updatedAt || resource.publishedAt,
+      author: { "@type": "Organization", name: resource.author || siteConfig.name },
+      publisher: { "@id": `${siteConfig.url}#organization` },
+      learningResourceType: resource.resourceType || "Guide",
+      audience: resource.audience ? { "@type": "Audience", audienceType: resource.audience } : undefined,
+      about: resource.tags,
+      timeRequired: `PT${resource.readingTime}M`,
+      image: resource.coverImage ? [new URL(resource.coverImage, siteConfig.url).toString()] : undefined,
+    };
+  });
+  const resourcesSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${resourcesUrl}#webpage`,
+        name: "Shopify Ecommerce Guides, Playbooks, and Resources",
+        description: "Practical Shopify guides, playbooks, checklists, templates, and documentation for product discovery and conversion growth.",
+        url: resourcesUrl,
+        isPartOf: { "@id": `${siteConfig.url}#website` },
+        publisher: { "@id": `${siteConfig.url}#organization` },
+        mainEntity: { "@id": `${resourcesUrl}#itemlist` },
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${resourcesUrl}#itemlist`,
+        name: "Hyper resource library",
+        numberOfItems: resources.length,
+        itemListElement: resourceSchemas.map((resource) => ({
+          "@type": "ListItem",
+          position: resource.position,
+          item: { "@id": resource["@id"] },
+        })),
+      },
+      ...resourceSchemas,
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: toJsonLd(resourcesSchema) }}
+      />
       <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16">
         <Container className="max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9">

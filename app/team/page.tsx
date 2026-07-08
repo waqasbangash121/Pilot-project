@@ -1,8 +1,10 @@
-import { Sparkles, UsersRound } from "lucide-react";
+import { BadgeCheck, Bot, SearchCheck, Sparkles, UsersRound } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
+import { siteConfig } from "@/config/site";
+import { toJsonLd } from "@/lib/schema";
 import { listTeamMembers } from "@/lib/team";
 import { getInitials } from "@/lib/utils";
 
@@ -14,11 +16,70 @@ export const metadata = createPageMetadata({
   path: "/team",
 });
 
+const teamPrinciples = [
+  {
+    title: "Product discovery expertise",
+    description: "The team focuses on helping shoppers find the right products faster through AI search, filters, and merchandising workflows.",
+    Icon: SearchCheck,
+  },
+  {
+    title: "AI support built for commerce",
+    description: "Hyper applies AI to customer questions, buying hesitation, and support deflection with practical Shopify use cases in mind.",
+    Icon: Bot,
+  },
+  {
+    title: "Conversion-first execution",
+    description: "Every app is shaped around measurable storefront outcomes: better engagement, clearer journeys, and more confident purchasing.",
+    Icon: BadgeCheck,
+  },
+];
 export default async function TeamPage() {
   const members = await listTeamMembers();
+  const teamUrl = new URL("/team", siteConfig.url).toString();
+  const personSchemas = members.map((member) => ({
+    "@type": "Person",
+    "@id": `${teamUrl}#${member.id}`,
+    name: member.name,
+    jobTitle: member.designation,
+    description: member.quote || `Member of the ${siteConfig.name} team building AI commerce tools for Shopify merchants.`,
+    image: member.photoUrl ? new URL(member.photoUrl, siteConfig.url).toString() : undefined,
+    sameAs: member.linkedinUrl ? [member.linkedinUrl] : undefined,
+    worksFor: {
+      "@id": `${siteConfig.url}#organization`,
+    },
+  }));
+  const teamSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteConfig.url}#organization`,
+        name: siteConfig.name,
+        url: siteConfig.url,
+        email: siteConfig.email,
+        description: siteConfig.description,
+        employee: personSchemas.map((person) => ({ "@id": person["@id"] })),
+      },
+      {
+        "@type": "AboutPage",
+        "@id": `${teamUrl}#webpage`,
+        name: "Our Team",
+        url: teamUrl,
+        description: "Meet the people building Hyper's AI commerce apps for Shopify merchants.",
+        isPartOf: { "@id": `${siteConfig.url}#website` },
+        about: { "@id": `${siteConfig.url}#organization` },
+        mainEntity: personSchemas.map((person) => ({ "@id": person["@id"] })),
+      },
+      ...personSchemas,
+    ],
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: toJsonLd(teamSchema) }}
+      />
       <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16">
         <Container className="max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9">
@@ -49,6 +110,22 @@ export default async function TeamPage() {
         </Container>
       </Section>
 
+
+      <Section spacing="none" className="pb-8 sm:pb-10">
+        <Container className="max-w-6xl">
+          <div className="grid gap-4 md:grid-cols-3">
+            {teamPrinciples.map(({ title, description, Icon }) => (
+              <article key={title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+                <span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-background text-primary">
+                  <Icon aria-hidden="true" className="size-5" />
+                </span>
+                <h2 className="mt-4 text-lg font-semibold tracking-tight">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </Section>
       <Section spacing="none" className="pb-12 sm:pb-16">
         <Container className="max-w-6xl">
           <div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
