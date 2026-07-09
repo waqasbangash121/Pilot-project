@@ -215,6 +215,44 @@ const faqs = [
   },
 ];
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://niagarat.com/apps/hyper-ai-chat-faq#software",
+  name: "Hyper AI Chat & FAQs",
+  url: "https://niagarat.com/apps/hyper-ai-chat-faq",
+  applicationCategory: "BusinessApplication",
+  applicationSubCategory: "Customer support and conversational commerce",
+  operatingSystem: "Shopify",
+  description:
+    "AI customer support and FAQ automation for Shopify stores. Hyper AI Chat & FAQs uses store-specific product information, policies, and support guidance to answer shopper questions around the clock, reduce repetitive tickets, and support purchase decisions.",
+  image: "https://niagarat.com/aichat-banner.png",
+  installUrl: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+  publisher: {
+    "@type": "Organization",
+    name: "Hyper Apps",
+    url: "https://niagarat.com",
+  },
+  offers: pricingTiers.map((tier) => ({
+    "@type": "Offer",
+    name: tier.name,
+    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+    priceCurrency: "USD",
+    url: tier.buttonHref,
+  })),
+  featureList: [
+    "AI-powered Shopify customer support chat",
+    "Store-specific AI training",
+    "Automated and searchable FAQs",
+    "Product information assistance",
+    "Shipping, return, sizing, and policy answers",
+    "24/7 instant customer responses",
+    "Conversation history",
+    "Customer support analytics",
+    "Custom chatbot branding",
+    "Support ticket deflection",
+  ],
+};
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -231,6 +269,12 @@ const faqSchema = {
 export default function HyperAIChatFAQPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareApplicationSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

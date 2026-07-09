@@ -204,6 +204,44 @@ const faqs = [
   },
 ];
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://niagarat.com/apps/hyper-shoppable-videos#software",
+  name: "Hyper Shoppable Videos",
+  url: "https://niagarat.com/apps/hyper-shoppable-videos",
+  applicationCategory: "BusinessApplication",
+  applicationSubCategory: "Video commerce",
+  operatingSystem: "Shopify",
+  description:
+    "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and add products to their cart directly from engaging video experiences.",
+  image: "https://niagarat.com/shoppable-banner.png",
+  installUrl: "https://apps.shopify.com/hyper-shopable-videos",
+  publisher: {
+    "@type": "Organization",
+    name: "Hyper Apps",
+    url: "https://niagarat.com",
+  },
+  offers: pricingTiers.map((tier) => ({
+    "@type": "Offer",
+    name: tier.name,
+    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+    priceCurrency: "USD",
+    url: tier.buttonHref,
+  })),
+  featureList: [
+    "Interactive shoppable product videos",
+    "Direct add-to-cart from video",
+    "Product tagging inside videos",
+    "TikTok and Instagram video imports",
+    "User-generated content support",
+    "Multiple storefront video widgets",
+    "AI-assisted product matching",
+    "Video engagement analytics",
+    "A/B testing for video experiences",
+    "Responsive Shopify storefront integration",
+  ],
+};
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -220,6 +258,12 @@ const faqSchema = {
 export default function HyperShoppableVideosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareApplicationSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

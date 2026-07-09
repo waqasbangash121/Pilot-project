@@ -266,6 +266,48 @@ export const homeContent = {
       answer:
         "Yes. Hyper uses artificial intelligence to improve product discovery, automate customer support, and create intelligent shopping experiences for ecommerce businesses.",
     },
+    {
+      id: "faq-09",
+      question: "What is semantic search and how does it benefit my store?",
+      answer:
+        "Semantic search interprets the meaning and intent behind a shopper's query instead of relying only on exact keyword matches. This helps customers discover relevant products when they use synonyms, descriptive phrases, or different terminology from your catalog.",
+    },
+    {
+      id: "faq-10",
+      question: "Can Hyper Search & Filters use custom product attributes?",
+      answer:
+        "Yes. Hyper Search & Filters can create filters from Shopify metafields, variants, tags, collections, prices, vendors, and other product attributes.",
+    },
+    {
+      id: "faq-11",
+      question: "Will Hyper Search & Filters slow down my Shopify storefront?",
+      answer:
+        "Search requests are processed by Hyper infrastructure, and the storefront widget loads asynchronously so it does not block the initial page render.",
+    },
+    {
+      id: "faq-12",
+      question: "How quickly does Hyper Search & Filters sync catalog changes?",
+      answer:
+        "Product updates, inventory changes, new variants, and catalog edits sync automatically through Shopify webhooks to keep the search index current.",
+    },
+    {
+      id: "faq-13",
+      question: "How many products can Hyper Search & Filters index?",
+      answer:
+        "The Enterprise plan supports catalogs of up to 200,000 products. Lower plans provide limits designed for smaller catalogs.",
+    },
+    {
+      id: "faq-14",
+      question: "Do I need coding knowledge to install Hyper Search & Filters?",
+      answer:
+        "No. The app uses Shopify app embeds and does not require merchants to edit Liquid code for the standard installation.",
+    },
+    {
+      id: "faq-15",
+      question: "Which Hyper Search & Filters pricing plans are available?",
+      answer:
+        "Hyper Search & Filters offers Free, Starter, Professional, and Enterprise plans for different catalog sizes and feature requirements. Current prices and plan limits are listed on the product page.",
+    },
   ],
   cta: {
     title: "Create Better Shopify Shopping Experiences with Hyper.",

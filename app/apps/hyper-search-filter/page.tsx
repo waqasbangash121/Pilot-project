@@ -256,7 +256,7 @@ const softwareApplicationSchema = {
   },
 
   description:
-    "Vector-based semantic search and smart filters for Shopify stores. Indexes up to 200,000 products, supports metafield filters, and deploys via app embed with no Liquid edits.",
+    "AI-powered semantic product search, advanced filtering, and merchandising software for Shopify stores. Hyper AI Search understands natural-language shopping intent, tolerates misspellings, indexes catalogs of up to 200,000 products, supports product metafields, and installs through a no-code app embed.",
 
   featureList: [
     "Vector-based semantic search",
@@ -267,6 +267,15 @@ const softwareApplicationSchema = {
     "Instant autocomplete",
     "Smart merchandising controls",
     "Zero-results reporting",
+    "Synonym and stop-word management",
+    "Custom product ranking",
+    "Collection, vendor, variant, and metafield filters",
+    "Color and size swatches",
+    "Product recommendations",
+    "Search query and conversion analytics",
+    "Filter usage analytics",
+    "Custom CSS storefront styling",
+    "No-code Shopify app embed installation",
   ],
 };
 

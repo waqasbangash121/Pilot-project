@@ -2,6 +2,7 @@ import {
   BenefitsSection,
   CtaSection,
   CustomerLogosSection,
+  FaqSection,
   HeroSection,
   MerchantProblemsSection,
   StatisticsSection,
@@ -52,32 +53,14 @@ const softwareApplicationSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "How does AI search optimization help Shopify stores?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "AI search optimization improves how AI systems and search engines understand your products, helping increase visibility, traffic, and conversions.",
-      },
+  mainEntity: homeContent.faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
     },
-    {
-      "@type": "Question",
-      name: "Can this improve conversion rates?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Better product visibility, optimized content, and conversion-focused experiences can help increase revenue and conversion rates.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Does it work with existing Shopify stores?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. The platform is designed to integrate with existing Shopify stores and enhance performance without requiring a complete rebuild.",
-      },
-    },
-  ],
+  })),
 };
 
 const structuredData = [webpageSchema, organizationSchema, softwareApplicationSchema, faqSchema];
@@ -106,6 +89,8 @@ export default function HomePage() {
       <CustomerLogosSection logos={homeContent.logos} />
 
       <BenefitsSection benefits={homeContent.benefits} />
+
+      <FaqSection faqs={homeContent.faqs} />
 
       <CtaSection
         title={homeContent.cta.title}

@@ -697,23 +697,86 @@ export function FreeToolsSection({ tools }: { tools: readonly ToolItem[] }) {
   );
 }
 
+const faqColumnClassName = `
+  [&>div]:space-y-4 [&>div]:divide-y-0 [&>div]:border-0 [&>div]:bg-transparent
+  [&>div>section]:overflow-hidden [&>div>section]:rounded-2xl
+  [&>div>section]:border [&>div>section]:border-border
+  [&>div>section]:bg-surface
+  [&>div>section]:shadow-[0_18px_50px_-44px_hsl(var(--shadow)/0.9)]
+  [&>div>section]:transition [&>div>section]:duration-200
+  [&>div>section:hover]:border-primary/30
+  [&_button]:min-h-20 [&_button]:gap-4 [&_button]:px-5 [&_button]:py-4
+  [&_button]:font-bold [&_button]:text-foreground sm:[&_button]:px-6
+  [&_button>span:first-child]:leading-6
+  [&_button>span:last-child]:inline-flex [&_button>span:last-child]:size-8
+  [&_button>span:last-child]:shrink-0 [&_button>span:last-child]:items-center
+  [&_button>span:last-child]:justify-center [&_button>span:last-child]:rounded-full
+  [&_button>span:last-child]:border [&_button>span:last-child]:border-primary/20
+  [&_button>span:last-child]:bg-primary/10 [&_button>span:last-child]:text-lg
+  [&_button>span:last-child]:font-medium [&_button>span:last-child]:text-primary
+  [&_button[aria-expanded='true']>span:last-child]:bg-primary
+  [&_button[aria-expanded='true']>span:last-child]:text-primary-foreground
+  [&_button+div>div>div]:border-t [&_button+div>div>div]:border-border/70
+  [&_button+div>div>div]:px-5 [&_button+div>div>div]:py-5
+  sm:[&_button+div>div>div]:px-6
+`;
+
 export function FaqSection({ faqs }: { faqs: readonly FaqItem[] }) {
+  const midpoint = Math.ceil(faqs.length / 2);
+  const columns = [faqs.slice(0, midpoint), faqs.slice(midpoint)];
+
   return (
-    <SectionFrame
-      id="faqs"
-      title="Questions Merchants Ask Before Installing"
-      description="Answer decision-stage questions clearly to improve conversion and AI snippet quality."
+    <Section
+      aria-labelledby="faqs"
+      spacing="lg"
+      className="relative overflow-hidden border-t border-border bg-[linear-gradient(180deg,hsl(var(--background)),hsl(var(--muted)/0.45),hsl(var(--background)))]"
     >
-      <div className="mx-auto max-w-4xl rounded-[10px] border border-border bg-surface p-4">
-        <Accordion
-          items={faqs.map((faq) => ({
-            id: faq.id,
-            title: faq.question,
-            content: faq.answer,
-          }))}
-        />
-      </div>
-    </SectionFrame>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-0 h-64 w-[44rem] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl"
+      />
+
+      <Container className="relative max-w-6xl">
+        <header className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
+            Merchant FAQ
+          </p>
+          <h2
+            id="faqs"
+            className="mt-4 text-3xl font-black tracking-tight text-foreground sm:text-4xl"
+          >
+            Questions about Hyper, answered
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
+            Straightforward guidance on AI search, support automation, video commerce, setup,
+            pricing, and Shopify compatibility.
+          </p>
+        </header>
+
+        <div className="mt-12 grid items-start gap-4 lg:grid-cols-2 lg:gap-5">
+          {columns.map((column, columnIndex) => (
+            <div key={columnIndex} className={faqColumnClassName}>
+              <Accordion
+                defaultOpenId={columnIndex === 0 ? column[0]?.id : undefined}
+                items={column.map((faq) => ({
+                  id: faq.id,
+                  title: faq.question,
+                  content: faq.answer,
+                }))}
+              />
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          Still have a question?{" "}
+          <Link href="/contact" className="font-bold text-primary hover:underline">
+            Talk with the Hyper team
+          </Link>
+          .
+        </p>
+      </Container>
+    </Section>
   );
 }
 
