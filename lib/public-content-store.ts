@@ -40,14 +40,6 @@ function isDatabaseUnavailable(error: unknown): boolean {
   );
 }
 
-function shouldUseStaticContentOnly(): boolean {
-  return (
-    process.env.NEXT_PHASE === "phase-production-build" ||
-    process.env.NEXT_PRIVATE_BUILD_WORKER === "1" ||
-    process.env.npm_lifecycle_event === "build"
-  );
-}
-
 function mergeBySlug<T extends { slug: string }>(primary: T[], fallback: T[]): T[] {
   const items = new Map<string, T>();
 
@@ -63,7 +55,6 @@ function mergeBySlug<T extends { slug: string }>(primary: T[], fallback: T[]): T
 
 export async function listPublishedBlogPosts(): Promise<BlogPostInput[]> {
   const staticPosts = await listStaticBlogPosts();
-  if (shouldUseStaticContentOnly()) return staticPosts;
 
   try {
     const storedPosts = await listStoredBlogPosts();
@@ -75,8 +66,6 @@ export async function listPublishedBlogPosts(): Promise<BlogPostInput[]> {
 }
 
 export async function getPublishedBlogPostBySlug(slug: string): Promise<BlogPostInput | null> {
-  if (shouldUseStaticContentOnly()) return getStaticBlogPostBySlug(slug);
-
   try {
     const storedPost = await getStoredBlogPostBySlug(slug);
     return storedPost ?? (await getStaticBlogPostBySlug(slug));
@@ -90,7 +79,6 @@ export async function listPublishedManagedContent(
   type: ManagedContentType,
 ): Promise<ManagedContentInput[]> {
   const staticItems = await listStaticManagedContent(type);
-  if (shouldUseStaticContentOnly()) return staticItems;
 
   try {
     const storedItems = await listStoredManagedContent(type);
@@ -105,8 +93,6 @@ export async function getPublishedManagedContentBySlug(
   type: ManagedContentType,
   slug: string,
 ): Promise<ManagedContentInput | null> {
-  if (shouldUseStaticContentOnly()) return getStaticManagedContentBySlug(type, slug);
-
   try {
     const storedItem = await getStoredManagedContentBySlug(type, slug);
     return storedItem ?? (await getStaticManagedContentBySlug(type, slug));
