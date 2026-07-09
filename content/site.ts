@@ -1,6 +1,6 @@
 export const homeContent = {
   hero: {
-    title: "Build Better Shopify Shopping Experiences with Hyper AI.",
+    title: "Build Better Shopify Shopping Experiences with Hyper AI",
     description:
       "Hyper helps Shopify merchants improve product discovery, automate customer support, and create engaging shopping experiences through AI-powered Search & Filters, AI Chat & FAQs, and Shoppable Videos. Increase customer satisfaction, improve conversions, and create seamless buying journeys with intelligent commerce tools.",
     primaryCtaLabel: "Explore Hyper Apps",

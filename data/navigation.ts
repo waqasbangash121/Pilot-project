@@ -85,6 +85,7 @@ export const footerNavigation: FooterNavigationGroup[] = [
       { label: "Resources", href: "/resources", description: "Guides and playbooks" },
       { label: "Blog", href: "/blog", description: "Articles and updates" },
       { label: "Case Studies", href: "/case-studies", description: "Customer outcomes" },
+      { label: "About", href: "/about", description: "Learn about Hyper Apps" },
     ],
   },
   {

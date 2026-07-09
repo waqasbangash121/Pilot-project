@@ -9,7 +9,7 @@ import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker"
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl } from "@/config/metadata";
+import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatCaseStudyDate, getCaseStudyBySlug } from "@/lib/case-studies";
 
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
   const caseStudy = await getCaseStudyBySlug(slug);
   if (!caseStudy) return { robots: { index: false, follow: false }, title: "Case study not found" };
 
-  const title = caseStudy.seoTitle ?? caseStudy.title;
+  const title = compactPageTitle(caseStudy.seoTitle ?? caseStudy.title);
   const description = caseStudy.seoDescription ?? caseStudy.excerpt;
   const path = `/case-studies/${caseStudy.slug}`;
   const canonical = canonicalUrl(path);

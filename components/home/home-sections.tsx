@@ -315,8 +315,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
             The Shopify Conversion Intelligence Platform
           </p>
           <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.08] tracking-normal text-foreground sm:text-5xl lg:text-6xl">
-            Shopify Conversion Stack for <span className="text-primary">AI Search</span> and{" "}
-            <span className="text-primary">Revenue Growth</span>
+            {content.title}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
             Three AI-powered apps that help you attract, engage, and convert more shoppers. More
@@ -433,7 +432,7 @@ export function ThreeProductsSection({ products }: { products: readonly ProductI
                 ))}
               </ul>
               <Link href={product.href} className="mt-7 inline-flex text-sm font-bold text-primary">
-                Learn More +
+                Explore {product.name} +
               </Link>
             </article>
           );

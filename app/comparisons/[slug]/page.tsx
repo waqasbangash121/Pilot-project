@@ -9,7 +9,7 @@ import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker"
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl } from "@/config/metadata";
+import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatComparisonDate, getComparisonBySlug } from "@/lib/comparisons";
 
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: ComparisonPageProps): Promise
     return { robots: { index: false, follow: false }, title: "Comparison not found" };
   }
 
-  const title = comparison.seoTitle ?? comparison.title;
+  const title = compactPageTitle(comparison.seoTitle ?? comparison.title);
   const description = comparison.seoDescription ?? comparison.excerpt;
   const path = `/comparisons/${comparison.slug}`;
   const canonical = canonicalUrl(path);

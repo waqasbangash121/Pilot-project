@@ -66,23 +66,35 @@ type PageMetadataInput = {
   path: string;
 };
 
+const MAX_PAGE_TITLE_LENGTH = 62;
+
+export function compactPageTitle(title: string): string {
+  if (title.length <= MAX_PAGE_TITLE_LENGTH) return title;
+
+  const candidate = title.slice(0, MAX_PAGE_TITLE_LENGTH + 1);
+  const lastWordBoundary = candidate.lastIndexOf(" ");
+  return candidate.slice(0, lastWordBoundary > 0 ? lastWordBoundary : MAX_PAGE_TITLE_LENGTH);
+}
+
 export function createPageMetadata({ title, description, path }: PageMetadataInput): Metadata {
+  const compactTitle = compactPageTitle(title);
+
   return {
     ...defaultMetadata,
-    title,
+    title: compactTitle,
     description,
     alternates: {
       canonical: canonicalUrl(path),
     },
     openGraph: {
       ...defaultMetadata.openGraph,
-      title,
+      title: compactTitle,
       description,
       url: canonicalUrl(path),
     },
     twitter: {
       ...defaultMetadata.twitter,
-      title,
+      title: compactTitle,
       description,
     },
   };

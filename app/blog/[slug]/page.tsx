@@ -9,7 +9,7 @@ import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker"
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl } from "@/config/metadata";
+import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatBlogDate, getBlogPostBySlug } from "@/lib/blog";
 
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  const title = post.seoTitle || post.title;
+  const title = compactPageTitle(post.seoTitle || post.title);
   const description =
     post.seoDescription ||
     post.excerpt ||

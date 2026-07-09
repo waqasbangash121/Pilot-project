@@ -16,7 +16,7 @@ import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker"
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl } from "@/config/metadata";
+import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatToolDate, getToolBySlug } from "@/lib/tools";
 
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
   const tool = await getToolBySlug(slug);
   if (!tool) return { robots: { index: false, follow: false }, title: "Tool not found" };
 
-  const title = tool.seoTitle ?? tool.title;
+  const title = compactPageTitle(tool.seoTitle ?? tool.title);
   const description = tool.seoDescription ?? tool.excerpt;
   const path = `/tools/${tool.slug}`;
   const canonical = canonicalUrl(path);

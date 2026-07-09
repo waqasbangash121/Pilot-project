@@ -6,7 +6,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Shopify AI Apps for Search, Chat & Video Commerce | Hyper AI Tools",
+  title: "Shopify AI Apps for Search, Chat & Video Commerce",
   description:
     "Discover Hyper AI Shopify apps for smart product search, AI chat support, FAQs, and shoppable video commerce. Improve SEO, conversions, and customer experience with AI-powered ecommerce tools.",
   path: "/apps",

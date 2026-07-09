@@ -9,7 +9,7 @@ import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker"
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl } from "@/config/metadata";
+import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatResourceDate, getResourceBySlug } from "@/lib/resources";
 import { toJsonLd } from "@/lib/schema";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: ResourcePageProps): Promise<M
     return { robots: { index: false, follow: false }, title: "Resource not found" };
   }
 
-  const title = resource.seoTitle ?? resource.title;
+  const title = compactPageTitle(resource.seoTitle ?? resource.title);
   const description = resource.seoDescription ?? resource.excerpt;
   const path = `/resources/${resource.slug}`;
   const canonical = canonicalUrl(path);

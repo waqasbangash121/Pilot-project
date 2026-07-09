@@ -21,7 +21,7 @@ const CardStack = dynamic(
 );
 
 export const metadata = createPageMetadata({
-  title: "Hyper Shoppable Videos – Shopify Video Commerce & Interactive Shopping",
+  title: "Hyper Shoppable Videos: Shopify Video Commerce",
   description:
     "Turn Shopify product videos into interactive shopping experiences. Hyper Shoppable Videos enables direct add-to-cart from video content, boosting engagement and conversions.",
   path: "/apps/hyper-shoppable-videos",
