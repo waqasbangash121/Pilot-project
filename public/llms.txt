@@ -1,0 +1,36 @@
+# Hyper Apps
+
+> Hyper Apps builds AI-powered Shopify applications for product discovery, customer support, and interactive video commerce.
+
+Hyper Apps helps Shopify merchants improve search and filtering, automate customer support with AI chat and FAQs, and create shoppable video experiences.
+
+## Products
+
+- [Hyper Apps](https://niagarat.com/apps): Overview of the Hyper Apps product suite.
+- [Hyper Search & Filter](https://niagarat.com/apps/hyper-search-filter): Semantic product search, smart filters, merchandising controls, and search analytics for Shopify.
+- [Hyper AI Chat & FAQs](https://niagarat.com/apps/hyper-ai-chat-faq): AI-powered customer support chat and FAQ automation for Shopify.
+- [Hyper Shoppable Videos](https://niagarat.com/apps/hyper-shoppable-videos): Interactive product videos and video commerce tools for Shopify.
+
+## Company
+
+- [About Hyper Apps](https://niagarat.com/about): Company focus and product philosophy.
+- [Hyper Apps Team](https://niagarat.com/team): People behind Hyper Apps.
+- [Contact Hyper Apps](https://niagarat.com/contact): Contact and product enquiries.
+
+## Content and Research
+
+- [Blog](https://niagarat.com/blog): Articles about Shopify, AI commerce, product discovery, customer experience, and conversion.
+- [Resources](https://niagarat.com/resources): Shopify guides, playbooks, checklists, and documentation.
+- [Comparisons](https://niagarat.com/comparisons): Shopify application comparisons and evaluation guidance.
+- [Case Studies](https://niagarat.com/case-studies): Customer outcomes and implementation examples.
+- [Tools](https://niagarat.com/tools): Utilities for evaluating ecommerce and Shopify workflows.
+
+## Policies
+
+- [Privacy Policy](https://niagarat.com/privacy)
+- [Terms of Service](https://niagarat.com/terms)
+- [Cookie Policy](https://niagarat.com/cookie-policy)
+
+## Discovery
+
+- [XML Sitemap](https://niagarat.com/sitemap.xml): Canonical list of indexable pages.
