@@ -76,6 +76,8 @@ function postEvent(payload: Record<string, unknown>): void {
 
 export function ContentAnalyticsTracker({ contentType, slug, path }: ContentAnalyticsTrackerProps) {
   useEffect(() => {
+    if (process.env.NODE_ENV !== "production") return;
+
     const visitorId = getOrCreateCookie(VISITOR_COOKIE, VISITOR_MAX_AGE_SECONDS);
     const sessionId = getOrCreateCookie(SESSION_COOKIE, SESSION_MAX_AGE_SECONDS);
 

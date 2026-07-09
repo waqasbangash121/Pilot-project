@@ -44,6 +44,10 @@ function toAnalyticsInput(body: JsonBody): RecordContentAnalyticsInput {
 }
 
 export async function POST(request: NextRequest) {
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.json({ ok: true, recorded: false });
+  }
+
   if (!sameOrigin(request)) {
     return NextResponse.json({ ok: false }, { status: 403 });
   }

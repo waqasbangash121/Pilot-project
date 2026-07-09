@@ -8,6 +8,7 @@ declare global {
 export const GA_ID = "G-ZC5XNC1VDY";
 
 export const pageview = (url: string): void => {
+  if (process.env.NODE_ENV !== "production") return;
   if (typeof window === "undefined") return;
   if (!window.gtag) return;
 
@@ -19,6 +20,7 @@ export const pageview = (url: string): void => {
 type GtagEventParams = Record<string, string | number | boolean | undefined>;
 
 export const trackEvent = (eventName: string, params?: GtagEventParams): void => {
+  if (process.env.NODE_ENV !== "production") return;
   if (typeof window === "undefined") return;
   if (!window.gtag) return;
 

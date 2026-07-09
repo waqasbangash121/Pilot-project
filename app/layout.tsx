@@ -46,26 +46,30 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: toJsonLd(websiteSchema) }}
         />
         <BreadcrumbJsonLd />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZC5XNC1VDY"
-          strategy="lazyOnload"
-          defer
-        />
-        <Script id="gtag-init" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-ZC5XNC1VDY"
+              strategy="lazyOnload"
+              defer
+            />
+            <Script id="gtag-init" strategy="lazyOnload">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
 
-            gtag('js', new Date());
-            gtag('config', 'G-ZC5XNC1VDY', {
-              page_path: window.location.pathname,
-            });
-          `}
-        </Script>
-        <GoogleAnalytics />
+                gtag('js', new Date());
+                gtag('config', 'G-ZC5XNC1VDY', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+            <GoogleAnalytics />
 
-        <Analytics />
-        <SpeedInsights />
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
