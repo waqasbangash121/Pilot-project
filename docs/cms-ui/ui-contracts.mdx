@@ -1,0 +1,147 @@
+---
+title: UI Contracts
+description: Required screens, form fields, component behavior, and server boundaries for replacement interfaces.
+---
+
+# UI Contracts
+
+## Required admin screens
+
+### Dashboard
+
+Show content totals by type and status, recent edits, publishing activity, analytics summaries, and quick-create actions.
+
+### Content library
+
+Provide a shared list screen with:
+
+- Type filter
+- Status filter
+- Search by title, slug, category, and tag
+- Sort by publication and update date
+- Clear status badges
+- Create, edit, preview, publish, and archive actions
+
+### Content editor
+
+Use a common editor shell with conditional type-specific sections.
+
+Shared fields:
+
+- Title
+- Slug
+- Excerpt
+- Markdown body
+- Author
+- Category
+- Tags
+- Cover image URL
+- Reading time
+- Focus keyword
+- SEO title
+- SEO description
+- Publication date
+- Draft/published state
+
+Type-specific fields must map exactly to the keys documented in `content-model.mdx`.
+
+### Revision history
+
+Show revision date, editor, status, and summary. Support comparison and non-destructive restoration.
+
+### Analytics
+
+Allow filtering by content type, slug, event type, and date range. Keep analytics reading separate from content editing so analytics queries do not slow down the editor.
+
+### Workspace settings
+
+Manage AI provider, model, content defaults, and integration secret presence. Secret values must be written and masked through server-only operations.
+
+### Team members
+
+Support create, edit, reorder, and archive/delete behavior consistent with the existing team member service.
+
+## Editor state contract
+
+The UI should maintain a typed draft object matching either `BlogPostInput` or `ManagedContentInput`. Avoid a generic untyped object that requires ad hoc conversions before saving.
+
+Recommended client state:
+
+```ts
+{
+  values,
+  originalSlug,
+  isDirty,
+  isSaving,
+  validationErrors,
+  lastSavedAt
+}
+```
+
+## Form behavior
+
+- Generate a slug from the title only until the user edits the slug manually.
+- Keep Markdown content as plain text.
+- Convert comma-separated tag input into a trimmed string array.
+- Validate URLs before submission but allow empty optional URL fields.
+- Show SEO character guidance without blocking legitimate longer values unless backend validation requires it.
+- Warn before navigating away with unsaved changes.
+- Disable duplicate submissions while saving.
+
+## Component boundaries
+
+Recommended reusable components:
+
+- `ContentEditorShell`
+- `ContentTypeSelector`
+- `PublishingPanel`
+- `SeoPanel`
+- `MarkdownEditor`
+- `MarkdownPreview`
+- `TagInput`
+- `ImageUrlField`
+- `RevisionTimeline`
+- `ContentStatusBadge`
+- `ContentTable`
+- `ArchiveDialog`
+- `AnalyticsSummary`
+
+These components should accept typed data and callbacks. They should not import database or server-only modules.
+
+## Server action boundary
+
+Client components submit serializable values to a server action or route handler. The server layer is responsible for:
+
+- Authentication
+- Authorization
+- Input validation
+- Calling the content store
+- Mapping known errors
+- Revalidating caches and routes
+- Returning a minimal result
+
+## Public UI contract
+
+A redesigned public content page must preserve:
+
+- Canonical metadata
+- SEO title and description fallbacks
+- Open Graph/Twitter data
+- JSON-LD where currently provided
+- Author, publication, and update dates
+- Markdown rendering with GFM support
+- Analytics tracking
+- Not-found behavior
+- Static parameter generation and ISR strategy
+
+Visual markup may change completely as long as these behavioral contracts remain intact.
+
+## Accessibility baseline
+
+- Every form control has a label.
+- Validation errors are associated with fields.
+- Dialog focus is trapped and restored.
+- Status is not communicated through color alone.
+- Editor shortcuts do not override browser or assistive technology shortcuts.
+- Tables remain usable on narrow screens.
+- Save and publish feedback uses an accessible live region.
