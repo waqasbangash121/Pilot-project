@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 import {
@@ -44,10 +45,12 @@ export async function GET() {
 export async function PUT(request: Request) {
   const editor = await requireAuthenticatedEditor();
   if (!editor) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
-  if (!sameOrigin(request)) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  if (!sameOrigin(request))
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
 
   try {
     const settings = await saveFooterSocialSettings(await request.json());
+    revalidatePath("/", "layout");
     return NextResponse.json({ settings });
   } catch (error) {
     return errorResponse(error, "Footer social settings could not be saved.");

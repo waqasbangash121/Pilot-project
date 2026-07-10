@@ -19,15 +19,20 @@ type FooterSocialSettingsFormProps = {
   initialSettings: FooterSocialSettingsSummary;
 };
 
-const lastUpdatedFormatter = new Intl.DateTimeFormat("en", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-  hour: "numeric",
-  minute: "2-digit",
-  timeZone: "UTC",
-  timeZoneName: "short",
-});
+const shortMonthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
 
 async function responseBody(response: Response): Promise<ApiResponse> {
   const value = (await response.json().catch(() => ({}))) as ApiResponse;
@@ -53,7 +58,16 @@ function normalizeLinks(links: FooterSocialLink[]): FooterSocialLink[] {
 }
 
 function formatLastUpdated(value: string): string {
-  return lastUpdatedFormatter.format(new Date(value));
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "Unknown";
+
+  const hours = date.getUTCHours();
+  const displayHours = hours % 12 || 12;
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  const period = hours >= 12 ? "PM" : "AM";
+
+  return `${shortMonthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}, ${displayHours}:${minutes} ${period} UTC`;
 }
 
 export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettingsFormProps) {
@@ -104,7 +118,10 @@ export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettin
   }
 
   return (
-    <form onSubmit={saveSettings} className="rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6">
+    <form
+      onSubmit={saveSettings}
+      className="rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6"
+    >
       <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex gap-3">
           <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-background text-primary">
@@ -113,7 +130,8 @@ export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettin
           <div>
             <p className="text-sm font-semibold">Footer social channels</p>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Choose which social channels appear in the public footer and set their destination links.
+              Choose which social channels appear in the public footer and set their destination
+              links.
             </p>
           </div>
         </div>
@@ -183,13 +201,19 @@ export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettin
       </ul>
 
       {error ? (
-        <p role="alert" className="mt-5 rounded-md border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm font-medium text-rose-800 dark:border-rose-400/30 dark:bg-rose-400/15 dark:text-rose-100">
+        <p
+          role="alert"
+          className="mt-5 rounded-md border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm font-medium text-rose-800 dark:border-rose-400/30 dark:bg-rose-400/15 dark:text-rose-100"
+        >
           {error}
         </p>
       ) : null}
 
       {notice ? (
-        <p role="status" className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-100">
+        <p
+          role="status"
+          className="mt-5 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm font-medium text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-100"
+        >
           {notice}
         </p>
       ) : null}
@@ -200,7 +224,11 @@ export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettin
           disabled={isSaving}
           className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSaving ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : <Save aria-hidden="true" className="size-4" />}
+          {isSaving ? (
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+          ) : (
+            <Save aria-hidden="true" className="size-4" />
+          )}
           Save social links
         </button>
 
