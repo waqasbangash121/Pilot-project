@@ -1,0 +1,100 @@
+---
+title: Migration Checklist
+description: Acceptance criteria for replacing the CMS and public UI safely.
+---
+
+# Migration Checklist
+
+## Architecture
+
+- [ ] New client components do not import server-only modules.
+- [ ] Database access remains centralized in existing server services.
+- [ ] The default workspace is applied consistently.
+- [ ] No duplicate publication rules exist in presentation components.
+
+## Content library
+
+- [ ] All five content types can be listed.
+- [ ] Draft, published, scheduled, and archived states are represented correctly.
+- [ ] Search, filtering, and sorting do not expose archived content unintentionally.
+- [ ] Titles, slugs, categories, tags, dates, and statuses display correctly.
+
+## Editor
+
+- [ ] Shared fields round-trip without data loss.
+- [ ] Blog entries save without unnecessary `details` fields.
+- [ ] Comparison details preserve competitor name and decision summary.
+- [ ] Resource details preserve resource type and audience.
+- [ ] Case study details preserve customer, industry, and outcome summary.
+- [ ] Tool details preserve tool type, URL, and use case.
+- [ ] Markdown remains valid Markdown after editing.
+- [ ] Original slug is supplied when an existing slug changes.
+- [ ] Duplicate slug errors are understandable.
+
+## Publishing
+
+- [ ] Saving a draft does not expose a public route.
+- [ ] Publishing with a current or past date makes the entry public.
+- [ ] A future publication date keeps the entry unavailable until eligible.
+- [ ] Archiving removes the entry from public loaders.
+- [ ] Old routes are invalidated after a slug change.
+
+## Revisions
+
+- [ ] A revision is created on meaningful saves.
+- [ ] Revision snapshots contain all shared and type-specific data.
+- [ ] Revision history identifies the editor and timestamp.
+- [ ] Restore creates a new revision instead of altering history.
+
+## Caching and ISR
+
+- [ ] Public list loaders use the existing cached repository.
+- [ ] Public slug loaders use the existing cached repository.
+- [ ] Content mutations invalidate the public-content cache tag.
+- [ ] Collection routes are revalidated.
+- [ ] Current and previous detail routes are revalidated when required.
+- [ ] Sitemap output is revalidated.
+- [ ] Static parameter generation still includes published entries.
+
+## Public pages
+
+- [ ] Missing, draft, scheduled, and archived content returns not found.
+- [ ] SEO title and description fallbacks are preserved.
+- [ ] Canonical URLs remain correct.
+- [ ] Open Graph and Twitter metadata remain correct.
+- [ ] Structured data remains valid where supported.
+- [ ] Markdown tables, lists, links, and code render correctly.
+- [ ] Analytics tracking remains active on public detail pages.
+
+## Settings and security
+
+- [ ] Workspace secrets are never exposed to client components.
+- [ ] Secret values are masked in the UI.
+- [ ] Authentication is required for admin routes.
+- [ ] Authorization is checked on the server for every mutation.
+- [ ] Database and encryption errors do not leak sensitive details.
+
+## Team members
+
+- [ ] Team members can be created and edited.
+- [ ] Display order is preserved.
+- [ ] Optional photo and LinkedIn URLs are handled safely.
+- [ ] Public team rendering remains compatible.
+
+## Accessibility
+
+- [ ] Keyboard-only editing and navigation are possible.
+- [ ] Form errors are announced and linked to fields.
+- [ ] Dialog focus behavior is correct.
+- [ ] Status badges include text labels.
+- [ ] Save, publish, and failure notifications are announced.
+
+## Release
+
+- [ ] Production build succeeds.
+- [ ] Type checking succeeds.
+- [ ] Linting succeeds.
+- [ ] Database migrations are unchanged unless intentionally required.
+- [ ] Existing public URLs remain stable.
+- [ ] A rollback path to the previous UI exists.
+- [ ] Smoke tests pass against production-like Neon data.
