@@ -1,0 +1,143 @@
+---
+title: New UI Implementation Guide
+description: Step-by-step plan for replacing the CMS interface without changing the underlying architecture.
+---
+
+# New UI Implementation Guide
+
+## Phase 1: Inventory and contracts
+
+Before changing screens, identify every existing server action, route handler, content service, validation type, and cache invalidation helper used by the current studio.
+
+Create a dependency map for:
+
+- Content list screens
+- Content editor screens
+- Revision history
+- Analytics
+- Workspace settings and secrets
+- Team management
+- Authentication and authorization
+
+Do not begin by copying database queries into the new UI.
+
+## Phase 2: Build a typed data adapter
+
+Create a small UI-facing adapter layer that converts existing server results into view models while preserving the domain input types.
+
+Example responsibilities:
+
+- Convert dates to form-safe strings.
+- Convert tag arrays to and from tag-input state.
+- Provide labels for content types and statuses.
+- Expose type-specific field definitions.
+- Convert server errors into field and form errors.
+
+The adapter must not redefine publication logic or database status semantics.
+
+## Phase 3: Build the shared editor shell
+
+Start with a single editor shell used by all content types.
+
+Recommended layout:
+
+```text
+Header: breadcrumb, title, save state, preview
+Main column: title, excerpt, Markdown editor, type fields
+Side column: publishing, taxonomy, image, SEO
+Footer/sticky bar: save draft, publish, archive
+```
+
+Render type-specific fields from the selected content type rather than creating five unrelated editors.
+
+## Phase 4: Connect reads
+
+Connect the new content library and editor to studio list and studio detail functions. Confirm that drafts, published entries, scheduled entries, and archived entries appear according to existing rules.
+
+## Phase 5: Connect mutations
+
+Use the existing save and archive paths. Pass the original slug during edits. Confirm that each mutation:
+
+- Creates or updates the correct item.
+- Creates a revision.
+- Preserves type-specific details.
+- Invalidates public caches.
+- Revalidates collection, detail, and sitemap routes.
+
+## Phase 6: Add preview and revision UX
+
+Preview should reuse the public renderer with studio data. Revision restore should create a new save operation instead of editing historical snapshots.
+
+## Phase 7: Migrate public layouts
+
+Public layouts can be redesigned independently after the admin workflow is stable. Keep the same domain loaders, metadata behavior, Markdown renderer, analytics tracker, structured data, and route semantics.
+
+## Phase 8: Remove old UI safely
+
+Remove old components only after the new interface passes the migration checklist. Keep persistence, schema, import, caching, and domain-loader modules unless a separate backend migration is explicitly planned.
+
+## Suggested folder structure
+
+```text
+components/
+  cms/
+    content-editor-shell.tsx
+    content-table.tsx
+    markdown-editor.tsx
+    publishing-panel.tsx
+    seo-panel.tsx
+    revision-timeline.tsx
+    status-badge.tsx
+lib/
+  cms-ui/
+    adapters.ts
+    field-definitions.ts
+    labels.ts
+    validation-errors.ts
+app/
+  admin/
+    content/
+    analytics/
+    team/
+    settings/
+```
+
+## Testing strategy
+
+### Unit tests
+
+- Slug normalization
+- Tag conversion
+- Type-specific detail mapping
+- Date conversion
+- Error mapping
+
+### Integration tests
+
+- Save draft
+- Publish immediately
+- Schedule publication
+- Rename slug
+- Archive item
+- Restore revision
+- Cache invalidation
+
+### End-to-end tests
+
+- Create and publish each content type.
+- Confirm the public detail route renders.
+- Confirm metadata and structured data are present.
+- Confirm draft content is not public.
+- Confirm archived content returns not found.
+- Confirm analytics events are recorded.
+
+## Non-negotiable compatibility rules
+
+- Keep Markdown as the stored body format.
+- Keep workspace scoping.
+- Keep type and status values unchanged.
+- Keep public reads behind published-only loaders.
+- Keep cache invalidation after mutations.
+- Keep revisions append-only.
+- Keep secret operations server-only.
+- Keep analytics identifiers stable.
