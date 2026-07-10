@@ -1,0 +1,150 @@
+---
+title: Database and Content Model
+description: Tables, shared fields, type-specific details, statuses, and relationships.
+---
+
+# Database and Content Model
+
+## Entity relationship overview
+
+```text
+workspaces
+  ├── workspace_settings (1:1)
+  ├── workspace_secrets (1:N)
+  ├── content_items (1:N)
+  │     ├── content_revisions (1:N)
+  │     └── content_analytics_events (0:N)
+  ├── content_analytics_events (1:N)
+  └── team_members (1:N)
+```
+
+## `workspaces`
+
+| Field | Meaning |
+|---|---|
+| `id` | Stable workspace identifier |
+| `name` | Human-readable workspace name |
+| `createdAt` | Creation timestamp |
+| `updatedAt` | Last update timestamp |
+
+## `workspace_settings`
+
+Stores workspace-level behavior such as AI provider, optional AI model, and arbitrary content defaults in JSON.
+
+## `workspace_secrets`
+
+Stores encrypted integration secrets. The UI should only display secret presence and the stored final four characters. Never send ciphertext, IV, or authentication tags to client components unless a dedicated secure server operation requires them.
+
+## `content_items`
+
+### Shared fields
+
+| Field | UI purpose |
+|---|---|
+| `type` | Selects the editor and public route family |
+| `status` | Draft, published, or archived |
+| `slug` | Unique route segment within workspace and type |
+| `title` | Primary heading and admin label |
+| `excerpt` | Card summary and metadata fallback |
+| `bodyMarkdown` | Main Markdown document |
+| `authorName` | Public byline |
+| `category` | Taxonomy and filtering |
+| `tags` | Searchable JSON string array |
+| `focusKeyword` | SEO workflow field |
+| `seoTitle` | Optional metadata title override |
+| `seoDescription` | Optional metadata description override |
+| `coverImageUrl` | Public hero/card image |
+| `readingTime` | Estimated reading duration |
+| `details` | Type-specific JSON fields |
+| `publishedAt` | Publication and scheduling date |
+| `createdAt` | Record creation time |
+| `updatedAt` | Last modification time |
+
+### Content types
+
+#### Blog
+
+Uses only the shared fields.
+
+#### Comparison
+
+`details` contains:
+
+- `competitorName`
+- `decisionSummary`
+
+#### Resource
+
+`details` contains:
+
+- `resourceType`
+- `audience`
+
+#### Case study
+
+`details` contains:
+
+- `customerName`
+- `industry`
+- `outcomeSummary`
+
+#### Tool
+
+`details` contains:
+
+- `toolType`
+- `toolUrl`
+- `useCase`
+
+## Status semantics
+
+### Draft
+
+Visible in the content studio, hidden from public loaders.
+
+### Published
+
+Visible publicly only when `publishedAt` is present and not in the future according to the existing UTC publication rule.
+
+### Archived
+
+Excluded from standard studio lists and public loaders. Archive is the current deletion strategy and should remain reversible at the database level.
+
+## `content_revisions`
+
+Each revision stores a full JSON snapshot plus the editor identity and timestamp. A new editor UI should create revisions through the existing save flow rather than implementing partial field history independently.
+
+Recommended revision UI:
+
+- Timestamp
+- Editor identity
+- Status at revision time
+- Title and slug summary
+- Compare action
+- Restore action implemented as a new save, not destructive history replacement
+
+## `content_analytics_events`
+
+Supports `view` and `click` events. Events include content identity, visitor/session identifiers, path, optional click target, referrer, and timestamp.
+
+A replacement public UI must preserve the tracker wherever analytics continuity matters.
+
+## `team_members`
+
+Stores team profile content independently from `content_items`:
+
+- Name
+- Designation
+- Quote
+- Photo URL
+- LinkedIn URL
+- Display order
+
+## Validation invariants
+
+- Allowed content types must stay synchronized with the database check constraint.
+- Allowed statuses must stay synchronized with UI controls.
+- Slugs must remain unique within `(workspaceId, type)`.
+- Tags must be stored as a string array.
+- `details` should always be written with the correct shape for the selected content type.
+- Public code must not infer publication solely from `draft`; it must respect database status and publication date.
