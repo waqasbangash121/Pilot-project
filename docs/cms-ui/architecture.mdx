@@ -1,0 +1,96 @@
+---
+title: System Architecture
+description: Runtime boundaries, data flow, caching, and rendering model for the Hyper CMS.
+---
+
+# System Architecture
+
+## Runtime layers
+
+### Presentation layer
+
+The application uses the Next.js App Router. Public pages are server-rendered and use server components by default. Interactive controls, analytics tracking, navigation state, and editor experiences use client components only where browser state is required.
+
+### Content access layer
+
+Public pages do not query the database directly. They use domain loaders such as the blog, comparison, resource, case-study, and tool modules. Those modules delegate to the public content repository.
+
+The public repository wraps database reads in Next.js `unstable_cache`. All public content shares a cache tag and a one-hour revalidation interval. Admin writes invalidate the shared tag and relevant paths immediately.
+
+### Persistence layer
+
+`lib/content-store.ts` is the central persistence service for CMS content. It:
+
+- Ensures the default workspace exists.
+- Converts database rows into typed content inputs.
+- Lists public and studio content.
+- Saves new and existing content.
+- Creates revision snapshots.
+- Archives content instead of hard-deleting it.
+- Maps type-specific fields into the `details` JSON object.
+
+Database access uses both Drizzle ORM and Neon SQL. New UI code should call the existing service rather than introducing direct SQL in components.
+
+### Database layer
+
+Neon PostgreSQL stores all CMS data. Drizzle provides table definitions and inferred TypeScript types.
+
+## Primary data flow
+
+```text
+Admin form
+  -> validated CMS input
+  -> server action or route handler
+  -> content-store save operation
+  -> content_items upsert
+  -> content_revisions snapshot
+  -> cache tag invalidation
+  -> path revalidation
+  -> refreshed public page
+```
+
+## Public rendering flow
+
+```text
+Public route
+  -> domain content loader
+  -> cached public-content repository
+  -> content-store published query
+  -> typed content object
+  -> metadata + JSON-LD + ReactMarkdown rendering
+```
+
+## Source-of-truth rules
+
+- PostgreSQL is the source of truth for public content.
+- MDX files are legacy/import inputs, not the live public source after import.
+- Draft and archived records must never be returned by public loaders.
+- A published item is public only when `publishedAt` exists and is not later than the end of the current UTC day.
+- Slugs are unique per workspace and content type.
+
+## Caching contract
+
+A redesigned UI must preserve these behaviors:
+
+- Public list and slug queries remain cacheable.
+- Admin mutations invalidate the shared public-content cache tag.
+- Root collection pages and affected detail pages are revalidated.
+- Sitemap output is revalidated after content mutations.
+- Dynamic slug routes continue to support generated static parameters and ISR.
+
+## Server/client boundaries
+
+Keep these modules server-only:
+
+- Database clients
+- Content persistence services
+- Secret encryption and decryption
+- Admin authentication
+- Cache invalidation
+- Content imports
+
+Client components may receive serialized data and submit forms, but they must not import server-only modules.
+
+## Workspace model
+
+The current deployment uses a default workspace identifier, `hyper-default`. The schema is workspace-aware, so a future UI can add workspace switching without changing the core content tables. Until then, all CMS reads and writes should remain scoped to the existing workspace constant.
