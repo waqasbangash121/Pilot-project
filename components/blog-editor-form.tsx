@@ -20,6 +20,11 @@ import {
 
 import { AdminStatusBadge } from "@/components/admin/admin-ui";
 import {
+  CollapsibleEditorSection,
+  EditorAccordion,
+} from "@/components/admin/collapsible-editor-section";
+import { ContentPreview } from "@/components/admin/content-preview";
+import {
   BlogAuditFeedback,
   BlogAuditPanel,
   BlogKeywordIdeas,
@@ -71,7 +76,6 @@ const inputClass =
   "h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2";
 const textareaClass =
   "rounded-md border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2";
-const sectionClass = "rounded-lg border border-border bg-surface p-5 shadow-sm sm:p-6";
 const secondaryButtonClass =
   "inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60";
 const primaryButtonClass =
@@ -86,17 +90,22 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
   const [success, setSuccess] = useState("");
   const [auditResult, setAuditResult] = useState<BlogAuditResult | null>(null);
 
-  const publicUrl = useMemo(() => `/blog/${post.slug || "your-article-slug"}`, [post.slug]);
+  const publicUrl = "/blog/" + (post.slug || "your-article-slug");
+  const parsedTags = useMemo(
+    () =>
+      tagsText
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    [tagsText],
+  );
   const auditArticle = useMemo<BlogPostInput>(
     () => ({
       ...post,
       focusKeyword: post.focusKeyword ?? "",
-      tags: tagsText
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
+      tags: parsedTags,
     }),
-    [post, tagsText],
+    [post, parsedTags],
   );
   const auditChecks = useMemo(
     () => new Map((auditResult?.article.checks ?? []).map((check) => [check.id, check])),
@@ -130,10 +139,7 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
     const payload = {
       ...post,
       focusKeyword: post.focusKeyword ?? "",
-      tags: tagsText
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
+      tags: parsedTags,
       draft: mode === "draft",
       updatedAt: today(),
     };
@@ -189,14 +195,13 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
               Articles
             </Link>
             <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Article editor
+              Article edito
             </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">
               {originalSlug ? "Edit article" : "Create article"}
             </h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              Shape the brief, draft visually, review on-page quality, and publish directly to
-              Neon.
+              Shape the brief, draft visually, review on-page quality, and publish directly to Neon.
             </p>
           </div>
 
@@ -228,25 +233,15 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="space-y-6">
-          <section className={sectionClass}>
-            <div className="flex items-start gap-3">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary">
-                <FileText aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Core brief
-                </p>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight">Article details</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Start with the title, keyword, URL, and summary. These fields drive the review
-                  feedback and public preview.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-5">
+        <EditorAccordion>
+          <CollapsibleEditorSection
+            sectionId="core-brief"
+            icon={FileText}
+            eyebrow="Core brief"
+            title="Article details"
+            description="Start with the title, keyword, URL, and summary. These fields drive the review feedback and public preview."
+          >
+            <div className="grid gap-5">
               <label className={fieldLabelClass}>
                 Article title
                 <input
@@ -321,27 +316,18 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
               </label>
               <BlogAuditFeedback checks={feedbackFor("excerpt-keyword")} />
             </div>
-          </section>
+          </CollapsibleEditorSection>
 
-          <section className={sectionClass}>
-            <div className="flex items-start gap-3">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary">
-                <CalendarDays aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Publishing details
-                </p>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight">
-                  Ownership and taxonomy
-                </h2>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <CollapsibleEditorSection
+            sectionId="publishing-details"
+            icon={CalendarDays}
+            eyebrow="Publishing details"
+            title="Ownership and taxonomy"
+          >
+            <div className="grid gap-5 sm:grid-cols-2">
               <label className={fieldLabelClass}>
                 <span className="inline-flex items-center gap-2">
-                  <UserRound aria-hidden="true" className="size-4" /> Author
+                  <UserRound aria-hidden="true" className="size-4" /> Autho
                 </span>
                 <input
                   value={post.author}
@@ -408,22 +394,16 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
                 />
               </label>
             </div>
-          </section>
+          </CollapsibleEditorSection>
 
-          <section className={sectionClass}>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Visual draft
-                </p>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight">Article content</h2>
-              </div>
-              <span className="rounded-md border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-foreground">
-                H2 sections recommended
-              </span>
-            </div>
-
-            <div className="mt-6">
+          <CollapsibleEditorSection
+            sectionId="visual-draft"
+            icon={ImageIcon}
+            eyebrow="Visual draft"
+            title="Article content"
+            badge="H2 sections recommended"
+          >
+            <div>
               <MarkdownBlockEditor
                 label="Article content"
                 value={post.content}
@@ -448,26 +428,18 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
                 ideas={auditResult?.keywordIdeas.questions ?? []}
               />
             </div>
-          </section>
+          </CollapsibleEditorSection>
 
-          <section className={sectionClass}>
-            <div className="flex items-start gap-3">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary">
-                <Globe2 aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Search and social
-                </p>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight">SEO preview</h2>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  These fields control the document title, meta description, social preview, and
-                  Article schema.
-                </p>
-              </div>
-            </div>
+          <ContentPreview type="blog" item={auditArticle} tags={parsedTags} publicUrl={publicUrl} />
 
-            <div className="mt-6 grid gap-5">
+          <CollapsibleEditorSection
+            sectionId="search-social"
+            icon={Globe2}
+            eyebrow="Search and social"
+            title="SEO preview"
+            description="These fields control the document title, meta description, social preview, and Article schema."
+          >
+            <div className="grid gap-5">
               <label className={fieldLabelClass}>
                 SEO title
                 <input
@@ -513,8 +485,8 @@ export function BlogEditorForm({ initialPost, originalSlug }: BlogEditorFormProp
                 </p>
               </div>
             </div>
-          </section>
-        </div>
+          </CollapsibleEditorSection>
+        </EditorAccordion>
 
         <aside className="h-fit space-y-4 xl:sticky xl:top-24">
           <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">

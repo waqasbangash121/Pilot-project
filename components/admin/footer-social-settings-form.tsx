@@ -19,6 +19,16 @@ type FooterSocialSettingsFormProps = {
   initialSettings: FooterSocialSettingsSummary;
 };
 
+const lastUpdatedFormatter = new Intl.DateTimeFormat("en", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "UTC",
+  timeZoneName: "short",
+});
+
 async function responseBody(response: Response): Promise<ApiResponse> {
   const value = (await response.json().catch(() => ({}))) as ApiResponse;
 
@@ -40,6 +50,10 @@ function normalizeLinks(links: FooterSocialLink[]): FooterSocialLink[] {
       enabled: Boolean(link?.enabled),
     };
   });
+}
+
+function formatLastUpdated(value: string): string {
+  return lastUpdatedFormatter.format(new Date(value));
 }
 
 export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettingsFormProps) {
@@ -192,7 +206,7 @@ export function FooterSocialSettingsForm({ initialSettings }: FooterSocialSettin
 
         {updatedAt ? (
           <p className="text-xs font-medium text-muted-foreground">
-            Last updated {new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date(updatedAt))}
+            Last updated {formatLastUpdated(updatedAt)}
           </p>
         ) : null}
       </div>
