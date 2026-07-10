@@ -11,7 +11,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatResourceDate, getResourceBySlug } from "@/lib/resources";
+import { formatResourceDate, getAllResources, getResourceBySlug } from "@/lib/resources";
 import { toJsonLd } from "@/lib/schema";
 
 type ResourcePageProps = {
@@ -20,6 +20,11 @@ type ResourcePageProps = {
 
 export const revalidate = 3600;
 export const dynamicParams = true;
+
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
+  const resources = await getAllResources();
+  return resources.map((resource) => ({ slug: resource.slug }));
+}
 
 export async function generateMetadata({ params }: ResourcePageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -211,5 +216,3 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
     </>
   );
 }
-
-

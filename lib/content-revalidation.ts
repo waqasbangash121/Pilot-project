@@ -1,8 +1,9 @@
 import "server-only";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import type { ContentType } from "@/db/schema";
+import { PUBLIC_CONTENT_CACHE_TAG } from "@/lib/content-cache";
 
 function rootPath(type: ContentType): string {
   if (type === "blog") return "/blog";
@@ -19,6 +20,7 @@ export function revalidateContentRoutes(
 ): void {
   const root = rootPath(type);
 
+  revalidateTag(PUBLIC_CONTENT_CACHE_TAG);
   revalidatePath(root);
   revalidatePath(`${root}/${slug}`);
 

@@ -31,7 +31,7 @@ const publicStaticRoutes = [
 const legalRoutes = new Set(["/privacy", "/terms", "/cookie-policy"]);
 const appRoutes = new Set(["/apps", "/apps/hyper-search-filter", "/apps/hyper-ai-chat-faq", "/apps/hyper-shoppable-videos"]);
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function isInternalRoute(href: string): boolean {
   return href.startsWith("/") && !href.startsWith("/admin") && !href.startsWith("/api");
