@@ -1,0 +1,52 @@
+---
+title: CMS UI Architecture Guide
+description: Implementation guide for building new user interfaces on top of the existing Hyper CMS architecture.
+status: complete
+---
+
+# CMS UI Architecture Guide
+
+This documentation describes how to build a new UI while preserving the existing CMS, database, publishing, analytics, and caching architecture.
+
+## Documentation map
+
+- [System architecture](./architecture.mdx)
+- [Database and content model](./content-model.mdx)
+- [CMS workflows](./cms-workflows.mdx)
+- [UI contracts](./ui-contracts.mdx)
+- [Routes and integration points](./routes-reference.mdx)
+- [New UI implementation guide](./new-ui-guide.mdx)
+- [Migration checklist](./migration-checklist.mdx)
+
+## Core principle
+
+The PostgreSQL database is the source of truth. The UI may be replaced, but it must continue to use the same content types, status rules, validation contracts, persistence functions, cache invalidation hooks, and public content loaders.
+
+## Current stack
+
+- Next.js 15 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Neon PostgreSQL
+- Drizzle ORM
+- React Markdown with GitHub-flavored Markdown
+- MDX support for imported legacy content
+- Next.js Data Cache and ISR
+- Vercel Analytics and Speed Insights
+
+## Supported CMS entities
+
+The primary CMS manages five public content types:
+
+1. Blog posts
+2. Comparisons
+3. Resources
+4. Case studies
+5. Tools
+
+The architecture also includes workspaces, workspace settings, encrypted workspace secrets, content revisions, content analytics events, and team members.
+
+## Recommended use
+
+Treat these files as the contract for a redesigned administration interface or alternative frontend. A new UI should depend on the existing server-side functions rather than duplicating database logic in client components.
