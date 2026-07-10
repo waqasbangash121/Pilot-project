@@ -1,0 +1,110 @@
+---
+title: Routes and Integration Points
+description: Public route families, admin integration boundaries, metadata, caching, and sitemap behavior.
+---
+
+# Routes and Integration Points
+
+## Public content route families
+
+| Content type | Collection route | Detail route |
+|---|---|---|
+| Blog | `/blog` | `/blog/[slug]` |
+| Comparison | `/comparisons` | `/comparisons/[slug]` |
+| Resource | `/resources` | `/resources/[slug]` |
+| Case study | `/case-studies` | `/case-studies/[slug]` |
+| Tool | `/tools` | `/tools/[slug]` |
+
+## Detail route responsibilities
+
+Each public detail route should:
+
+1. Resolve the slug from route parameters.
+2. Load published content through the domain loader.
+3. Return `notFound()` when no publicly available item exists.
+4. Generate metadata from SEO overrides and shared fallbacks.
+5. Render the Markdown body with GitHub-flavored Markdown.
+6. Include analytics tracking.
+7. Include structured data where the current route supports it.
+8. Participate in static parameter generation and ISR.
+
+## Collection route responsibilities
+
+Collection pages should use cached published list loaders, not studio list functions. They may filter or sort in memory after the authoritative published query, but they must not expose drafts or archived content.
+
+## Domain loader pattern
+
+Keep route files thin. Public route code should import from domain modules such as:
+
+- `lib/blog`
+- `lib/comparisons`
+- `lib/resources`
+- `lib/case-studies`
+- `lib/tools`
+
+Those modules should continue to hide persistence and caching details from presentation code.
+
+## Admin integration points
+
+The replacement admin UI should preserve the existing route or server-action responsibilities for:
+
+- Listing studio content
+- Loading an individual draft or published item
+- Creating content
+- Updating content by original slug
+- Archiving content
+- Loading revision history
+- Restoring revisions
+- Reading analytics summaries
+- Managing settings and secrets
+- Managing team members
+
+The exact URL structure of a redesigned admin area may change, but server-side mutations should remain centralized.
+
+## Suggested admin route structure
+
+```text
+/admin
+/admin/content
+/admin/content/new
+/admin/content/[type]/[slug]
+/admin/content/[type]/[slug]/revisions
+/admin/analytics
+/admin/team
+/admin/settings
+```
+
+## Revalidation map
+
+| Mutation | Revalidate |
+|---|---|
+| Create draft | Admin/studio views |
+| Publish item | Collection, detail, sitemap, public cache tag |
+| Edit published item | Collection, detail, sitemap, public cache tag |
+| Change slug | Old detail, new detail, collection, sitemap, cache tag |
+| Archive item | Collection, detail, sitemap, cache tag |
+| Restore revision | Same routes as a normal edit |
+
+## Metadata contract
+
+Metadata generation should use this fallback order:
+
+1. Explicit SEO title/description
+2. Content title/excerpt
+3. Site-level defaults
+
+Canonical URLs must use the production site base URL and the correct route family.
+
+## Sitemap contract
+
+The sitemap should include only public, canonical routes. A content mutation that affects public availability or slug identity must invalidate the sitemap route.
+
+## Preview strategy
+
+A replacement UI may add a dedicated preview route. Preview must:
+
+- Require authenticated access or a short-lived signed token.
+- Load studio content rather than published-only content.
+- Add `noindex` metadata.
+- Avoid writing public analytics events.
+- Reuse the public renderer where practical to prevent visual drift.
