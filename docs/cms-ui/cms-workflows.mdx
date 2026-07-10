@@ -1,0 +1,114 @@
+---
+title: CMS Workflows
+description: Authoring, publishing, archiving, revisions, imports, analytics, and cache invalidation.
+---
+
+# CMS Workflows
+
+## Create content
+
+1. Select one of the five supported content types.
+2. Initialize the editor with shared defaults and type-specific defaults.
+3. Validate required fields and normalize arrays, dates, URLs, and Markdown.
+4. Save through the existing content-store function.
+5. Persist the record as `draft` or `published` according to the editor toggle.
+6. Create a revision snapshot.
+7. Invalidate public content caches and affected routes.
+
+## Edit content
+
+The editor loads studio content by type and slug. When a slug changes, the save operation must receive the original slug so the existing record can be found and updated safely.
+
+A replacement UI should clearly distinguish:
+
+- Current slug
+- Original slug
+- Publication status
+- Publication date
+- Last updated date
+
+## Publish content
+
+Publishing is represented by `status = published`, produced by saving an input with `draft = false`.
+
+The public availability rule also requires a valid publication date that is not in the future. This means the UI can support scheduling without adding another status.
+
+Recommended controls:
+
+- Save draft
+- Publish now
+- Schedule publication
+- Preview draft
+- Archive
+
+The backend publication rule is authoritative; button labels should not bypass it.
+
+## Archive content
+
+Archiving replaces destructive deletion. Archived entries are removed from public queries and normal studio lists.
+
+The UI should use a confirmation dialog that explains:
+
+- The public route will stop resolving.
+- The entry remains in the database.
+- Historical revisions and analytics are retained unless separately removed.
+
+## Revision workflow
+
+Every meaningful save should produce a snapshot containing the full content state. A redesigned revision panel can compare snapshots, but restoring a revision should write the restored state as a new update so the history remains append-only.
+
+## Markdown editing
+
+The main body is stored as Markdown in `bodyMarkdown`. Public pages render it with `react-markdown` and `remark-gfm`.
+
+The editor may use a textarea, split preview, or rich Markdown editor, provided the persisted value remains Markdown text. Do not store editor-specific JSON in `bodyMarkdown`.
+
+## Legacy MDX import
+
+The project includes an import script for content originally stored in MDX. The import process should be treated as migration tooling, not the ongoing publishing path.
+
+Import rules for new tooling:
+
+- Parse frontmatter into the shared content fields.
+- Map content-type-specific metadata into `details`.
+- Preserve slugs and dates.
+- Avoid overwriting newer database content without an explicit option.
+- Report skipped, imported, and failed items.
+
+## Public cache invalidation
+
+After a content mutation, the existing cache invalidation layer should:
+
+- Revalidate the shared public-content tag.
+- Revalidate the collection route.
+- Revalidate the current detail route.
+- Revalidate the previous detail route when the slug changes.
+- Revalidate the sitemap.
+
+A new UI must call the same server mutation path so this behavior remains automatic.
+
+## Analytics workflow
+
+Public detail pages render a content analytics tracker. The tracker records views and relevant clicks against the content type and slug.
+
+New public layouts should preserve:
+
+- One view event per intended page-view definition.
+- Stable content type and slug identifiers.
+- Click target URL and text when available.
+- Visitor and session identifiers using the existing mechanism.
+
+## Error handling
+
+CMS mutations should return actionable, field-aware errors without exposing database details.
+
+Recommended categories:
+
+- Validation error
+- Duplicate slug
+- Missing record
+- Authentication or authorization failure
+- Database unavailable
+- Cache revalidation failure after successful save
+
+When persistence succeeds but cache invalidation fails, report the save as successful with a warning and provide a retry path.
