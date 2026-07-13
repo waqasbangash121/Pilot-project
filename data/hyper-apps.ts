@@ -417,8 +417,14 @@ export const hyperApps: HyperApp[] = [
   },
 ];
 
-export function getHyperApp(id: HyperAppId) {
-  return hyperApps.find((app) => app.id === id);
+export function getHyperApp(id: HyperAppId): HyperApp {
+  const app = hyperApps.find((item) => item.id === id);
+
+  if (!app) {
+    throw new Error(`Missing Hyper app configuration for ${id}.`);
+  }
+
+  return app;
 }
 
 

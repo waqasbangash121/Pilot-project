@@ -11,19 +11,14 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatComparisonDate, getAllComparisons, getComparisonBySlug } from "@/lib/comparisons";
+import { formatComparisonDate, getComparisonBySlug } from "@/lib/comparisons";
 
 type ComparisonPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
-
-export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const comparisons = await getAllComparisons();
-  return comparisons.map((comparison) => ({ slug: comparison.slug }));
-}
 
 export async function generateMetadata({ params }: ComparisonPageProps): Promise<Metadata> {
   const { slug } = await params;

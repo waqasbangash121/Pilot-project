@@ -18,19 +18,14 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatToolDate, getAllTools, getToolBySlug } from "@/lib/tools";
+import { formatToolDate, getToolBySlug } from "@/lib/tools";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
-
-export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const tools = await getAllTools();
-  return tools.map((tool) => ({ slug: tool.slug }));
-}
 
 export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
   const { slug } = await params;

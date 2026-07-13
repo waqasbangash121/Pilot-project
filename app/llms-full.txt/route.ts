@@ -5,7 +5,7 @@ import { buildLlmsFullText } from "@/lib/llms";
 import { getAllResources } from "@/lib/resources";
 import { getAllTools } from "@/lib/tools";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function GET(): Promise<Response> {
   const [posts, comparisons, resources, caseStudies, tools] = await Promise.all([

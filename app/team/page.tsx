@@ -8,7 +8,7 @@ import { toJsonLd } from "@/lib/schema";
 import { listTeamMembers } from "@/lib/team";
 import { getInitials } from "@/lib/utils";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Our Team",

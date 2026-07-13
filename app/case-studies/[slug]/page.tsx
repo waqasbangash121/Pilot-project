@@ -11,19 +11,14 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatCaseStudyDate, getAllCaseStudies, getCaseStudyBySlug } from "@/lib/case-studies";
+import { formatCaseStudyDate, getCaseStudyBySlug } from "@/lib/case-studies";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
-
-export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const caseStudies = await getAllCaseStudies();
-  return caseStudies.map((caseStudy) => ({ slug: caseStudy.slug }));
-}
 
 export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
   const { slug } = await params;

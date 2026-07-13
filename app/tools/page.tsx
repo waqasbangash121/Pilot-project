@@ -15,7 +15,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatToolDate, getAllTools } from "@/lib/tools";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Shopify Ecommerce Tools from Hyper Apps",

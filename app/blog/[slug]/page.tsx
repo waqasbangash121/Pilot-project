@@ -11,20 +11,15 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatBlogDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/blog";
+import { formatBlogDate, getBlogPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const dynamicParams = true;
-
-export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const posts = await getAllBlogPosts();
-  return posts.map((post) => ({ slug: post.slug }));
-}
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;

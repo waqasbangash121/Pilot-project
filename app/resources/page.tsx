@@ -18,7 +18,7 @@ import { siteConfig } from "@/config/site";
 import { formatResourceDate, getAllResources } from "@/lib/resources";
 import { toJsonLd } from "@/lib/schema";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Shopify Ecommerce Guides, Playbooks, and Resources",

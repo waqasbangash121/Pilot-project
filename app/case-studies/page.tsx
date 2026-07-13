@@ -15,7 +15,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { formatCaseStudyDate, getAllCaseStudies } from "@/lib/case-studies";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Hyper Apps Shopify Case Studies",

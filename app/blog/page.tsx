@@ -7,7 +7,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import { getAllBlogPosts } from "@/lib/blog";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Hyper Blog for Shopify Product Discovery and Conversion",

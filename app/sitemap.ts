@@ -37,7 +37,7 @@ const appRoutes = new Set([
   "/apps/hyper-shoppable-videos",
 ]);
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 function isInternalRoute(href: string): boolean {
   return href.startsWith("/") && !href.startsWith("/admin") && !href.startsWith("/api");

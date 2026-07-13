@@ -10,6 +10,8 @@ import { getAllComparisons } from "@/lib/comparisons";
 import { getAllResources } from "@/lib/resources";
 import { getAllTools } from "@/lib/tools";
 
+export const dynamic = "force-dynamic";
+
 const searchMetadata = createPageMetadata({
   title: "Search Hyper Apps Shopify Content",
   description: "Search NiagaraT Hyper Apps articles, resources, comparisons, case studies, and tools for Shopify product discovery, support, shoppable videos, and conversion topics.",
