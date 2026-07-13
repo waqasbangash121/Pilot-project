@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <SiteShell footer={<SiteFooter />}>{children}</SiteShell>
 
         <BreadcrumbJsonLd />
@@ -55,3 +55,4 @@ export default function RootLayout({
     </html>
   );
 }
+

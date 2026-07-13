@@ -237,7 +237,7 @@ function ProductPanel({ product }: { product: ProductPricing }) {
 
   return (
     <>
-      <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
+      <div className="grid gap-5">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
             {product.shortName} pricing
@@ -342,10 +342,10 @@ export function PricingExplorer() {
         </div>
 
         <div className="rounded-[10px] border border-border bg-surface/80 p-3 shadow-[0_28px_80px_-62px_hsl(var(--shadow)/0.95)] backdrop-blur">
-          <div className="grid gap-4 lg:grid-cols-[18rem_1fr]">
-            <aside className="rounded-[8px] bg-muted/35 p-2 lg:min-h-[34rem]">
+          <div className="grid gap-4">
+            <aside className="rounded-[8px] bg-muted/35 p-2">
               <div
-                className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1"
+                className="grid gap-2 sm:grid-cols-3"
                 aria-label="Choose a Hyper app pricing section"
               >
                 {products.map((product, index) => {
