@@ -49,7 +49,7 @@ const briefInputClass = "h-9 rounded-md border border-border bg-background px-2.
 const briefTextareaClass = "min-h-20 rounded-md border border-border bg-background px-2.5 py-2 text-xs leading-5 text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2";
 
 function defaultProductFocus(module: ContentModule): string {
-  if (module === "comparison") return "Hyper AI Search and relevant Shopify alternatives";
+  if (module === "comparison") return "Hyper Search & Product Filters and relevant Shopify alternatives";
   if (module === "resource") return "Hyper Shopify apps and ecommerce workflows";
   if (module === "case-study") return "Hyper Shopify apps used in the customer story";
   if (module === "tool") return "The tool workflow and related Hyper Shopify apps";
@@ -174,7 +174,7 @@ export function ContentAiAssistant({
               onChange={(event) => updateBrief("productFocus", event.target.value)}
               className={briefInputClass}
               maxLength={160}
-              placeholder="Hyper AI Search, Hyper AI Chat, Hyper Shoppable Videos..."
+              placeholder="Hyper Search & Product Filters, Hyper AI Chat & FAQs, Hyper Shoppable Videos..."
             />
           </label>
           <label className={briefLabelClass}>
@@ -204,7 +204,7 @@ export function ContentAiAssistant({
               onChange={(event) => updateBrief("internalLinks", event.target.value)}
               className={briefTextareaClass}
               maxLength={900}
-              placeholder="/apps/hyper-search-filter - Hyper AI Search overview"
+              placeholder="/apps/hyper-search-filter - Hyper Search & Product Filters overview"
             />
           </label>
           <label className={briefLabelClass}>

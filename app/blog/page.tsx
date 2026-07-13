@@ -10,9 +10,9 @@ import { getAllBlogPosts } from "@/lib/blog";
 export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
-  title: "Hyper Blog | AI Shopify & Ecommerce Insights",
+  title: "Hyper Blog for Shopify Product Discovery and Conversion",
   description:
-    "Explore the Hyper Blog for expert insights on AI for Shopify, ecommerce growth, product discovery, AI chatbots, customer experience, shoppable videos, and conversion optimization.",
+    "Read NiagaraT Hyper Apps articles for Shopify merchants covering product discovery, search and filters, AI chat, FAQs, shoppable videos, customer support, and ecommerce conversion.",
   path: "/blog",
 });
 
@@ -55,17 +55,16 @@ export default async function BlogPage() {
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
-                  Hyper insights
+                  NiagaraT Hyper insights
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  The Hyper blog
+                  Shopify content from Hyper Apps
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Practical ideas for AI-powered ecommerce growth.
+                  Practical Shopify ideas for discovery, support, engagement, and conversion.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Explore clear, useful perspectives on product discovery, customer experience,
-                  Shopify growth, and the systems that help more shoppers find the right next step.
+                  Explore clear perspectives from NiagaraT on Shopify product discovery, customer support automation, shoppable video commerce, and the systems that help shoppers find products, get answers, and buy with confidence.
                 </p>
               </div>
 
@@ -129,7 +128,7 @@ export default async function BlogPage() {
                 <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For discovery work, look for ideas that help shoppers move from broad intent to the right product faster.</p>
                 <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For support work, focus on questions that repeat often and block confident buying decisions.</p>
                 <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For conversion work, connect page clarity, trust signals, product details, and checkout friction to measurable outcomes.</p>
-                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For planning work, pair each article with a comparison, checklist, or tool so the idea becomes easier to act on.</p>
+                <p className="rounded-2xl border border-border bg-background p-4 text-sm leading-6 text-muted-foreground">For planning work, pair each article with a Hyper Apps comparison, Shopify checklist, or ecommerce tool so the idea becomes easier to act on.</p>
               </div>
             </div>
           </div>
@@ -143,12 +142,11 @@ export default async function BlogPage() {
                 Latest reading
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Ideas you can put to work.
+                Shopify ideas you can put to work.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Every article is written to help teams make a clearer product, content, or conversion
-              decision.
+              Every article is written to help Shopify teams make a clearer product discovery, customer support, shoppable video, or conversion decision.
             </p>
           </div>
 
@@ -167,8 +165,7 @@ export default async function BlogPage() {
                 Articles are on the way.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                New perspectives on AI commerce, discovery, and conversion will appear here as they
-                are published.
+                New perspectives on Shopify product discovery, Hyper Apps, AI support, shoppable videos, and conversion will appear here as they are published.
               </p>
             </div>
           )}
@@ -184,11 +181,11 @@ export default async function BlogPage() {
                   Keep exploring
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  More ways to plan your next move.
+                  More ways to plan your next Shopify improvement.
                 </h2>
               </div>
               <p className="max-w-lg text-sm leading-6 text-muted-foreground">
-                Move from ideas to evaluated options and practical implementation support.
+                Move from Shopify ideas to evaluated app options, Hyper product context, and practical implementation support.
               </p>
             </div>
 

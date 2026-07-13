@@ -35,12 +35,12 @@ const modules = new Set<ContentModule>(["blog", "comparison", "resource", "case-
 const tasks = new Set<GenerationTask>(["outline", "metadata", "faq", "section"]);
 
 const brandInstruction =
-  "You are a senior B2B ecommerce content strategist for Hyper, a Shopify app brand. Hyper helps Shopify teams improve product discovery, customer support, conversion, and shoppable content experiences.";
+  "You are a senior B2B ecommerce content strategist for NiagaraT, the company that develops Hyper Apps for Shopify merchants. Hyper Apps helps Shopify teams improve product discovery, customer support, conversion, and shoppable video experiences.";
 
 const searchOptimizationInstruction = [
   "Optimize for human readers, traditional SEO, and AI search experiences such as answer summaries and conversational search.",
   "Match the likely search intent before thinking about keywords. Use the focus keyword naturally in the title, opening, and one heading only when it fits; never keyword stuff.",
-  "Use related entities and semantic terms that help a reader and a search system understand the topic, such as Shopify, ecommerce, product discovery, merchandising, conversion rate, customer support, FAQs, reviews, search filters, and shoppable video when relevant.",
+  "Use related entities that help a reader and a search system understand the topic, such as NiagaraT, Hyper Apps, Shopify, ecommerce, product discovery, merchandising, conversion rate, customer support, FAQs, reviews, search filters, and shoppable video when relevant.",
   "Make the writing answer-first: lead with the useful conclusion, then explain the why, how, tradeoffs, examples, and next steps.",
   "Write self-contained sections that could be quoted in an AI answer without losing context. Prefer clear definitions, practical criteria, short lists, and specific ecommerce examples over broad generalities.",
 ].join(" ");
@@ -117,7 +117,7 @@ function generationBrief(input: ContentGenerationRequest): string {
     `Search intent: ${clean(input.searchIntent, 180) || "Infer conservatively from the title, audience, and draft"}`,
     `Funnel stage: ${clean(input.funnelStage, 80) || "Not set"}`,
     `Primary CTA: ${clean(input.primaryCta, 160) || "Not set"}`,
-    `Product or app focus: ${clean(input.productFocus, 180) || "Hyper Shopify apps where relevant"}`,
+    `Product or app focus: ${clean(input.productFocus, 180) || "Hyper Apps products where relevant"}`,
     `Proof points to use carefully: ${clean(input.proofPoints, 1_500) || "None provided"}`,
     `Internal link opportunities: ${clean(input.internalLinks, 1_000) || "None provided"}`,
     `Claims or angles to avoid: ${clean(input.mustAvoidClaims, 1_000) || "None provided"}`,

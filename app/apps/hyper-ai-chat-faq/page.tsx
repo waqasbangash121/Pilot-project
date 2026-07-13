@@ -19,41 +19,41 @@ const CardStack = dynamic(
 );
 
 export const metadata = createPageMetadata({
-  title: "Hyper AI Chat & FAQs – Shopify AI Customer Support Automation",
+  title: "Hyper AI Chat & FAQs for Shopify Customer Support",
   description:
-    "Automate Shopify customer support with Hyper AI Chat & FAQs. Provide instant answers, reduce support tickets, and improve conversions with AI-powered conversational support.",
+    "Hyper AI Chat & FAQs is a Shopify AI chatbot and FAQ app from NiagaraT that helps merchants answer common customer questions, support self-service help, review chat history, and use support analytics.",
   path: "/apps/hyper-ai-chat-faq",
 });
 
 const features = [
-  "AI-powered customer support chat",
-  "Automated FAQ generation and responses",
-  "24/7 instant reply system",
+  "Shopify AI chatbot for customer support",
+  "Searchable FAQ page and responses",
+  "Self-service customer answers",
   "Reduces support workload",
-  "Smart product & order assistance",
-  "Improves customer satisfaction",
+  "Product and policy question support",
+  "Supports purchase confidence",
 ];
 
 const seoBenefits = [
   {
     icon: "💬",
     title: "Instant AI Responses",
-    desc: "Provide real-time answers to customer queries without waiting for human support.",
+    desc: "Provide quick answers to common customer questions before a support team needs to step in.",
   },
   {
     icon: "🧠",
     title: "AI-Powered FAQs",
-    desc: "Automatically generate and optimize FAQ answers based on customer behavior.",
+    desc: "Create and manage FAQ answers that support common shopper questions.",
   },
   {
     icon: "⚡",
     title: "24/7 Support",
-    desc: "Offer always-on support to improve customer trust and satisfaction.",
+    desc: "Offer self-service help for shoppers who need answers outside normal support hours.",
   },
   {
     icon: "📈",
-    title: "Higher Conversions",
-    desc: "Faster answers reduce drop-offs and improve purchase decisions.",
+    title: "Purchase Confidence",
+    desc: "Faster answers can reduce hesitation and help customers make more confident purchase decisions.",
   },
 ];
 
@@ -68,7 +68,7 @@ const benefits = [
   {
     id: 2,
     title: "Reduce Support Costs",
-    description: "Automate repetitive queries and significantly reduce support team workload.",
+    description: "Automate repetitive questions and reduce support workload for common requests.",
     imageSrc: "/aichat-benefit-2.png",
   },
   {
@@ -88,7 +88,7 @@ const benefits = [
     id: 5,
     title: "Store-Specific Intelligence",
     description:
-      "Leverage AI trained on your store data to provide personalized and accurate responses.",
+      "Use store-specific content such as FAQs, product information, policies, and support guidance to answer with better context.",
     imageSrc: "/aichat-benefit-5.png",
   },
 ];
@@ -178,19 +178,19 @@ const faqs = [
     a: "It is an automated support system that answers customer questions using artificial intelligence trained on your store data.",
   },
   {
-    q: "Can it replace human support agents?",
-    a: "It handles most repetitive queries, reducing workload, but complex cases can still be escalated to humans.",
+    q: "Can Hyper AI Chat & FAQs reduce repetitive support work?",
+    a: "It can handle repetitive questions and reduce workload, but complex or sensitive cases should still be reviewed by a human support team.",
   },
   {
-    q: "Does it improve sales?",
-    a: "Yes. Faster responses increase customer confidence and reduce cart abandonment.",
+    q: "How can Hyper AI Chat & FAQs support conversions?",
+    a: "Faster answers can improve purchase confidence by helping shoppers understand products, policies, shipping, returns, and availability before they leave the store.",
   },
   {
-    q: "Is it available 24/7?",
-    a: "Yes. AI Chat works around the clock to support customers anytime.",
+    q: "Can Hyper AI Chat & FAQs answer questions outside business hours?",
+    a: "Yes. Hyper AI Chat & FAQs can provide self-service answers when support staff are not immediately available.",
   },
   {
-    q: "Does Hyper AI Chat work with Shopify themes?",
+    q: "Does Hyper AI Chat & FAQs work with Shopify themes?",
     a: "Yes. The app integrates seamlessly with Shopify stores and is designed to work across modern Shopify themes.",
   },
   {
@@ -198,20 +198,20 @@ const faqs = [
     a: "No. Hyper AI Chat & FAQs is designed as a plug-and-play Shopify app with an easy setup process.",
   },
   {
-    q: "What store data can Hyper AI Chat use to answer customers?",
-    a: "Hyper AI Chat can use store-specific content such as FAQs, product information, policies, and support guidance to answer questions with context that matches your Shopify store.",
+    q: "What store data can Hyper AI Chat & FAQs use to answer customers?",
+    a: "Hyper AI Chat & FAQs can use store-specific content such as FAQs, product information, policies, and support guidance to answer questions with context that matches your Shopify store.",
   },
   {
-    q: "Can Hyper AI Chat answer product and policy questions?",
+    q: "Can Hyper AI Chat & FAQs answer product and policy questions?",
     a: "Yes. The assistant can respond to common product, shipping, return, sizing, availability, and policy questions so customers can keep moving toward purchase.",
   },
   {
-    q: "How does Hyper AI Chat reduce support tickets?",
+    q: "How does Hyper AI Chat & FAQs reduce support tickets?",
     a: "It handles repetitive questions instantly, gives customers self-service answers, and keeps common requests out of the support queue so teams can focus on higher-value conversations.",
   },
   {
-    q: "Is Hyper AI Chat useful for small Shopify stores?",
-    a: "Yes. Smaller stores can use it to provide 24/7 support without hiring extra agents, while growing stores can scale support coverage as order volume increases.",
+    q: "Is Hyper AI Chat & FAQs useful for small Shopify stores?",
+    a: "Yes. Smaller Shopify stores can use it to answer common questions without immediately adding more support staff, while growing stores can scale self-service support as order volume increases.",
   },
 ];
 
@@ -230,7 +230,7 @@ const softwareApplicationSchema = {
   installUrl: "https://apps.shopify.com/hyper-chatbot-and-faqs",
   publisher: {
     "@type": "Organization",
-    name: "Hyper Apps",
+    name: "NiagaraT",
     url: "https://niagarat.com",
   },
   offers: pricingTiers.map((tier) => ({
@@ -246,7 +246,7 @@ const softwareApplicationSchema = {
     "Automated and searchable FAQs",
     "Product information assistance",
     "Shipping, return, sizing, and policy answers",
-    "24/7 instant customer responses",
+    "Self-service customer responses",
     "Conversation history",
     "Customer support analytics",
     "Custom chatbot branding",
@@ -289,7 +289,7 @@ export default function HyperAIChatFAQPage() {
             <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
               <Image
                 src="/hyper-search.svg"
-                alt="Hyper AI Shopify Apps"
+                alt="Hyper AI Chat & FAQs app"
                 width={28}
                 height={28}
                 className="h-7 w-7 rounded-md object-contain"
@@ -305,9 +305,7 @@ export default function HyperAIChatFAQPage() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Automate customer support with intelligent AI chat and FAQ systems. Hyper helps Shopify
-            stores deliver instant answers, reduce support tickets, and improve customer
-            satisfaction 24/7.
+            Automate customer support with intelligent AI chat and FAQ systems. Hyper AI Chat & FAQs is developed by NiagaraT under the Hyper brand for Shopify merchants. It helps answer product, shipping, return, sizing, availability, and policy questions with an AI chatbot and searchable FAQ page.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -344,8 +342,7 @@ export default function HyperAIChatFAQPage() {
                 </h2>
 
                 <p className="text-muted-foreground text-base sm:text-lg leading-7 max-w-xl">
-                  Hyper AI Chat understands customer questions and responds instantly using your
-                  store data.
+                  Hyper AI Chat & FAQs uses store-specific content such as FAQs, product information, policies, and support guidance to answer common customer questions.
                 </p>
               </div>
 
@@ -393,14 +390,11 @@ export default function HyperAIChatFAQPage() {
             </p>
 
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Increase Shopify Conversions with AI-Powered Customer Support
+              Automate Shopify Customer Support with AI Chat and FAQs
             </h2>
 
             <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-muted-foreground leading-7">
-              Explore how AI chat and automated FAQs improve customer satisfaction, reduce support
-              workload, and increase conversion rates for modern Shopify stores. Each benefit below
-              is based on real-world ecommerce behavior: instant responses, 24/7 availability, and
-              seamless support experiences that keep customers moving toward purchase.
+              Explore how an AI chatbot, FAQ management, chat history, branding controls, and support analytics help Shopify merchants answer repeated questions and give shoppers clearer self-service support.
             </p>
           </div>
 
@@ -457,9 +451,7 @@ export default function HyperAIChatFAQPage() {
             </h2>
 
             <p className="mt-5 text-muted-foreground leading-7">
-              Hyper AI Chat transforms traditional customer support into intelligent automated
-              experiences. Customers can get instant answers, explore product details, and resolve
-              issues without waiting for human agents.
+              Hyper AI Chat & FAQs helps Shopify merchants automate common support conversations. Customers can ask product, shipping, return, sizing, availability, and policy questions and receive self-service answers from the chat and FAQ experience.
             </p>
           </div>
 
@@ -477,14 +469,14 @@ export default function HyperAIChatFAQPage() {
                 icon: "🧠",
                 title: "AI Understands Intent",
                 description:
-                  "The system analyzes store data, FAQs, and product information to understand what the customer needs and provide accurate answers.",
+                  "The app uses store content such as FAQs, product information, policies, and support guidance to provide a relevant answer when available.",
               },
               {
                 step: "03",
                 icon: "⚡",
                 title: "Instant Response Delivered",
                 description:
-                  "Customers receive immediate answers 24/7, reducing wait times and helping them make faster purchase decisions.",
+                  "Customers receive quick self-service answers, reducing wait times for common questions and helping them make more confident purchase decisions.",
               },
             ].map((item) => (
               <div
@@ -523,23 +515,19 @@ export default function HyperAIChatFAQPage() {
 
           <div className="mt-14 rounded-3xl border border-border bg-surface p-8 sm:p-10">
             <h3 className="text-2xl font-semibold tracking-tight">
-              Why AI Chat Matters for Shopify Brands
+              Why Hyper AI Chat & FAQs Matters for Shopify Brands
             </h3>
 
             <p className="mt-5 text-muted-foreground leading-8">
-              Automated customer support combines instant responses with store-specific intelligence,
-              helping Shopify merchants increase customer satisfaction, reduce support costs, and
-              improve conversion rates. By enabling shoppers to get answers immediately without
-              waiting for human agents, businesses can create modern support experiences that
-              encourage higher purchase confidence and stronger customer retention.
+              Automated customer support combines AI chat, searchable FAQs, chat history, branding controls, and analytics. Hyper AI Chat & FAQs helps Shopify merchants reduce repetitive questions, improve self-service support, and give shoppers clearer information before purchase.
             </p>
           </div>
         </Container>
       </Section>
       <PricingComponent
         productName="Hyper AI Chat & FAQs"
-        title="Pricing for AI Chat & FAQ Automation"
-        subtitle="Plans built for every Shopify store — automate support, reduce tickets, and reply 24/7."
+        title="Pricing for Hyper AI Chat & FAQs"
+        subtitle="Plans for Shopify merchants who want to answer customer questions with AI chat, searchable FAQs, chat history, custom branding, and support analytics."
         tiers={pricingTiers}
       />
       {/* FAQ */}
@@ -601,10 +589,7 @@ export default function HyperAIChatFAQPage() {
             </h3>
 
             <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
-              Hyper AI Chat & FAQs helps Shopify businesses transform traditional customer support
-              into intelligent automated experiences. By combining AI chat with smart FAQ automation,
-              merchants can improve customer satisfaction, reduce support costs, and create seamless
-              support journeys that drive higher conversion rates.
+              Hyper AI Chat & FAQs helps Shopify businesses answer repeated support questions with an AI chatbot and searchable FAQ page. By combining store-specific content, chat history, branding controls, and analytics, merchants can improve self-service support and purchase confidence.
             </p>
           </div>
         </Container>
@@ -628,14 +613,12 @@ export default function HyperAIChatFAQPage() {
 
               {/* Heading */}
               <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-                Turn Customer Questions Into Instant Conversions
+                Turn Shopify Customer Questions Into Clear Answers
               </h2>
 
               {/* Description */}
               <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
-                Hyper AI Chat helps Shopify merchants automate customer support with intelligent AI
-                responses, reduce ticket volume, and improve customer satisfaction with 24/7 instant
-                assistance.
+                Hyper AI Chat & FAQs helps Shopify merchants automate common customer support questions with an AI chatbot, searchable FAQ page, chat history, branding controls, and analytics.
               </p>
 
               {/* Benefits Pills (IMPORTANT PART YOU WERE MISSING) */}
@@ -644,14 +627,14 @@ export default function HyperAIChatFAQPage() {
                   💬 Instant AI Replies
                 </div>
 
-                <div className="rounded-full border border-border px-4 py-2">⚡ 24/7 Support</div>
+                <div className="rounded-full border border-border px-4 py-2">Self-Service Support</div>
 
                 <div className="rounded-full border border-border px-4 py-2">
                   🧠 Smart FAQ Automation
                 </div>
 
                 <div className="rounded-full border border-border px-4 py-2">
-                  📈 Higher Conversions
+                  Purchase Confidence
                 </div>
               </div>
 
@@ -692,8 +675,7 @@ export default function HyperAIChatFAQPage() {
 
               {/* Trust Text */}
               <p className="mt-8 text-center text-sm text-muted-foreground">
-                Built for Shopify stores that want scalable AI-driven customer support without
-                hiring extra agents.
+                Built by NiagaraT for Shopify stores that want scalable self-service support for common customer questions.
               </p>
             </div>
           </div>

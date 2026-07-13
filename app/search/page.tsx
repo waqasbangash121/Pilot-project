@@ -10,8 +10,8 @@ import { getAllResources } from "@/lib/resources";
 import { getAllTools } from "@/lib/tools";
 
 export const metadata = createPageMetadata({
-  title: "Search",
-  description: "Search Hyper Apps articles, resources, comparisons, case studies, and tools.",
+  title: "Search Hyper Apps Shopify Content Shopify Content",
+  description: "Search NiagaraT Hyper Apps articles, resources, comparisons, case studies, and tools for Shopify product discovery, support, shoppable videos, and conversion topics.",
   path: "/search",
 });
 
@@ -101,9 +101,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <Section className="pb-20 pt-20 sm:pt-28 lg:pt-32">
       <Container className="max-w-4xl">
         <p className="text-sm font-medium uppercase tracking-[0.35em] text-muted-foreground">Search</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">Search Hyper Apps</h1>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">Search Hyper Apps Shopify Content</h1>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-muted-foreground">
-          Find articles, resources, comparisons, case studies, and tools from the Hyper Apps library.
+          Find NiagaraT content about Hyper Apps, Shopify product discovery, customer support automation, shoppable videos, ecommerce conversion, comparisons, case studies, and tools.
         </p>
 
         <form action="/search" className="mt-8 flex flex-col gap-3 rounded-[10px] border border-border bg-surface p-4 shadow-sm sm:flex-row">
@@ -111,7 +111,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             type="search"
             name="q"
             defaultValue={query}
-            placeholder="Search AI commerce, Shopify tools, product discovery..."
+            placeholder="Search Shopify search, AI chat, FAQs, shoppable videos..."
             className="h-12 min-w-0 flex-1 rounded-md border border-border bg-background px-4 text-sm text-foreground outline-none ring-ring transition placeholder:text-muted-foreground focus:ring-2"
           />
           <button type="submit" className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">

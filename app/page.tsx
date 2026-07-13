@@ -13,7 +13,7 @@ import { homeContent } from "@/content";
 import { toJsonLd } from "@/lib/schema";
 
 export const metadata = createPageMetadata({
-  title: "Shopify Conversion Stack for AI Search and Revenue Growth",
+  title: "Hyper Apps for Shopify Search, Support and Video Commerce",
   description: homeContent.hero.description,
   path: "/",
 });
@@ -23,7 +23,7 @@ const siteUrl = "https://niagarat.com";
 const webpageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Shopify Conversion Stack for AI Search and Revenue Growth",
+  name: "Hyper Apps for Shopify Search, Support and Video Commerce",
   description: homeContent.hero.description,
   url: siteUrl,
 };
@@ -31,7 +31,7 @@ const webpageSchema = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Niagarat",
+  name: "NiagaraT",
   url: siteUrl,
   logo: `${siteUrl}/icon.png`,
 };
@@ -39,13 +39,13 @@ const organizationSchema = {
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Shopify Conversion Stack",
+  name: "Hyper Shopify Conversion Stack",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description: homeContent.hero.description,
   provider: {
     "@type": "Organization",
-    name: "Niagarat",
+    name: "NiagaraT",
   },
   url: siteUrl,
 };

@@ -23,7 +23,7 @@ const CardStack = dynamic(
 export const metadata = createPageMetadata({
   title: "Hyper Shoppable Videos: Shopify Video Commerce",
   description:
-    "Turn Shopify product videos into interactive shopping experiences. Hyper Shoppable Videos enables direct add-to-cart from video content, boosting engagement and conversions.",
+    "Hyper Shoppable Videos is a Shopify video commerce app from NiagaraT that helps merchants tag products in videos, add shoppable widgets, import social-style content, review analytics, and improve product discovery.",
   path: "/apps/hyper-shoppable-videos",
 });
 
@@ -38,17 +38,17 @@ const seoBenefits = [
   {
     icon: "🎥",
     title: "Interactive Product Videos",
-    desc: "Create immersive shopping experiences by tagging products directly inside videos.",
+    desc: "Create interactive shopping experiences by tagging products inside videos.",
   },
   {
     icon: "🛒",
-    title: "Direct Add-to-Cart",
-    desc: "Allow customers to purchase products instantly without interrupting video playback.",
+    title: "Plan-Supported Add-to-Cart",
+    desc: "Let shoppers add products from video where the selected plan and widget setup support it.",
   },
   {
     icon: "📈",
-    title: "Higher Engagement Metrics",
-    desc: "Increase time-on-site and product interactions that support Shopify growth.",
+    title: "Video Engagement Analytics",
+    desc: "Review video views and engagement analytics to understand how shoppers interact with product content.",
   },
   {
     icon: "⚡",
@@ -60,20 +60,20 @@ const seoBenefits = [
 const benefits = [
   {
     id: 1,
-    title: "Increase Engagement",
-    description: "Interactive videos and AI experiences keep users on your store longer.",
+    title: "Improve Video Engagement",
+    description: "Interactive product videos help shoppers explore products while they stay engaged with your storefront content.",
     imageSrc: "/shopable-benefit-1.png",
   },
   {
     id: 2,
-    title: "Boost Conversions",
-    description: "Reduce friction and help customers buy faster with smart UX flows.",
+    title: "Connect Video to Products",
+    description: "Reduce friction by connecting product demonstrations, social commerce clips, and UGC-style videos with tagged Shopify products.",
     imageSrc: "/shopable-benefit-2.png",
   },
   {
     id: 3,
     title: "Manage Content Easily",
-    description: "Better engagement signals improve ranking and organic visibility.",
+    description: "Organize product-tagged videos, widgets, imports, and analytics from the Shopify video commerce workflow.",
     imageSrc: "/shopable-benefit-3.png",
   },
 ];
@@ -164,15 +164,15 @@ const pricingTiers = [
 const faqs = [
   {
     q: "What are shoppable videos for Shopify?",
-    a: "Shoppable videos are interactive product videos that allow customers to click featured products, view details, and purchase directly while watching.",
+    a: "Shoppable videos are interactive product videos that allow customers to click featured products, view details, and continue toward purchase while watching.",
   },
   {
-    q: "How do shoppable videos increase sales?",
-    a: "By reducing the number of steps between product discovery and checkout, shoppable videos improve customer engagement and conversion rates.",
+    q: "How do shoppable videos support Shopify conversion?",
+    a: "By reducing the gap between product discovery and product exploration, shoppable videos can improve engagement and help shoppers move closer to purchase.",
   },
   {
-    q: "Can customers add products to cart directly from videos?",
-    a: "Yes. Hyper Shoppable Videos enables direct product interaction and add-to-cart functionality without interrupting the viewing experience.",
+    q: "Can customers add products to cart from videos?",
+    a: "Yes. Hyper Shoppable Videos supports product interaction and plan-supported add-to-cart paths from video widgets.",
   },
   {
     q: "Does Hyper Shoppable Videos work with Shopify themes?",
@@ -180,7 +180,7 @@ const faqs = [
   },
   {
     q: "Do shoppable videos improve customer engagement?",
-    a: "Interactive video commerce typically increases session duration, product interactions, and customer engagement compared to static product pages.",
+    a: "Interactive video commerce gives shoppers more ways to explore products than static content alone, especially for demos, styling, tutorials, and UGC-style clips.",
   },
   {
     q: "Is coding required to use Hyper Shoppable Videos?",
@@ -199,7 +199,7 @@ const faqs = [
     a: "Shoppable video widgets can be used across product pages, home pages, landing pages, and campaign pages where merchants want to combine storytelling with direct product discovery.",
   },
   {
-    q: "What types of products work best with shoppable videos?",
+    q: "What types of products are a strong fit for shoppable videos?",
     a: "Fashion, beauty, home goods, electronics, accessories, and products that benefit from demos, styling, tutorials, or before-and-after content are strong fits for shoppable video commerce.",
   },
 ];
@@ -214,12 +214,12 @@ const softwareApplicationSchema = {
   applicationSubCategory: "Video commerce",
   operatingSystem: "Shopify",
   description:
-    "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and add products to their cart directly from engaging video experiences.",
+    "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and use plan-supported add-to-cart paths from engaging video experiences.",
   image: "https://niagarat.com/shoppable-banner.png",
   installUrl: "https://apps.shopify.com/hyper-shopable-videos",
   publisher: {
     "@type": "Organization",
-    name: "Hyper Apps",
+    name: "NiagaraT",
     url: "https://niagarat.com",
   },
   offers: pricingTiers.map((tier) => ({
@@ -279,7 +279,7 @@ export default function HyperShoppableVideosPage() {
             <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
               <Image
                 src="/hyper-search.svg"
-                alt="Hyper AI Shopify Apps"
+                alt="Hyper Shoppable Videos app"
                 width={28}
                 height={28}
                 className="h-7 w-7 rounded-md object-contain"
@@ -295,9 +295,7 @@ export default function HyperShoppableVideosPage() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Transform static product videos into interactive shopping journeys. Hyper Shoppable
-            Videos lets customers explore, engage, and purchase directly from video content—creating
-            a seamless video commerce experience.
+            Hyper Shoppable Videos is developed by NiagaraT under the Hyper brand for Shopify merchants. The app helps stores connect product videos with tagged products, storefront widgets, social-style content, analytics, and add-to-cart paths where supported by plan.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -331,12 +329,11 @@ export default function HyperShoppableVideosPage() {
               {/* HEADING */}
               <div className="flex flex-col gap-3">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl tracking-tight font-semibold">
-                  Powerful Shoppable Video Features for Shopify
+                  Shopify Shoppable Video Features
                 </h2>
 
                 <p className="text-muted-foreground text-base sm:text-lg leading-7 max-w-xl">
-                  Built for modern Shopify brands using video-first commerce strategies. Turn
-                  engagement into direct sales with interactive shopping experiences.
+                  Built for Shopify merchants who use product demonstrations, tutorials, short-form social content, and user-generated content to support product discovery and shopper engagement.
                 </p>
               </div>
 
@@ -387,14 +384,11 @@ export default function HyperShoppableVideosPage() {
             </p>
 
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Increase Shopify Conversions with Shoppable Video Experiences
+              Turn Shopify Product Videos Into Shoppable Experiences
             </h2>
 
             <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-muted-foreground leading-7">
-              Explore how interactive shoppable videos improve product discovery, reduce friction in
-              the buying journey, and increase conversion rates for modern Shopify stores. Each
-              benefit below is based on real-world ecommerce behavior: engagement, attention
-              retention, and seamless add-to-cart experiences directly inside video content.
+              Explore how product-tagged videos, storefront widgets, social-video imports, analytics, and add-to-cart paths can help Shopify shoppers move from watching product content to exploring the products featured in that content.
             </p>
           </div>
 
@@ -452,9 +446,7 @@ export default function HyperShoppableVideosPage() {
             </h2>
 
             <p className="mt-5 text-muted-foreground leading-7">
-              Hyper Shoppable Videos transforms traditional product videos into interactive shopping
-              experiences. Customers can discover products, explore details, and purchase instantly
-              without disrupting their browsing journey.
+              Hyper Shoppable Videos transforms traditional product videos into interactive Shopify shopping experiences. Customers can discover tagged products, view product details, and continue toward purchase from the video experience.
             </p>
           </div>
 
@@ -466,21 +458,21 @@ export default function HyperShoppableVideosPage() {
                 icon: "🎥",
                 title: "Upload Product Videos",
                 description:
-                  "Merchants upload product, promotional, or social commerce videos directly to their Shopify store and prepare them for interactive shopping.",
+                  "Merchants upload product, promotional, social commerce, or UGC-style videos and prepare them for interactive Shopify storefront placements.",
               },
               {
                 step: "02",
                 icon: "🏷️",
                 title: "Tag Products in Real Time",
                 description:
-                  "Products are linked directly inside the video experience, allowing shoppers to view pricing, details, and variants while watching.",
+                  "Products are linked inside the video experience so shoppers can explore the items featured on screen.",
               },
               {
                 step: "03",
                 icon: "🛒",
                 title: "Enable Instant Purchases",
                 description:
-                  "Customers can add products to cart and complete purchases with fewer steps, creating a seamless video commerce experience.",
+                  "Where the selected plan supports it, customers can add products to cart from video and continue buying with fewer steps.",
               },
             ].map((item) => (
               <div
@@ -528,11 +520,7 @@ export default function HyperShoppableVideosPage() {
             </h3>
 
             <p className="mt-5 text-muted-foreground leading-8">
-              Interactive video commerce combines storytelling with direct purchasing, helping
-              Shopify merchants increase customer engagement, improve product discovery, and reduce
-              friction during the buying process. By enabling shoppers to interact with products
-              directly inside video content, businesses can create modern shopping experiences that
-              encourage higher conversion rates and stronger customer retention.
+              Interactive video commerce combines product storytelling with product discovery. Hyper Shoppable Videos helps Shopify merchants tag products in videos, place shoppable widgets across storefront pages, import social-style clips, review analytics, and reduce the gap between viewing content and exploring products.
             </p>
           </div>
         </Container>
@@ -540,11 +528,11 @@ export default function HyperShoppableVideosPage() {
       <PricingComponent
         productName="Hyper Shoppable Videos"
         title="Pricing for Shoppable Videos"
-        subtitle="Plans built for every Shopify store — create interactive shopping experiences, increase engagement, and improve conversion rates."
+        subtitle="Plans for Shopify merchants who want product-tagged videos, storefront widgets, social-video uploads, analytics, and shoppable video engagement."
         tiers={pricingTiers}
       />
 
-      {/* FAQ (SEO + GEO BOOST) */}
+      {/* FAQ */}
       <Section className="py-20 lg:py-24">
         <Container className="max-w-5xl">
           {/* Header */}
@@ -558,8 +546,7 @@ export default function HyperShoppableVideosPage() {
             </h2>
 
             <p className="mt-5 text-muted-foreground leading-7">
-              Learn how Hyper Shoppable Videos helps Shopify merchants create interactive shopping
-              experiences, increase engagement, and improve conversion rates.
+              Learn how Hyper Shoppable Videos helps Shopify merchants create product-tagged video experiences, improve product discovery, and support shopper engagement.
             </p>
           </div>
 
@@ -608,10 +595,7 @@ export default function HyperShoppableVideosPage() {
             </h3>
 
             <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
-              Hyper Shoppable Videos helps Shopify businesses transform traditional product videos
-              into interactive shopping experiences. By combining video commerce with direct
-              purchasing, merchants can improve customer engagement, increase product discovery, and
-              create seamless buying journeys that drive higher conversion rates.
+              Hyper Shoppable Videos helps Shopify merchants transform traditional product videos into interactive shopping experiences. By combining product tagging, video widgets, social-style content, analytics, and add-to-cart paths where supported, merchants can improve product discovery and shopper engagement.
             </p>
           </div>
         </Container>
@@ -635,15 +619,12 @@ export default function HyperShoppableVideosPage() {
 
               {/* Heading */}
               <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-                Turn Product Videos Into Revenue
+                Turn Shopify Product Videos Into Product Discovery
               </h2>
 
               {/* Description */}
               <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
-                Hyper Shoppable Videos helps Shopify merchants create interactive shopping
-                experiences that increase customer engagement, improve product discovery, and enable
-                direct purchases from video content. Build a modern video-first storefront that
-                converts viewers into customers.
+                Hyper Shoppable Videos helps Shopify merchants create interactive product video experiences that improve discovery and engagement. Use product tagging, shoppable widgets, social-style uploads, analytics, and plan-supported add-to-cart paths to move shoppers from viewing content to exploring products.
               </p>
 
               {/* Benefits */}
@@ -653,11 +634,11 @@ export default function HyperShoppableVideosPage() {
                 </div>
 
                 <div className="rounded-full border border-border px-4 py-2">
-                  🛒 Direct Add-to-Cart
+                  🛒 Plan-Supported Add-to-Cart
                 </div>
 
                 <div className="rounded-full border border-border px-4 py-2">
-                  ⚡ Higher Conversions
+                  Product Discovery
                 </div>
 
                 <div className="rounded-full border border-border px-4 py-2">
@@ -702,8 +683,7 @@ export default function HyperShoppableVideosPage() {
 
               {/* Trust Text */}
               <p className="mt-8 text-center text-sm text-muted-foreground">
-                Designed for Shopify brands looking to grow through interactive video commerce and
-                modern customer experiences.
+                Built by NiagaraT for Shopify merchants using video commerce, product demonstrations, social commerce clips, and user-generated content to support shopper engagement.
               </p>
             </div>
           </div>

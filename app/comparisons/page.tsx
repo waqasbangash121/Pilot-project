@@ -19,7 +19,7 @@ export const revalidate = 3600;
 export const metadata = createPageMetadata({
   title: "Shopify App Comparisons and Alternatives",
   description:
-    "Compare Hyper Shopify apps with alternatives using clear decision criteria, implementation considerations, and practical use cases.",
+    "Compare Hyper Apps from NiagaraT with Shopify alternatives using factual decision criteria, implementation considerations, and product discovery, support, or shoppable video use cases.",
   path: "/comparisons",
 });
 
@@ -84,10 +84,10 @@ export default async function ComparisonsPage() {
                   Shopify comparisons
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Compare Shopify solutions with more confidence.
+                  Compare Shopify apps with clearer product context.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Browse balanced versus and alternative guides built around buyer context, decision criteria, and the implementation factors that matter in a real storefront. Hyper comparisons help Shopify merchants and ecommerce teams understand fit before they spend time on demos, migrations, or new app setup.
+                  Browse balanced versus and alternative guides for Shopify merchants comparing Hyper Apps with other tools. Each comparison clarifies the product category, intended audience, relevant use cases, and what NiagaraT's Hyper product is built to solve.
                 </p>
               </div>
 
@@ -165,11 +165,11 @@ export default async function ComparisonsPage() {
                 Comparison library
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Find the decision guide you need.
+                Find the Shopify app comparison you need.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Each guide highlights the context behind a choice, with a focus on practical fit, trade-offs, and the questions a Shopify team should answer before selecting an app.
+              Each guide highlights product category, audience, practical fit, trade-offs, and the questions a Shopify team should answer before selecting a search, support, video commerce, or conversion app.
             </p>
           </div>
 
@@ -216,7 +216,7 @@ export default async function ComparisonsPage() {
                     </h3>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">{summary}</p>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                      Use this guide to frame the buying conversation, identify the assumptions your team needs to verify, and decide whether this Shopify app category deserves a closer look for your storefront.
+                      Use this guide to frame the buying conversation, identify the claims your team needs to verify, and decide whether this Shopify app category fits your storefront problem.
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-2">
@@ -275,7 +275,7 @@ export default async function ComparisonsPage() {
                   Gather context, then take action.
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
-                  Pair these guides with broader ecommerce strategy articles and implementation resources so research turns into a clear plan for product discovery, customer support, merchandising, and conversion work.
+                  Pair these comparison guides with NiagaraT resources and Hyper Apps product pages so research turns into a clear plan for product discovery, customer support, merchandising, shoppable video, and conversion work.
                 </p>
               </div>
               <BadgeCheck aria-hidden="true" className="size-6 text-primary" />
@@ -296,7 +296,7 @@ export default async function ComparisonsPage() {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Continue exploring
+                    Continue with Shopify resources
                     <ArrowRight
                       aria-hidden="true"
                       className="size-4 transition-transform group-hover:translate-x-1"

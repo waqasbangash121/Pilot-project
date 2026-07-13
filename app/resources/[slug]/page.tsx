@@ -205,7 +205,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
                   href="/resources"
                   className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
                 >
-                  More resources
+                  More Shopify resources
                   <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
                 </Link>
               </div>

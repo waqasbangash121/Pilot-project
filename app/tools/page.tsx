@@ -18,9 +18,9 @@ import { formatToolDate, getAllTools } from "@/lib/tools";
 export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
-  title: "Tools",
+  title: "Shopify Ecommerce Tools from Hyper Apps",
   description:
-    "Use Hyper tools to evaluate search quality, support workflows, and merchandising opportunities.",
+    "Use Hyper Apps tools from NiagaraT to evaluate Shopify search quality, product discovery, support workflows, merchandising opportunities, and ecommerce conversion priorities.",
   path: "/tools",
 });
 
@@ -75,14 +75,13 @@ export default async function ToolsPage() {
                   Practical utilities
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  Hyper tools
+                  Shopify tools from Hyper Apps
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Useful tools for sharper ecommerce decisions.
+                  Useful tools for sharper Shopify ecommerce decisions.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Access focused utilities for audit workflows, prioritization, support planning,
-                  and storefront optimization without adding complexity to the work.
+                  Access focused utilities for Shopify search audits, product discovery reviews, support planning, merchandising prioritization, and storefront conversion work without adding complexity.
                 </p>
               </div>
 
@@ -93,7 +92,7 @@ export default async function ToolsPage() {
                   published {tools.length === 1 ? "tool" : "tools"}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Built for teams that need lightweight ways to inspect, prioritize, and act.
+                  Built for Shopify teams that need lightweight ways to inspect, prioritize, and act.
                 </p>
               </aside>
             </div>
@@ -147,12 +146,11 @@ export default async function ToolsPage() {
                 Tool library
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Pick the utility that fits the task.
+                Pick the Shopify utility that fits the task.
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Each tool is shaped around a concrete workflow, from audits and checklists to
-              lightweight planning support.
+              Each tool is shaped around a concrete Shopify or ecommerce workflow, from search audits and support checklists to lightweight planning support.
             </p>
           </div>
 
@@ -218,7 +216,7 @@ export default async function ToolsPage() {
                     </div>
 
                     <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                      Open tool
+                      Open Shopify tool
                       <ArrowRight
                         aria-hidden="true"
                         className="size-4 transition-transform group-hover:translate-x-1"
@@ -237,7 +235,7 @@ export default async function ToolsPage() {
                 Tools are being prepared.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Audits, calculators, checklists, and practical utilities will appear here soon, with a focus on clear outputs that help teams inspect, prioritize, and act.
+                Shopify audits, calculators, checklists, and practical utilities will appear here soon, with clear outputs that help merchants inspect, prioritize, and act.
               </p>
             </div>
           )}
@@ -274,7 +272,7 @@ export default async function ToolsPage() {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Continue exploring
+                    Continue with Shopify resources
                     <ArrowRight
                       aria-hidden="true"
                       className="size-4 transition-transform group-hover:translate-x-1"

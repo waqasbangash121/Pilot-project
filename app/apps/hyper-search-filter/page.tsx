@@ -18,30 +18,30 @@ const CardStack = dynamic(() => import("@/components/CardStack").then((m) => m.C
 });
 
 export const metadata = createPageMetadata({
-  title: "Hyper AI Search - Semantic Search & Smart Filters for Shopify",
+  title: "Hyper Search & Product Filters for Shopify",
   description:
-    "Replace Shopify's default keyword search with semantic product discovery. Hyper AI Search indexes up to 200,000 products, returns typo-tolerant results, and filters by any metafield - no code required.",
+    "Improve Shopify product discovery with Hyper Search & Product Filters from NiagaraT. Support search suggestions, product filters, merchandising controls, synonyms, typo tolerance, analytics, and catalogs up to 200,000 products.",
   path: "/apps/hyper-search-filter",
 });
 
 /* DATA */
 const features = [
-  "Vector-based semantic search",
+  "Shopify product search",
   "Typo-tolerant product discovery",
-  "Metafield & variant filters",
+  "Metafield, variant, and collection filters",
   "Real-time Shopify webhook sync",
 ];
 
 const seoBenefits = [
   {
-    icon: "🧠",
-    title: "Semantic Search",
-    desc: "Understand customer intent instead of matching exact keywords.",
+    icon: "🔍",
+    title: "Relevant Product Search",
+    desc: "Help shoppers find relevant products with search suggestions, synonyms, and typo tolerance.",
   },
   {
     icon: "🎯",
-    title: "NLP Intent Mapping",
-    desc: "Interpret what shoppers mean, even when they use different terminology.",
+    title: "Synonym Matching",
+    desc: "Connect common shopper language with the product terms used in your catalog.",
   },
   {
     icon: "⚡",
@@ -50,19 +50,19 @@ const seoBenefits = [
   },
   {
     icon: "📈",
-    title: "Smart Merchandising",
-    desc: "Boost products, pin results, and optimize product discovery for revenue.",
+    title: "Merchandising Controls",
+    desc: "Use boost rules, pinned products, and zero-result insights to guide product discovery.",
   },
 ];
 
 const benefits = [
   {
     id: 1,
-    title: "Vector-Based Semantic Search",
+    title: "Shopify Search and Product Discovery",
     description:
-      "Convert search queries and product data into semantic embeddings for highly relevant results.",
+      "Support product discovery with fast search, typo tolerance, synonym matching, and relevant product results.",
     imageSrc: "/search-benefit-1.png",
-    alt: "Vector-based semantic search for Shopify product discovery",
+    alt: "Shopify search and product discovery",
   },
   {
     id: 2,
@@ -80,7 +80,7 @@ const benefits = [
   },
   {
     id: 4,
-    title: "Smart Merchandising Controls",
+    title: "Merchandising Controls Controls",
     description: "Pin products, create boost rules, and improve search relevance.",
     imageSrc: "/search-benefit-4.png",
     alt: "Smart merchandising controls and product ranking optimization",
@@ -174,12 +174,12 @@ const pricingTiers = [
 
 const faqs = [
   {
-    q: "Does Hyper AI Search replace Shopify's default search?",
-    a: "Yes. Hyper AI Search replaces the storefront search experience while leaving Shopify admin search unchanged.",
+    q: "Does Hyper Search & Product Filters work with Shopify storefront search?",
+    a: "Yes. Hyper Search & Product Filters improves the storefront search experience while leaving Shopify admin search unchanged.",
   },
   {
-    q: "How does semantic search handle technical terminology?",
-    a: "The search engine understands intent and supports synonym mapping for industry-specific catalogs.",
+    q: "How does Hyper Search & Product Filters handle different product terms?",
+    a: "The app supports synonym mapping and typo tolerance so merchants can connect shopper language with catalog terminology.",
   },
   {
     q: "Will the app slow down my storefront?",
@@ -194,15 +194,15 @@ const faqs = [
     a: "Yes. Every paid plan includes a free trial before billing begins.",
   },
   {
-    q: "Does Hyper AI Search work on mobile devices?",
+    q: "Does Hyper Search & Product Filters work on mobile devices?",
     a: "Yes. The search experience is fully responsive and optimized for mobile commerce.",
   },
   {
-    q: "Can Hyper AI Search filter by Shopify metafields and variants?",
-    a: "Yes. Hyper AI Search can create filters from metafields, variants, tags, collections, prices, vendors, and custom product attributes so shoppers can narrow large catalogs quickly.",
+    q: "Can Hyper Search & Product Filters filter by Shopify metafields and variants?",
+    a: "Yes. Hyper Search & Product Filters can create filters from metafields, variants, tags, collections, prices, vendors, and custom product attributes so shoppers can narrow large catalogs quickly.",
   },
   {
-    q: "How quickly does Hyper AI Search sync product changes?",
+    q: "How quickly does Hyper Search & Product Filters sync product changes?",
     a: "Product updates, inventory changes, new variants, and catalog edits sync automatically through Shopify webhooks, helping search results stay accurate without manual reindexing.",
   },
   {
@@ -210,15 +210,15 @@ const faqs = [
     a: "Yes. Merchants can use merchandising controls such as pinned products, boost rules, synonyms, and zero-results insights to improve search relevance for high-value queries.",
   },
   {
-    q: "What Shopify stores benefit most from semantic search?",
-    a: "Stores with large catalogs, technical product names, many variants, seasonal collections, or shoppers who use natural-language queries benefit most from semantic search and smart filtering.",
+    q: "What Shopify stores benefit most from better search and filtering?",
+    a: "Stores with large catalogs, technical product names, many variants, seasonal collections, or detailed product attributes benefit from better Shopify search and smart filtering.",
   },
 ];
 
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Hyper AI Search",
+  name: "Hyper Search & Product Filters",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Shopify",
 
@@ -251,16 +251,16 @@ const softwareApplicationSchema = {
 
   publisher: {
     "@type": "Organization",
-    name: "Hyper Apps",
+    name: "NiagaraT",
     url: "https://niagarat.com",
   },
 
   description:
-    "AI-powered semantic product search, advanced filtering, and merchandising software for Shopify stores. Hyper AI Search understands natural-language shopping intent, tolerates misspellings, indexes catalogs of up to 200,000 products, supports product metafields, and installs through a no-code app embed.",
+    "Shopify product search, advanced filtering, merchandising, and analytics software developed by NiagaraT. Hyper Search & Product Filters supports typo tolerance, synonyms, metafield filters, catalogs of up to 200,000 products, zero-result reporting, and no-code Shopify app embed installation.",
 
   featureList: [
-    "Vector-based semantic search",
-    "NLP intent mapping",
+    "Shopify product search",
+    "Synonym matching",
     "Typo tolerance",
     "Metafield filters",
     "Real-time Shopify webhook sync",
@@ -316,26 +316,23 @@ export default function HyperSearchFilterPage() {
             <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
               <Image
                 src="/hyper-search.svg"
-                alt="Hyper AI Search"
+                alt="Hyper Search & Product Filters"
                 width={28}
                 height={28}
                 className="h-7 w-7 rounded-md object-contain"
               />
               <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                Hyper AI Search
+                Hyper Search & Product Filters
               </span>
             </div>
           </div>
 
           <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-            Semantic Search and Smart Filters for Shopify Stores That Outgrow Basic Search
+            Relevant Product Search and Smart Filters for Shopify Stores That Outgrow Basic Search
           </h1>
 
           <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Hyper AI Search replaces Shopify&apos;s native keyword matching with vector-based
-            semantic search. When shoppers search for products using natural language, the app
-            returns relevant results, intelligent suggestions, and advanced filters across catalogs
-            of up to 200,000 products.
+            Hyper Search & Product Filters is a Shopify search and filtering app developed by NiagaraT under the Hyper brand. It helps shoppers find relevant products with product search, search suggestions, typo tolerance, synonym matching, merchandising controls, analytics, and advanced filters across catalogs of up to 200,000 products.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -368,15 +365,11 @@ export default function HyperSearchFilterPage() {
 
               <div className="flex flex-col gap-3">
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl tracking-tight font-semibold">
-                  The Problem That Keyword Search Cannot Fix
+                  The Shopify Product Discovery Problem
                 </h2>
 
                 <p className="text-muted-foreground text-base sm:text-lg leading-7 max-w-xl">
-                  Shopify&apos;s default search relies heavily on keyword matching. When customers
-                  search using different terminology than your catalog, they often receive poor
-                  results or no results at all. Hyper AI Search uses NLP-powered intent mapping to
-                  understand what shoppers mean, helping them discover products even when exact
-                  keywords don&apos;t match.
+                  Large Shopify catalogs are difficult to navigate when search, filters, synonyms, and merchandising controls are limited. Hyper Search & Product Filters helps merchants reduce zero-result searches, guide shoppers with relevant suggestions, and make collection filtering easier across products, variants, tags, vendors, prices, and metafields.
                 </p>
               </div>
 
@@ -428,14 +421,11 @@ export default function HyperSearchFilterPage() {
             </p>
 
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Increase Shopify Conversions with AI-Powered Product Discovery
+              Improve Shopify Product Discovery with Search and Product Filters
             </h2>
 
             <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-muted-foreground leading-7">
-              Explore how AI search and smart filters improve product discovery, reduce friction in
-              the shopping journey, and increase conversion rates for modern Shopify stores. Each
-              benefit below is based on real-world ecommerce behavior: intent understanding, faster
-              navigation, and seamless product discovery experiences.
+              Explore how Shopify search, product filters, search suggestions, synonyms, typo tolerance, merchandising, and analytics help shoppers move from a query or collection page to relevant products faster.
             </p>
           </div>
 
@@ -488,13 +478,11 @@ export default function HyperSearchFilterPage() {
             </span>
 
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              How the Search Index Works
+              How Hyper Search & Product Filters Works
             </h2>
 
             <p className="mt-5 text-muted-foreground leading-7">
-              Hyper AI Search builds a semantic search index of your Shopify catalog and keeps it
-              synchronized in real time using Shopify webhooks. Product updates, inventory changes,
-              and new variants are reflected automatically.
+              Hyper Search & Product Filters indexes your Shopify catalog and keeps product data synchronized using Shopify webhooks. Product updates, inventory changes, and new variants are reflected automatically so search and filters stay current.
             </p>
           </div>
 
@@ -505,14 +493,14 @@ export default function HyperSearchFilterPage() {
                 icon: "📦",
                 title: "Catalog Indexing",
                 description:
-                  "Hyper AI Search crawls your Shopify catalog and builds a search index within minutes.",
+                  "Hyper Search & Product Filters indexes your Shopify catalog for storefront search and filtering.",
               },
               {
                 step: "02",
-                icon: "🧠",
-                title: "Semantic Understanding",
+                icon: "🔍",
+                title: "Search Relevance",
                 description:
-                  "Queries and products are converted into vector embeddings so the engine can understand intent rather than exact wording.",
+                  "Synonyms, typo tolerance, product attributes, and merchandising controls help shoppers find relevant catalog results.",
               },
               {
                 step: "03",
@@ -562,18 +550,15 @@ export default function HyperSearchFilterPage() {
             </h3>
 
             <p className="mt-5 text-muted-foreground leading-8">
-              Hyper AI Search combines semantic search, advanced filtering, autocomplete,
-              merchandising controls, and analytics in a single Shopify app. The platform supports
-              catalogs up to 200,000 products while maintaining fast response times and accurate
-              product discovery.
+              Hyper Search & Product Filters combines product search, advanced filtering, autocomplete, search suggestions, merchandising controls, synonym matching, typo tolerance, zero-result reporting, and analytics in a single Shopify app. The platform supports catalog limits up to 200,000 products on the Enterprise plan.
             </p>
           </div>
         </Container>
       </Section>
 
       <PricingComponent
-        productName="Hyper Search and Filters"
-        title="Pricing for Hyper Search & Filters"
+        productName="Hyper Search & Product Filters"
+        title="Pricing for Hyper Search & Product Filters"
         subtitle="Shopify search and filter plans for growing ecommerce stores. Enhance product discovery with instant search, advanced collection filters, smart merchandising, and optimized shopping experiences."
         tiers={pricingTiers}
       />
@@ -584,7 +569,7 @@ export default function HyperSearchFilterPage() {
 
             <div className="mt-6 space-y-5 text-muted-foreground leading-8">
               <p>
-                Hyper AI Search works with Shopify Online Store 2.0 themes including Dawn, Refresh,
+                Hyper Search & Product Filters works with Shopify Online Store 2.0 themes including Dawn, Refresh,
                 Sense, Spotlight, and most modern Shopify themes.
               </p>
 
@@ -610,12 +595,11 @@ export default function HyperSearchFilterPage() {
             </span>
 
             <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              Frequently Asked Questions About Shopify AI Search
+              Frequently Asked Questions About Hyper Search & Product Filters
             </h2>
 
             <p className="mt-5 text-muted-foreground leading-7">
-              Learn how Hyper AI Search helps Shopify merchants improve product discovery, reduce
-              shopping friction, and increase conversion rates.
+              Learn how Hyper Search & Product Filters helps Shopify merchants improve product discovery with search, filters, merchandising, synonym matching, typo tolerance, and analytics.
             </p>
           </div>
 
@@ -655,13 +639,10 @@ export default function HyperSearchFilterPage() {
           </div>
 
           <div className="mt-14 rounded-3xl border border-border bg-gradient-to-br from-primary/5 to-transparent p-8 text-center">
-            <h3 className="text-2xl font-semibold">Why Shopify Merchants Choose Hyper AI Search</h3>
+            <h3 className="text-2xl font-semibold">Why Shopify Merchants Choose Hyper Search & Product Filters</h3>
 
             <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
-              Hyper AI Search helps Shopify businesses transform traditional product search into
-              intelligent discovery experiences. By combining semantic search with smart filters,
-              merchants can improve customer engagement, increase product findability, and create
-              seamless shopping journeys that drive higher conversion rates.
+              Hyper Search & Product Filters helps Shopify merchants improve product findability across search results and collection pages. By combining search suggestions, filters, merchandising controls, synonyms, typo tolerance, zero-result insights, and analytics, the app supports clearer catalog navigation and more confident shopping journeys.
             </p>
           </div>
         </Container>
@@ -679,19 +660,18 @@ export default function HyperSearchFilterPage() {
               {/* Badge */}
               <div className="flex justify-center">
                 <span className="inline-flex rounded-full border border-border px-4 py-1 text-xs font-medium text-muted-foreground">
-                  Shopify AI Search
+                  Shopify Search and Product Filters
                 </span>
               </div>
 
               {/* Heading */}
               <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-                Turn Search Into Revenue
+                Turn Shopify Search Into Product Discovery
               </h2>
 
               {/* Description */}
               <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
-                Hyper AI Search helps Shopify merchants improve product discovery, reduce friction,
-                and increase conversions by turning search into an intelligent shopping experience.
+                Hyper Search & Product Filters helps Shopify merchants improve product discovery, reduce search friction, and guide shoppers toward relevant products with search, filters, merchandising controls, and analytics.
               </p>
 
               {/* Feature Pills */}
@@ -701,10 +681,10 @@ export default function HyperSearchFilterPage() {
                   ⚡ Instant Results
                 </div>
                 <div className="rounded-full border border-border px-4 py-2">
-                  📈 Higher Conversions
+                  Product Discovery
                 </div>
                 <div className="rounded-full border border-border px-4 py-2">
-                  🧠 AI Understanding
+                  Synonym Matching
                 </div>
               </div>
 
@@ -728,7 +708,7 @@ export default function HyperSearchFilterPage() {
 
               {/* Trust line */}
               <p className="mt-8 text-center text-sm text-muted-foreground">
-                Built for Shopify brands focused on scaling through AI-powered product discovery.
+                Built by NiagaraT for Shopify merchants focused on better product discovery and catalog navigation.
               </p>
             </div>
           </div>

@@ -2,13 +2,13 @@ import type { FooterNavigationGroup, MegaMenuColumn, RouteItem } from "@/types";
 
 export const primaryNavigation: RouteItem[] = [
   { label: "Home", href: "/", description: "Hyper homepage" },
-  { label: "Apps", href: "/apps", description: "Shopify apps and product suite" },
+  { label: "Apps", href: "/apps", description: "Hyper Apps for Shopify merchants" },
   { label: "Our Team", href: "/team", description: "Our dedicated team members" },
-  { label: "Resources", href: "/resources", description: "Guides and documentation" },
-  { label: "Blog", href: "/blog", description: "Hyper insights and updates" },
+  { label: "Resources", href: "/resources", description: "Shopify guides and playbooks" },
+  { label: "Blog", href: "/blog", description: "Shopify conversion insights" },
   //{ label: "Case Studies", href: "/case-studies", description: "Customer results and proof" },
   //{ label: "Tools", href: "/tools", description: "Free utility tools" },
-  { label: "Contact", href: "/contact", description: "Contact Hyper" },
+  { label: "Contact", href: "/contact", description: "Contact NiagaraT about Hyper Apps" },
 ];
 
 export const appsMegaMenu: MegaMenuColumn[] = [
@@ -16,19 +16,19 @@ export const appsMegaMenu: MegaMenuColumn[] = [
     title: "Products",
     links: [
       {
-        label: "Hyper Search & Filter",
+        label: "Hyper Search & Product Filters",
         href: "/apps/hyper-search-filter",
-        description: "Merchandising-focused search and filters",
+        description: "Shopify search, filters, merchandising, and analytics",
       },
       {
         label: "Hyper AI Chat & FAQs",
         href: "/apps/hyper-ai-chat-faq",
-        description: "AI support and pre-sales assistant",
+        description: "AI chatbot and searchable FAQs for Shopify support",
       },
       {
         label: "Hyper Shoppable Videos",
         href: "/apps/hyper-shoppable-videos",
-        description: "Video commerce experiences for conversion",
+        description: "Product-tagged video commerce for Shopify stores",
       },
     ],
   },
@@ -74,9 +74,9 @@ export const footerNavigation: FooterNavigationGroup[] = [
   {
     title: "Products",
     links: [
-      { label: "Apps", href: "/apps", description: "Hyper app suite" },
-      { label: "Comparisons", href: "/comparisons", description: "Feature comparison pages" },
-      { label: "Tools", href: "/tools", description: "Free and premium tools" },
+      { label: "Apps", href: "/apps", description: "Hyper Apps Shopify conversion stack" },
+      { label: "Comparisons", href: "/comparisons", description: "Shopify app comparison pages" },
+      { label: "Tools", href: "/tools", description: "Shopify ecommerce tools" },
     ],
   },
   {

@@ -18,9 +18,9 @@ import { formatCaseStudyDate, getAllCaseStudies } from "@/lib/case-studies";
 export const revalidate = 3600;
 
 export const metadata = createPageMetadata({
-  title: "Case Studies",
+  title: "Hyper Apps Shopify Case Studies",
   description:
-    "Explore measurable outcomes from brands using Hyper to improve discovery and conversion.",
+    "Explore verified Shopify implementation stories for Hyper Apps, including product discovery, customer support, shoppable video, and conversion outcomes where available.",
   path: "/case-studies",
 });
 
@@ -78,11 +78,10 @@ export default async function CaseStudiesPage() {
                   Hyper case studies
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Real implementation stories from ecommerce teams.
+                  Shopify implementation stories for Hyper Apps.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Explore customer stories, implementation lessons, and measurable outcomes from
-                  brands using Hyper to improve discovery, support, and conversion.
+                  Explore customer stories, implementation lessons, and verified outcomes from Shopify stores using Hyper Apps to improve product discovery, customer support, shoppable video engagement, and conversion.
                 </p>
               </div>
 
@@ -132,8 +131,7 @@ export default async function CaseStudiesPage() {
               </h2>
             </div>
             <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">
-              Each story highlights the customer context, the work performed, and the outcome or
-              lesson worth carrying forward.
+              Each story highlights the Shopify store context, product used, business problem, solution, and verified outcome or lesson worth carrying forward.
             </p>
           </div>
 
@@ -219,7 +217,7 @@ export default async function CaseStudiesPage() {
                 Case studies are being prepared.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Customer implementation stories and verified outcomes will appear here soon.
+                Shopify customer implementation stories and verified Hyper Apps outcomes will appear here soon.
               </p>
             </div>
           )}
@@ -235,7 +233,7 @@ export default async function CaseStudiesPage() {
                   Keep exploring
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  Turn customer lessons into your next plan.
+                  Turn Shopify customer lessons into your next plan.
                 </h2>
               </div>
               <BadgeCheck aria-hidden="true" className="size-6 text-primary" />
@@ -256,7 +254,7 @@ export default async function CaseStudiesPage() {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Continue exploring
+                    Continue with Shopify resources
                     <ArrowRight
                       aria-hidden="true"
                       className="size-4 transition-transform group-hover:translate-x-1"

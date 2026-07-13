@@ -80,7 +80,7 @@ const modules: Record<ManagedContentType, ModuleCopy> = {
     defaultCategory: "Shopify App Comparison",
     defaultContent:
       "## Who this comparison is for\n\nExplain the buyer scenario and the decision this page helps them make.\n\n## Key differences\n\nUse only verified, fair comparison points.\n\n## Choosing the right fit\n\nGive clear guidance based on use case.",
-    titlePlaceholder: "Hyper AI Search vs [Alternative]",
+    titlePlaceholder: "Hyper Search & Product Filters vs [Alternative]",
     focusPlaceholder: "Shopify search app alternatives",
     slugPlaceholder: "hyper-ai-search-vs-alternative",
     coverPlaceholder: "/images/comparisons/alternative.jpg or https://...",

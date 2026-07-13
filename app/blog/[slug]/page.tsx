@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const description =
     post.seoDescription ||
     post.excerpt ||
-    "Read Shopify, ecommerce, SEO, and AI search insights from Hyper.";
+    "Read NiagaraT Hyper Apps insights for Shopify merchants on product discovery, customer support, shoppable videos, and ecommerce conversion.";
 
   const path = `/blog/${post.slug}`;
   const canonical = canonicalUrl(path);
@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     description:
       post.seoDescription ||
       post.excerpt ||
-      "Read Shopify, ecommerce, SEO, and AI search insights from Hyper.",
+      "Read NiagaraT Hyper Apps insights for Shopify merchants on product discovery, customer support, shoppable videos, and ecommerce conversion.",
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: articleUrl,
@@ -240,7 +240,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   href="/blog"
                   className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
                 >
-                  More articles
+                  More Shopify articles
                   <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
                 </Link>
               </div>

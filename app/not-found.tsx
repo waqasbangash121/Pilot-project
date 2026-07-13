@@ -9,7 +9,7 @@ import { Section } from "@/components/ui/section";
 const helpfulLinks = [
   {
     title: "Explore Apps",
-    description: "Compare Hyper AI Search, AI Chat, and Shoppable Videos.",
+    description: "Explore Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos.",
     href: "/apps",
   },
   {
@@ -84,7 +84,7 @@ export default function NotFound() {
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
             The page may have moved, the URL may be mistyped, or the content is no longer
-            available. Use search or jump back into the main Shopify AI commerce pages.
+            available. Use search or jump back into the main Hyper Apps pages for Shopify merchants.
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

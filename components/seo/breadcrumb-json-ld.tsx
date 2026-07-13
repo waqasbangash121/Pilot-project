@@ -23,8 +23,8 @@ const labelBySegment: Record<string, string> = {
   team: "Team",
   terms: "Terms",
   tools: "Tools",
-  "hyper-ai-chat-faq": "Hyper AI Chat FAQ",
-  "hyper-search-filter": "Hyper Search Filter",
+  "hyper-ai-chat-faq": "Hyper AI Chat & FAQs",
+  "hyper-search-filter": "Hyper Search & Product Filters",
   "hyper-shoppable-videos": "Hyper Shoppable Videos",
 };
 

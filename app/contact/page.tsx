@@ -9,9 +9,9 @@ import { toJsonLd } from "@/lib/schema";
 import { createLocalBusinessSchema } from "@/schemas";
 
 export const metadata = createPageMetadata({
-  title: "Contact Hyper | AI Shopify Solutions",
+  title: "Contact NiagaraT | Hyper Apps for Shopify",
   description:
-    "Contact Hyper to learn more about our AI-powered Shopify apps for product search, AI chat, FAQs, and shoppable videos. Connect with our team to improve your ecommerce customer experience.",
+    "Contact NiagaraT to learn about Hyper Apps for Shopify merchants, including Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos.",
   path: "/contact",
 });
 
@@ -34,7 +34,7 @@ const supportTopics = [
 ];
 
 const contactReasons = [
-  "Find the right Hyper solution for your Shopify store.",
+  "Find the right Hyper App for your Shopify store.",
   "Ask about implementation, workflows, or app capabilities.",
   "Discuss ways to improve customer experience and conversions.",
   "Share partnership, support, or general business questions.",
@@ -60,17 +60,16 @@ export default function ContactPage() {
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
-                  Contact Hyper
+                  Contact NiagaraT
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  Shopify AI commerce support
+                  Hyper Apps Shopify support
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Let&apos;s build better Shopify shopping experiences.
+                  Let&apos;s improve your Shopify search, support, and video commerce.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Reach out to discuss Hyper apps, AI product discovery, customer support
-                  automation, or practical ways to improve your storefront experience.
+                  Reach out to discuss NiagaraT's Hyper Apps, including Shopify product discovery, AI customer support, FAQ automation, shoppable videos, and practical ways to improve your storefront experience.
                 </p>
               </div>
 
@@ -121,9 +120,7 @@ export default function ContactPage() {
               </h2>
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
                 <p>
-                  Hyper develops AI-powered Shopify apps for product discovery, support, and
-                  interactive commerce. We can help you understand fit, implementation, and where a
-                  tool can reduce friction in the buying journey.
+                  NiagaraT develops Hyper Apps for Shopify product discovery, customer support automation, and interactive video commerce. We can help you understand product fit, implementation, and where a Hyper tool can reduce friction in the buying journey.
                 </p>
                 <p>
                   Whether you are launching a new store or improving an established one, send a
@@ -134,7 +131,7 @@ export default function ContactPage() {
                 href={`mailto:${siteConfig.email}`}
                 className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[0_18px_36px_-20px_hsl(var(--primary)/0.8)] transition-transform hover:-translate-y-0.5"
               >
-                Contact Hyper
+                Contact NiagaraT
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Link>
             </article>

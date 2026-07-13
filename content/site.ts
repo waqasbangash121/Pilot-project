@@ -1,18 +1,18 @@
 export const homeContent = {
   hero: {
-    title: "Build Better Shopify Shopping Experiences with Hyper AI",
+    title: "Hyper Apps for Shopify Search, Support, and Video Commerce",
     description:
-      "Hyper helps Shopify merchants improve product discovery, automate customer support, and create engaging shopping experiences through AI-powered Search & Filters, AI Chat & FAQs, and Shoppable Videos. Increase customer satisfaction, improve conversions, and create seamless buying journeys with intelligent commerce tools.",
+      "NiagaraT develops Hyper Apps for Shopify merchants. The Hyper Shopify Conversion Stack includes Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos to improve product discovery, customer support, shopper engagement, conversion rates, and revenue growth.",
     primaryCtaLabel: "Explore Hyper Apps",
     primaryCtaHref: "/apps",
-    secondaryCtaLabel: "Contact Hyper",
+    secondaryCtaLabel: "Contact NiagaraT",
     secondaryCtaHref: "/contact",
     geoFacts: [
-      "Hyper builds AI-powered Shopify apps for ecommerce growth.",
-      "Hyper Search & Filters helps customers discover products faster.",
-      "Hyper AI Chat & FAQs automates customer support around the clock.",
-      "Hyper Shoppable Videos transforms product videos into shopping experiences.",
-      "Hyper helps Shopify merchants improve engagement and conversions.",
+      "NiagaraT develops Shopify apps under the Hyper brand.",
+      "Hyper Search & Product Filters helps Shopify shoppers discover relevant products faster.",
+      "Hyper AI Chat & FAQs helps Shopify merchants answer common customer questions with an AI chatbot and searchable FAQ page.",
+      "Hyper Shoppable Videos turns product-tagged videos into interactive Shopify shopping experiences.",
+      "Hyper Apps helps Shopify merchants improve product discovery, support, engagement, and conversions.",
     ],
   },
   statistics: [
@@ -39,9 +39,9 @@ export const homeContent = {
   ],
   products: [
     {
-      name: "Hyper Search & Filters",
+      name: "Hyper Search & Product Filters",
       pitch:
-        "Help customers quickly discover products with AI-powered search and advanced filtering designed for Shopify stores.",
+        "Help Shopify shoppers discover relevant products with fast product search, flexible collection filters, merchandising controls, synonyms, typo tolerance, and analytics.",
       outcome: "Improve product discovery and create better shopping experiences.",
       href: "/apps/hyper-search-filter",
     },
@@ -62,29 +62,29 @@ export const homeContent = {
   ],
   benefits: [
     {
-      title: "Better Product Discovery",
+      title: "Shopify Product Discovery",
       detail:
-        "Help customers find products faster through AI-powered search and advanced filtering.",
+        "Help Shopify customers find relevant products faster through product search, collection filters, synonym matching, and typo tolerance.",
     },
     {
-      title: "AI Customer Support",
-      detail: "Answer common questions instantly with intelligent chat and FAQ experiences.",
+      title: "Shopify AI Customer Support",
+      detail: "Answer common product, shipping, return-policy, and store questions with an AI chatbot and searchable FAQ page.",
     },
     {
-      title: "Interactive Shopping",
-      detail: "Create engaging product journeys through shoppable video experiences.",
+      title: "Shoppable Video Commerce",
+      detail: "Connect product videos with tagged products so shoppers can explore items while they watch.",
     },
     {
       title: "Built for Shopify",
-      detail: "Designed to integrate seamlessly into Shopify storefronts and workflows.",
+      detail: "Designed for Shopify storefronts and merchant workflows.",
     },
     {
       title: "AI Commerce Ready",
-      detail: "Prepare your store for conversational shopping and AI-driven customer experiences.",
+      detail: "Support shopper questions and product discovery with practical AI commerce tools for Shopify stores.",
     },
     {
       title: "Conversion Focused",
-      detail: "Reduce friction throughout the customer journey to improve shopping experiences.",
+      detail: "Reduce friction across search, support, and video engagement so shoppers can buy with more confidence.",
     },
   ],
   problems: [
@@ -109,21 +109,21 @@ export const homeContent = {
   ],
   solutions: [
     {
-      title: "AI-powered product discovery",
+      title: "Shopify search and product filtering",
       detail:
-        "Hyper Search & Filters helps customers quickly locate products through intelligent search and advanced filtering.",
+        "Hyper Search & Product Filters helps Shopify customers locate relevant products through product search, collection filters, merchandising controls, and analytics.",
       channel: "Shopify Product Discovery",
     },
     {
       title: "AI customer support automation",
       detail:
-        "Hyper AI Chat & FAQs provides instant answers through intelligent conversations and searchable FAQs.",
+        "Hyper AI Chat & FAQs provides AI chatbot responses and searchable FAQs for common Shopify customer support questions.",
       channel: "Customer Experience",
     },
     {
       title: "Interactive video commerce",
       detail:
-        "Hyper Shoppable Videos transforms product content into interactive shopping experiences.",
+        "Hyper Shoppable Videos connects product videos with tagged products to support discovery, engagement, and purchase confidence.",
       channel: "Video Commerce",
     },
   ],
@@ -154,7 +154,7 @@ export const homeContent = {
     },
     {
       brand: "Video Commerce",
-      result: "Interactive Shopping",
+      result: "Shoppable Video Commerce",
       summary: "Shoppable videos connect product inspiration directly to purchasing opportunities.",
       href: "/blog",
     },
@@ -222,97 +222,97 @@ export const homeContent = {
       id: "faq-01",
       question: "What is Hyper?",
       answer:
-        "Hyper is a platform of AI-powered Shopify apps designed to improve product discovery, customer support, and shopping experiences through Search & Filters, AI Chat & FAQs, and Shoppable Videos.",
+        "Hyper Apps is NiagaraT's Shopify app suite for product discovery, customer support, and shoppable video experiences. It includes Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos.",
     },
     {
       id: "faq-02",
       question: "What Shopify apps does Hyper offer?",
       answer:
-        "Hyper offers three core Shopify apps: Hyper Search & Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos. Together they help merchants improve customer experiences and increase engagement.",
+        "NiagaraT offers three Hyper Apps for Shopify merchants: Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos. Together they support product discovery, self-service support, shopper engagement, and ecommerce conversion.",
     },
     {
       id: "faq-03",
-      question: "How does Hyper Search & Filters help Shopify stores?",
+      question: "How does Hyper Search & Product Filters help Shopify stores?",
       answer:
-        "Hyper Search & Filters helps customers discover products faster through intelligent search and advanced filtering, making it easier to navigate large product catalogs.",
+        "Hyper Search & Product Filters helps Shopify shoppers discover products faster through search suggestions, typo tolerance, synonym matching, collection filters, merchandising controls, and search analytics.",
     },
     {
       id: "faq-04",
       question: "What is Hyper AI Chat & FAQs?",
       answer:
-        "Hyper AI Chat & FAQs provides automated customer support through AI chatbots and searchable FAQ experiences that help answer customer questions instantly.",
+        "Hyper AI Chat & FAQs provides an AI chatbot and searchable FAQ page that help answer common customer questions about products, shipping, returns, and store policies.",
     },
     {
       id: "faq-05",
       question: "What are Hyper Shoppable Videos?",
       answer:
-        "Hyper Shoppable Videos transforms product videos into interactive shopping experiences that allow customers to discover and purchase products directly from video content.",
+        "Hyper Shoppable Videos turns product videos into interactive shopping experiences where Shopify customers can discover tagged products and move closer to purchase.",
     },
     {
       id: "faq-06",
       question: "Is Hyper built specifically for Shopify?",
       answer:
-        "Yes. Hyper is designed specifically for Shopify merchants and integrates directly with Shopify storefronts and ecommerce workflows.",
+        "Yes. NiagaraT builds Hyper Apps specifically for Shopify merchants, storefronts, and ecommerce workflows.",
     },
     {
       id: "faq-07",
       question: "How does Hyper improve customer experience?",
       answer:
-        "Hyper helps customers find products faster, receive instant support, and engage with interactive shopping experiences, creating a smoother customer journey.",
+        "Hyper Apps helps customers find products faster, get answers through AI chat and FAQs, and engage with product-tagged video, creating a smoother Shopify shopping journey.",
     },
     {
       id: "faq-08",
       question: "Does Hyper use artificial intelligence?",
       answer:
-        "Yes. Hyper uses artificial intelligence to improve product discovery, automate customer support, and create intelligent shopping experiences for ecommerce businesses.",
+        "Yes. Hyper Apps uses AI where it is part of the product experience, including customer support automation and product discovery features confirmed in the app content.",
     },
     {
       id: "faq-09",
-      question: "What is semantic search and how does it benefit my store?",
+      question: "How does better Shopify search help my store?",
       answer:
-        "Semantic search interprets the meaning and intent behind a shopper's query instead of relying only on exact keyword matches. This helps customers discover relevant products when they use synonyms, descriptive phrases, or different terminology from your catalog.",
+        "Better Shopify search helps shoppers discover relevant products when they use different terms, misspellings, synonyms, or descriptive phrases. Hyper Search & Product Filters combines search suggestions, synonym matching, typo tolerance, and product filters to reduce zero-result searches.",
     },
     {
       id: "faq-10",
-      question: "Can Hyper Search & Filters use custom product attributes?",
+      question: "Can Hyper Search & Product Filters use custom product attributes?",
       answer:
-        "Yes. Hyper Search & Filters can create filters from Shopify metafields, variants, tags, collections, prices, vendors, and other product attributes.",
+        "Yes. Hyper Search & Product Filters can create filters from Shopify metafields, variants, tags, collections, prices, vendors, and other product attributes.",
     },
     {
       id: "faq-11",
-      question: "Will Hyper Search & Filters slow down my Shopify storefront?",
+      question: "Will Hyper Search & Product Filters slow down my Shopify storefront?",
       answer:
         "Search requests are processed by Hyper infrastructure, and the storefront widget loads asynchronously so it does not block the initial page render.",
     },
     {
       id: "faq-12",
-      question: "How quickly does Hyper Search & Filters sync catalog changes?",
+      question: "How quickly does Hyper Search & Product Filters sync catalog changes?",
       answer:
         "Product updates, inventory changes, new variants, and catalog edits sync automatically through Shopify webhooks to keep the search index current.",
     },
     {
       id: "faq-13",
-      question: "How many products can Hyper Search & Filters index?",
+      question: "How many products can Hyper Search & Product Filters index?",
       answer:
         "The Enterprise plan supports catalogs of up to 200,000 products. Lower plans provide limits designed for smaller catalogs.",
     },
     {
       id: "faq-14",
-      question: "Do I need coding knowledge to install Hyper Search & Filters?",
+      question: "Do I need coding knowledge to install Hyper Search & Product Filters?",
       answer:
         "No. The app uses Shopify app embeds and does not require merchants to edit Liquid code for the standard installation.",
     },
     {
       id: "faq-15",
-      question: "Which Hyper Search & Filters pricing plans are available?",
+      question: "Which Hyper Search & Product Filters pricing plans are available?",
       answer:
-        "Hyper Search & Filters offers Free, Starter, Professional, and Enterprise plans for different catalog sizes and feature requirements. Current prices and plan limits are listed on the product page.",
+        "Hyper Search & Product Filters offers Free, Starter, Professional, and Enterprise plans for different catalog sizes and feature requirements. Current prices and plan limits are listed on the product page.",
     },
   ],
   cta: {
-    title: "Create Better Shopify Shopping Experiences with Hyper.",
+    title: "Create better Shopify shopping experiences with Hyper Apps.",
     detail:
-      "Discover how Hyper's AI-powered Shopify apps can help customers find products faster, receive instant support, and shop through engaging interactive experiences designed to improve customer satisfaction and ecommerce growth.",
+      "Discover how NiagaraT's Hyper Apps help Shopify merchants improve product discovery, automate common support questions, and turn product videos into engaging shopping experiences.",
     primaryHref: "/apps",
     primaryLabel: "Explore Hyper Apps",
   },
@@ -320,7 +320,7 @@ export const homeContent = {
     {
       title: "Built for Shopify",
       description:
-        "Hyper apps are designed specifically for Shopify merchants, integrating seamlessly with modern ecommerce storefronts.",
+        "Hyper Apps are built by NiagaraT for Shopify merchants and modern ecommerce storefronts.",
     },
     {
       title: "AI-Powered Commerce",
@@ -330,7 +330,7 @@ export const homeContent = {
     {
       title: "SEO & GEO Ready",
       description:
-        "Hyper combines semantic content, structured experiences, and ecommerce best practices to support both search engines and AI-powered discovery.",
+        "Hyper Apps content and structured data clarify the relationship between NiagaraT, Shopify merchants, product discovery, support automation, and video commerce.",
     },
   ],
   capabilities: [
@@ -340,7 +340,7 @@ export const homeContent = {
         "Help customers find products faster through intelligent search and advanced filtering experiences.",
     },
     {
-      title: "AI Customer Support",
+      title: "Shopify AI Customer Support",
       description:
         "Provide instant answers with AI chatbots and searchable FAQs that improve customer confidence.",
     },
@@ -359,9 +359,9 @@ export const homeContent = {
         "Reduce friction across the customer journey and create better online shopping experiences.",
     },
     {
-      title: "Built for Growth",
+      title: "Built for Shopify Growth",
       description:
-        "Support ecommerce businesses with scalable AI-powered tools for modern commerce.",
+        "Support Shopify merchants with practical tools for product discovery, customer support automation, shopper engagement, and ecommerce growth.",
     },
   ],
 } as const;

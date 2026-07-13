@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
   name: "Hyper Apps",
   shortName: "Hyper Apps",
   description:
-    "Hyper Apps is a Shopify AI commerce suite that powers product discovery, customer support automation, and shoppable video experiences using AI search, chat, and intent-based merchandising.",
+    "NiagaraT develops Hyper Apps for Shopify merchants, including Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos for product discovery, support automation, and video commerce.",
 
   url: canonicalSiteUrl,
   email: "support@niagarat.com",
@@ -25,8 +25,8 @@ export const siteConfig: SiteConfig = {
     // AI Search / Product Discovery (Hyper Search)
     "AI product search Shopify",
     "Shopify search and filter app",
-    "semantic product search",
-    "intent-based product discovery",
+    "Shopify product search",
+    "product discovery",
     "Shopify smart filters",
     "AI-powered product discovery",
     "Shopify search optimization",
@@ -51,8 +51,8 @@ export const siteConfig: SiteConfig = {
     "Shopify CRO tools",
     "increase Shopify conversion rate",
     "reduce cart abandonment Shopify",
-    "ecommerce personalization AI",
-    "retail AI optimization",
+    "shopper experience",
+    "revenue growth Shopify",
   ],
 
   iconPath: "/icon.svg",

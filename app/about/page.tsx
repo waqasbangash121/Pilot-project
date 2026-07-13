@@ -6,9 +6,9 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 
 export const metadata = createPageMetadata({
-  title: "About Hyper Apps",
+  title: "About NiagaraT and Hyper Apps",
   description:
-    "Hyper builds AI-powered Shopify apps for product discovery, customer support, and video commerce. Improve search, engagement, and conversions with intelligent commerce tools.",
+    "NiagaraT develops Hyper Apps for Shopify merchants, including search and product filters, AI chat and FAQs, and shoppable video tools for product discovery, support, engagement, and conversion optimization.",
   path: "/about",
 });
 
@@ -16,13 +16,13 @@ const productAreas = [
   {
     title: "AI-powered product discovery",
     description:
-      "Hyper Search & Filter helps Shopify stores deliver faster search, sharper filtering, and easier product exploration across modern catalogs.",
+      "Hyper Search & Product Filters helps Shopify stores deliver faster search, sharper filtering, and easier product exploration across modern catalogs.",
     Icon: Search,
   },
   {
     title: "AI customer support",
     description:
-      "Hyper AI Chat and FAQs helps merchants answer common questions, reduce support pressure, and guide shoppers toward confident buying decisions.",
+      "Hyper AI Chat & FAQs helps merchants answer common questions, reduce support pressure, and guide shoppers toward confident buying decisions.",
     Icon: Bot,
   },
   {
@@ -52,17 +52,16 @@ export default function AboutPage() {
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
-                  About Hyper
+                  About NiagaraT
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  AI commerce apps for Shopify
+                  Hyper Apps for Shopify merchants
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Hyper builds practical AI tools for better shopping experiences.
+                  NiagaraT builds Hyper Apps for Shopify merchants.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  We help Shopify merchants improve product discovery, automate customer support,
-                  and create engaging shopping paths with AI-powered commerce apps.
+                  NiagaraT develops ecommerce tools under the Hyper brand to help Shopify merchants improve product discovery, customer support, shopper engagement, and conversion optimization.
                 </p>
               </div>
 
@@ -100,29 +99,24 @@ export default function AboutPage() {
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem]">
             <article className="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Why merchants choose Hyper
+                Why Shopify merchants choose Hyper Apps
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Built for the work behind modern ecommerce growth.
               </h2>
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
                 <p>
-                  Hyper combines artificial intelligence with practical ecommerce workflows to solve
-                  common challenges for Shopify stores. From helping shoppers find products faster
-                  to providing instant support, our apps are built to improve key moments in the
-                  customer journey.
+                  Hyper Apps combines practical Shopify workflows with AI commerce tools where they help merchants solve real storefront problems. Hyper Search & Product Filters supports product discovery, Hyper AI Chat & FAQs supports customer questions, and Hyper Shoppable Videos supports product-tagged engagement.
                 </p>
                 <p>
-                  As ecommerce discovery evolves through AI search and conversational shopping, we
-                  focus on tools that help merchants stay visible, accessible, and ready for how
-                  shoppers make decisions next.
+                  As Shopify ecommerce evolves, NiagaraT focuses on tools that help merchants make catalogs easier to navigate, answer shopper questions more clearly, and connect product content with buying intent.
                 </p>
               </div>
               <Link
                 href="/apps"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
               >
-                Explore Hyper apps
+                Explore Hyper Apps
                 <ArrowRight aria-hidden="true" className="size-4" />
               </Link>
             </article>

@@ -312,18 +312,17 @@ export function HeroSection({ content }: { content: HeroContent }) {
       <Container className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
         <header>
           <p className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-            The Shopify Conversion Intelligence Platform
+            NiagaraT Shopify Conversion Stack
           </p>
           <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.08] tracking-normal text-foreground sm:text-5xl lg:text-6xl">
             {content.title}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground">
-            Three AI-powered apps that help you attract, engage, and convert more shoppers. More
-            discovery. More engagement. More sales.
+            NiagaraT develops Hyper Apps for Shopify merchants: search and product filters, AI chat and FAQs, and shoppable video tools that improve discovery, support, engagement, and conversion growth.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <PrimaryButton href={content.primaryCtaHref}>Explore Apps</PrimaryButton>
-            <SecondaryButton href={content.secondaryCtaHref}>Book a Demo</SecondaryButton>
+            <PrimaryButton href={content.primaryCtaHref}>Explore Hyper Apps</PrimaryButton>
+            <SecondaryButton href={content.secondaryCtaHref}>Contact NiagaraT</SecondaryButton>
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
@@ -335,7 +334,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
                 <span key={index} className="size-2 rounded-full bg-primary" />
               ))}
             </span>
-            <span>4.9/5 from 1,200+ reviews</span>
+            <span>Search, support, and shoppable video for Shopify stores</span>
           </div>
         </header>
 
@@ -347,18 +346,18 @@ export function HeroSection({ content }: { content: HeroContent }) {
 
 export function StatisticsSection({ items }: { items: readonly StatItem[] }) {
   const stats = [
-    { value: "35%", label: "Increase in", detail: "Conversion Rate" },
-    { value: "28%", label: "Increase in", detail: "Average Order Value" },
-    { value: "50%", label: "Reduction in", detail: "Support Tickets" },
-    { value: "31%", label: "Increase in", detail: "Search-to-Order Rate" },
-    { value: "40%", label: "Increase in", detail: "Video Engagement" },
+    { value: "Search", label: "Improve", detail: "Product Discovery" },
+    { value: "Filters", label: "Refine", detail: "Catalog Navigation" },
+    { value: "AI Chat", label: "Answer", detail: "Customer Questions" },
+    { value: "FAQs", label: "Support", detail: "Self-Service Help" },
+    { value: "Video", label: "Connect", detail: "Products to Content" },
   ];
 
   return (
     <SectionFrame
       id="statistics"
-      title="Real Results from Real Shopify Stores"
-      description="Conversion, support, and engagement improvements delivered by the complete Hyper stack."
+      title="Hyper Apps for Shopify Conversion Growth"
+      description="Use the Hyper Shopify Conversion Stack to connect product discovery, customer support automation, and shoppable video engagement in one product suite."
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {(items.length ? stats : stats).map((item) => (
@@ -386,8 +385,8 @@ export function ThreeProductsSection({ products }: { products: readonly ProductI
   return (
     <SectionFrame
       id="three-products"
-      title="Three AI Conversion Engines. One Complete Stack."
-      description="Each app is powerful on its own. Together, they drive unparalleled conversions."
+      title="Three Shopify Apps. One Hyper Conversion Stack."
+      description="Each NiagaraT app solves a distinct Shopify problem: product discovery, customer support, or shopper engagement. Together, Hyper Apps support ecommerce conversion growth."
     >
       <div className="grid gap-6 lg:grid-cols-3">
         {orderedProducts.map((product, index) => {
@@ -444,17 +443,17 @@ export function ThreeProductsSection({ products }: { products: readonly ProductI
 
 export function BenefitsSection({ benefits }: { benefits: readonly BenefitItem[] }) {
   const supportItems = [
-    ["Seamless Integration", "Install in minutes. No coding required."],
-    ["AI-Powered", "Machine learning that gets smarter every day."],
-    ["Enterprise Ready", "Scalable, secure, and built for growth."],
-    ["24/7 Support", "Our team is always here to help you succeed."],
+    ["Shopify Setup", "Use app embeds and storefront widgets designed for Shopify merchant workflows."],
+    ["Product Discovery", "Improve search, filters, merchandising, and catalog navigation."],
+    ["Support Automation", "Answer repeated product, shipping, return, and policy questions with AI chat and FAQs."],
+    ["Video Engagement", "Turn product videos into interactive shopping paths with tagged products."],
   ];
 
   return (
     <SectionFrame
       id="benefits"
-      title="Built for Shopify. Powered by AI."
-      description="The stack brings integration, intelligence, and operational readiness together."
+      title="Built by NiagaraT for Shopify Merchants"
+      description="The Hyper Shopify Conversion Stack brings product discovery, support automation, and video commerce together for practical storefront improvements."
     >
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         {(benefits.length ? supportItems : supportItems).map(([title, detail], index) => (
@@ -498,8 +497,8 @@ export function MerchantProblemsSection({ problems }: { problems: readonly Probl
   return (
     <SectionFrame
       id="merchant-problems"
-      title="Why Stores Lose Revenue (And How Hyper Fixes It)"
-      description="Shoppers leave your store for three main reasons. Our stack solves all three."
+      title="Why Shopify Stores Lose Revenue"
+      description="Hyper Apps addresses three common Shopify problems across discovery, support, and product engagement."
     >
       <div className="grid gap-5 lg:grid-cols-[1fr_auto_1fr_auto_1fr_0.95fr] lg:items-stretch">
         {cards.map((card, index) => (
@@ -520,13 +519,13 @@ export function MerchantProblemsSection({ problems }: { problems: readonly Probl
           </div>
         ))}
         <article className="rounded-[10px] border border-primary/20 bg-primary/10 p-6">
-          <h3 className="text-base font-bold text-primary">Hyper Solves All 3</h3>
+          <h3 className="text-base font-bold text-primary">Hyper Apps Connect All 3</h3>
           <ul className="mt-5 space-y-3">
             {(problems.length
               ? [
-                  "AI Chat answers instantly",
-                  "Smart Search finds products",
-                  "Shoppable Videos build trust",
+                  "Hyper AI Chat & FAQs answers common questions",
+                  "Hyper Search & Product Filters improves product discovery",
+                  "Hyper Shoppable Videos connects video to products",
                 ]
               : []
             ).map((item) => (
@@ -537,7 +536,7 @@ export function MerchantProblemsSection({ problems }: { problems: readonly Probl
             ))}
           </ul>
           <p className="mt-6 text-sm leading-7 text-foreground">
-            More engagement. More conversions. More revenue.
+            Better discovery, clearer support, stronger engagement, and more confident buying decisions.
           </p>
         </article>
       </div>
@@ -575,8 +574,8 @@ export function CustomerLogosSection({ logos }: { logos: readonly string[] }) {
   return (
     <SectionFrame
       id="customer-logos"
-      title="Trusted by 10,000+ Shopify Brands Worldwide"
-      description="From startups to enterprise, brands trust Hyper AI to grow their revenue."
+      title="Built for Shopify Merchants Across Key Industries"
+      description="Hyper Apps supports stores that need clearer product discovery, faster support answers, and more engaging product content."
     >
       <ul
         className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6"
@@ -608,7 +607,7 @@ export function CaseStudiesSection({ studies }: { studies: readonly CaseStudyIte
             <p className="mt-3 text-2xl font-black text-primary">{study.result}</p>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">{study.summary}</p>
             <Link href={study.href} className="mt-5 inline-flex text-sm font-bold text-primary">
-              Read case study +
+              Read Hyper Apps case study +
             </Link>
           </article>
         ))}
@@ -665,7 +664,7 @@ export function LatestArticlesSection({ articles }: { articles: readonly Article
             <h3 className="text-lg font-bold text-foreground">{article.title}</h3>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">{article.summary}</p>
             <Link href={article.href} className="mt-5 inline-flex text-sm font-bold text-primary">
-              Read article +
+              Read Shopify conversion article +
             </Link>
           </article>
         ))}
@@ -688,7 +687,7 @@ export function FreeToolsSection({ tools }: { tools: readonly ToolItem[] }) {
             <h3 className="text-lg font-bold text-foreground">{tool.title}</h3>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">{tool.summary}</p>
             <Link href={tool.href} className="mt-5 inline-flex text-sm font-bold text-primary">
-              Open tool +
+              Open Shopify ecommerce tool +
             </Link>
           </article>
         ))}
@@ -817,17 +816,17 @@ export function CtaSection({
             id="home-cta"
             className="text-2xl font-black tracking-normal text-foreground sm:text-3xl"
           >
-            Ready to 10X Your Shopify Store Conversions?
+            Ready to Improve Shopify Search, Support, and Video Commerce?
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
             {detail || title}
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-4">
-            <PrimaryButton href={primaryHref}>{primaryLabel || "Install All Free"}</PrimaryButton>
-            <SecondaryButton href="/contact">Book a Demo</SecondaryButton>
+            <PrimaryButton href={primaryHref}>{primaryLabel || "Explore Hyper Apps"}</PrimaryButton>
+            <SecondaryButton href="/contact">Contact NiagaraT</SecondaryButton>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            No credit card required - Works on all Shopify plans
+            Review the Hyper Apps product pages for current Shopify plan details and app pricing.
           </p>
         </div>
       </Container>

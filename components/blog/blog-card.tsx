@@ -64,7 +64,7 @@ export function BlogCard({ post }: BlogCardProps) {
             href={`/blog/${post.slug}`}
             className="inline-flex items-center gap-2 font-medium text-foreground transition-colors hover:text-primary focus-visible:rounded-sm"
           >
-            Read article
+            Read Shopify article
             <ArrowRight
               aria-hidden="true"
               className="size-4 transition-transform group-hover:translate-x-1"

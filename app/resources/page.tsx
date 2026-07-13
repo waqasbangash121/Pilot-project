@@ -23,7 +23,7 @@ export const revalidate = 3600;
 export const metadata = createPageMetadata({
   title: "Shopify Ecommerce Guides, Playbooks, and Resources",
   description:
-    "Explore practical Shopify guides, playbooks, checklists, templates, and documentation for product discovery and conversion growth.",
+    "Explore NiagaraT resources for Shopify merchants covering product discovery, search and filters, AI customer support, shoppable videos, and conversion growth.",
   path: "/resources",
 });
 
@@ -70,7 +70,7 @@ export default async function ResourcesPage() {
     "@type": "CollectionPage",
     "@id": `${resourcesUrl}#webpage`,
     name: "Shopify Ecommerce Guides, Playbooks, and Resources",
-    description: "Practical Shopify guides, playbooks, checklists, templates, and documentation for product discovery and conversion growth.",
+    description: "NiagaraT resources for Shopify merchants covering product discovery, search and filters, AI customer support, shoppable videos, and conversion growth.",
     url: resourcesUrl,
     isPartOf: { "@id": `${siteConfig.url}#website` },
     publisher: { "@id": `${siteConfig.url}#organization` },
@@ -91,17 +91,16 @@ export default async function ResourcesPage() {
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   <Sparkles aria-hidden="true" className="size-3.5 text-primary" />
-                  Practical learning
+                  Shopify learning
                 </div>
                 <p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                  Hyper resources
+                  Hyper Apps resources
                 </p>
                 <h1 className="mt-3 max-w-4xl type-display">
-                  Practical resources for better Shopify experiences.
+                  Shopify resources for product discovery, support, and conversion.
                 </h1>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-                  Use focused guides, playbooks, checklists, and templates to improve product
-                  discovery, customer experience, and conversion with a clearer implementation plan.
+                  Use focused guides, playbooks, checklists, and templates from NiagaraT to improve Shopify product discovery, customer support, shoppable video engagement, and ecommerce conversion with a clearer implementation plan.
                 </p>
               </div>
 
@@ -112,7 +111,7 @@ export default async function ResourcesPage() {
                   learning {resources.length === 1 ? "resource" : "resources"}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Designed to help ecommerce teams move from a question to a useful next action.
+                  Designed to help Shopify merchants move from a question to a useful next action.
                 </p>
               </aside>
             </div>
@@ -245,7 +244,7 @@ export default async function ResourcesPage() {
                     </div>
 
                     <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                      Open resource
+                      Open Shopify resource
                       <ArrowRight
                         aria-hidden="true"
                         className="size-4 transition-transform group-hover:translate-x-1"
@@ -264,8 +263,7 @@ export default async function ResourcesPage() {
                 New resources are on the way.
               </h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                Actionable ecommerce guides, templates, and implementation playbooks will appear
-                here soon.
+                Actionable Shopify guides, Hyper Apps templates, and implementation playbooks will appear here soon.
               </p>
             </div>
           )}
@@ -281,7 +279,7 @@ export default async function ResourcesPage() {
                   Keep moving
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                  Pair resources with context and evaluation.
+                  Pair Shopify resources with context and evaluation.
                 </h2>
               </div>
               <CheckCircle2 aria-hidden="true" className="size-6 text-primary" />
@@ -302,7 +300,7 @@ export default async function ResourcesPage() {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Continue exploring
+                    Continue with Shopify resources
                     <ArrowRight
                       aria-hidden="true"
                       className="size-4 transition-transform group-hover:translate-x-1"

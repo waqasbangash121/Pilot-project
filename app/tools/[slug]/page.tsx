@@ -184,7 +184,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                     href={tool.toolUrl}
                     className="mt-6 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5"
                   >
-                    Launch tool
+                    Launch Shopify tool
                     <ArrowRight aria-hidden="true" className="size-4" />
                   </a>
                 ) : null}
@@ -212,7 +212,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
                   href="/tools"
                   className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-foreground"
                 >
-                  More tools
+                  More Shopify tools
                   <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
                 </Link>
               </div>
