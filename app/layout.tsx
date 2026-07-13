@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { HyperEntityGraph } from "@/components/seo/hyper-entity-graph";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { canonicalUrl, defaultMetadata, defaultViewport } from "@/config/metadata";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -46,6 +47,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: toJsonLd(websiteSchema) }}
         />
         <BreadcrumbJsonLd />
+        <HyperEntityGraph />
         {process.env.NODE_ENV === "production" && (
           <>
             <Script
@@ -74,3 +76,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
+import { ProductEntityContext } from "@/components/seo/product-entity-context";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(
@@ -530,6 +531,7 @@ export default function HyperAIChatFAQPage() {
         subtitle="Plans for Shopify merchants who want to answer customer questions with AI chat, searchable FAQs, chat history, custom branding, and support analytics."
         tiers={pricingTiers}
       />
+      <ProductEntityContext product="chat" />
       {/* FAQ */}
       <Section className="py-20 lg:py-24">
         <Container className="max-w-5xl">
@@ -684,3 +686,4 @@ export default function HyperAIChatFAQPage() {
     </>
   );
 }
+

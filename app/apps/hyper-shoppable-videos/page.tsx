@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
+import { ProductEntityContext } from "@/components/seo/product-entity-context";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(
@@ -532,6 +533,7 @@ export default function HyperShoppableVideosPage() {
         tiers={pricingTiers}
       />
 
+      <ProductEntityContext product="video" />
       {/* FAQ */}
       <Section className="py-20 lg:py-24">
         <Container className="max-w-5xl">
@@ -692,3 +694,4 @@ export default function HyperShoppableVideosPage() {
     </>
   );
 }
+

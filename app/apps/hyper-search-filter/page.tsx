@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/section";
 import { createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
+import { ProductEntityContext } from "@/components/seo/product-entity-context";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(() => import("@/components/CardStack").then((m) => m.CardStack), {
@@ -218,46 +219,28 @@ const faqs = [
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
+  "@id": "https://niagarat.com/apps/hyper-search-filter#software",
   name: "Hyper Search & Product Filters",
+  url: "https://niagarat.com/apps/hyper-search-filter",
   applicationCategory: "BusinessApplication",
+  applicationSubCategory: "Product discovery, storefront search, and product filtering",
   operatingSystem: "Shopify",
-
-  offers: [
-    {
-      "@type": "Offer",
-      name: "Free",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    {
-      "@type": "Offer",
-      name: "Starter",
-      price: "15",
-      priceCurrency: "USD",
-    },
-    {
-      "@type": "Offer",
-      name: "Professional",
-      price: "49",
-      priceCurrency: "USD",
-    },
-    {
-      "@type": "Offer",
-      name: "Enterprise",
-      price: "119",
-      priceCurrency: "USD",
-    },
-  ],
-
+  description:
+    "Shopify product search, advanced filtering, merchandising, and analytics software developed by NiagaraT. Hyper Search & Product Filters supports typo tolerance, synonyms, metafield filters, catalogs of up to 200,000 products, zero-result reporting, and no-code Shopify app embed installation.",
+  image: "https://niagarat.com/search-banner.png",
+  installUrl: "https://apps.shopify.com/hyper-search-product-filters",
   publisher: {
     "@type": "Organization",
     name: "NiagaraT",
     url: "https://niagarat.com",
   },
-
-  description:
-    "Shopify product search, advanced filtering, merchandising, and analytics software developed by NiagaraT. Hyper Search & Product Filters supports typo tolerance, synonyms, metafield filters, catalogs of up to 200,000 products, zero-result reporting, and no-code Shopify app embed installation.",
-
+  offers: pricingTiers.map((tier) => ({
+    "@type": "Offer",
+    name: tier.name,
+    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+    priceCurrency: "USD",
+    url: tier.buttonHref,
+  })),
   featureList: [
     "Shopify product search",
     "Synonym matching",
@@ -562,6 +545,7 @@ export default function HyperSearchFilterPage() {
         subtitle="Shopify search and filter plans for growing ecommerce stores. Enhance product discovery with instant search, advanced collection filters, smart merchandising, and optimized shopping experiences."
         tiers={pricingTiers}
       />
+      <ProductEntityContext product="search" />
       <Section className="py-20">
         <Container className="max-w-5xl">
           <div className="rounded-3xl border border-border bg-surface p-8 sm:p-10">
@@ -717,3 +701,5 @@ export default function HyperSearchFilterPage() {
     </>
   );
 }
+
+
