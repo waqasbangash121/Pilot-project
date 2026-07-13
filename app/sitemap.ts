@@ -16,6 +16,7 @@ const publicStaticRoutes = [
   "/apps/hyper-ai-chat-faq",
   "/apps/hyper-shoppable-videos",
   "/blog",
+  "/case-studies",
   "/comparisons",
   "/contact",
   "/cookie-policy",
@@ -78,7 +79,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllTools(),
   ]);
 
-  const now = new Date();
   const routes = [...new Set([...publicStaticRoutes, ...navigationRoutes()])].sort(
     (left, right) => {
       if (left === "/") return -1;
@@ -89,7 +89,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticEntries: MetadataRoute.Sitemap = routes.map((route) => ({
     url: new URL(route, siteConfig.url).toString(),
-    lastModified: now,
     changeFrequency: routeChangeFrequency(route),
     priority: routePriority(route),
   }));

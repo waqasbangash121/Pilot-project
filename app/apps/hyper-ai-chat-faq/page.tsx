@@ -1,724 +1,103 @@
-import Link from "next/link";
+
+import type { ReactNode } from "react";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import Link from "next/link";
+import { BarChart3, Bot, CheckCircle2, ExternalLink, FileQuestion, History, MessageCircle, Palette, ShieldCheck } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl, createPageMetadata } from "@/config/metadata";
-import TrackLink from "@/components/TrackLink";
-import PricingComponent from "@/components/PricingComponent";
-import { ProductEntityContext } from "@/components/seo/product-entity-context";
+import { ProductVisualGallery } from "@/components/product-visual-gallery";
+import { canonicalUrl } from "@/config/metadata";
+import { getHyperApp, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 import { toJsonLd } from "@/lib/schema";
-import dynamic from "next/dynamic";
 
-const CardStack = dynamic(
-  () => import("@/components/CardStack").then((m) => m.CardStack),
-  {
-    loading: () => (
-      <div className="h-[420px] w-full max-w-3xl animate-pulse rounded-2xl bg-surface" />
-    ),
-  }
-);
+const chatApp = getHyperApp("chat");
+if (!chatApp) throw new Error("AI Chat app data is missing");
 
-export const metadata = createPageMetadata({
-  title: "Hyper AI Chat & FAQs for Shopify Customer Support",
-  description:
-    "Hyper AI Chat & FAQs is a Shopify AI chatbot and FAQ app from NiagaraT that helps merchants answer common customer questions, support self-service help, review chat history, and use support analytics.",
-  path: "/apps/hyper-ai-chat-faq",
-});
-
-const features = [
-  "Shopify AI chatbot for customer support",
-  "Searchable FAQ page and responses",
-  "Self-service customer answers",
-  "Reduces support workload",
-  "Product and policy question support",
-  "Supports purchase confidence",
-];
-
-const seoBenefits = [
-  {
-    icon: "💬",
-    title: "Instant AI Responses",
-    desc: "Provide quick answers to common customer questions before a support team needs to step in.",
-  },
-  {
-    icon: "🧠",
-    title: "AI-Powered FAQs",
-    desc: "Create and manage FAQ answers that support common shopper questions.",
-  },
-  {
-    icon: "⚡",
-    title: "24/7 Support",
-    desc: "Offer self-service help for shoppers who need answers outside normal support hours.",
-  },
-  {
-    icon: "📈",
-    title: "Purchase Confidence",
-    desc: "Faster answers can reduce hesitation and help customers make more confident purchase decisions.",
-  },
-];
-
-const benefits = [
-  {
-    id: 1,
-    title: "Instant Customer Support",
-    description:
-      "Provide real-time answers to customer questions without delays or manual support.",
-    imageSrc: "/aichat-benefit-1.png",
-  },
-  {
-    id: 2,
-    title: "Reduce Support Costs",
-    description: "Automate repetitive questions and reduce support workload for common requests.",
-    imageSrc: "/aichat-benefit-2.png",
-  },
-  {
-    id: 3,
-    title: "Increase Conversions",
-    description:
-      "Help customers make faster buying decisions with instant product and policy answers.",
-    imageSrc: "/aichat-benefit-3.png",
-  },
-  {
-    id: 4,
-    title: "Faster Issue Resolution",
-    description: "Resolve customer issues quickly with AI-powered support and instant answers.",
-    imageSrc: "/aichat-benefit-4.png",
-  },
-  {
-    id: 5,
-    title: "Store-Specific Intelligence",
-    description:
-      "Use store-specific content such as FAQs, product information, policies, and support guidance to answer with better context.",
-    imageSrc: "/aichat-benefit-5.png",
-  },
-];
-
-const pricingTiers = [
-  {
-    name: "Free",
-    subtitle: "Free",
-    price: "Free",
-    description:
-      "Add a Shopify AI chatbot and searchable FAQs to answer customer questions instantly.",
-    features: [
-      { text: "Up to 50 AI replies/month", included: true },
-      { text: "AI training", included: true },
-      { text: "10 FAQs", included: true },
-      { text: "Chat history(30 days)", included: true },
-      { text: "Basic analytics", included: true },
-      { text: "Email support", included: true },
-    ],
-    buttonText: "Install Free",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-  },
-  {
-    name: "Starter",
-    subtitle: "Starter",
-    price: "$19",
-    period: "/mo",
-    description: "Automate customer support and product discovery with AI-powered Shopify chat.",
-    features: [
-      { text: "500 AI replies/month", included: true },
-      { text: "AI training", included: true },
-      { text: "25 FAQs", included: true },
-      { text: "Chat history(180 days)", included: true },
-      { text: "Advanced analytics", included: true },
-      { text: "Custom branding", included: true },
-      { text: "Basic support", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-  },
-  {
-    name: "Growth",
-    subtitle: "GROWTH",
-    price: "$49",
-    period: "/mo",
-    description: "Improve customer experience with advanced chatbot analytics and FAQ automation.",
-    badge: { text: "Most Popular" },
-    features: [
-      { text: "2500 AI replies/month", included: true },
-      { text: "AI training", included: true },
-      { text: "Unlimited FAQs", included: true },
-      { text: "Chat history(365 days)", included: true },
-      { text: "Custom branding", included: true },
-      { text: "Advanced analytics", included: true },
-      { text: "Premium support", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-    highlighted: true,
-  },
-  {
-    name: "Pro",
-    subtitle: "PRO",
-    price: "$99",
-    period: "/mo",
-    description: "Complete AI customer support solution for high-volume Shopify stores and brands.",
-    features: [
-      { text: "10,000 AI replies/month", included: true },
-      { text: "AI training", included: true },
-      { text: "Unlimited FAQs", included: true },
-      { text: "Chat history(unlimited)", included: true },
-      { text: "White label branding", included: true },
-      { text: "Enterprise analytics", included: true },
-      { text: "Priority support", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-  },
-];
-
-const faqs = [
-  {
-    q: "What is AI chat for Shopify?",
-    a: "It is an automated support system that answers customer questions using artificial intelligence trained on your store data.",
-  },
-  {
-    q: "Can Hyper AI Chat & FAQs reduce repetitive support work?",
-    a: "It can handle repetitive questions and reduce workload, but complex or sensitive cases should still be reviewed by a human support team.",
-  },
-  {
-    q: "How can Hyper AI Chat & FAQs support conversions?",
-    a: "Faster answers can improve purchase confidence by helping shoppers understand products, policies, shipping, returns, and availability before they leave the store.",
-  },
-  {
-    q: "Can Hyper AI Chat & FAQs answer questions outside business hours?",
-    a: "Yes. Hyper AI Chat & FAQs can provide self-service answers when support staff are not immediately available.",
-  },
-  {
-    q: "Does Hyper AI Chat & FAQs work with Shopify themes?",
-    a: "Yes. The app integrates seamlessly with Shopify stores and is designed to work across modern Shopify themes.",
-  },
-  {
-    q: "Is coding required to use Hyper AI Chat & FAQs?",
-    a: "No. Hyper AI Chat & FAQs is designed as a plug-and-play Shopify app with an easy setup process.",
-  },
-  {
-    q: "What store data can Hyper AI Chat & FAQs use to answer customers?",
-    a: "Hyper AI Chat & FAQs can use store-specific content such as FAQs, product information, policies, and support guidance to answer questions with context that matches your Shopify store.",
-  },
-  {
-    q: "Can Hyper AI Chat & FAQs answer product and policy questions?",
-    a: "Yes. The assistant can respond to common product, shipping, return, sizing, availability, and policy questions so customers can keep moving toward purchase.",
-  },
-  {
-    q: "How does Hyper AI Chat & FAQs reduce support tickets?",
-    a: "It handles repetitive questions instantly, gives customers self-service answers, and keeps common requests out of the support queue so teams can focus on higher-value conversations.",
-  },
-  {
-    q: "Is Hyper AI Chat & FAQs useful for small Shopify stores?",
-    a: "Yes. Smaller Shopify stores can use it to answer common questions without immediately adding more support staff, while growing stores can scale self-service support as order volume increases.",
-  },
-];
-
-const productPageUrl = canonicalUrl("/apps/hyper-ai-chat-faq");
-const productSoftwareId = `${productPageUrl}#software`;
-const productWebPageId = `${productPageUrl}#webpage`;
+const productName = "Hyper AI Chat & FAQs";
+const officialName = "Hyper AI Chat and FAQs";
+const installUrl = chatApp.installHref;
+const demoUrl = chatApp.demoHref;
+const pageUrl = canonicalUrl(chatApp.internalHref);
+const softwareId = `${pageUrl}#software`;
+const webPageId = `${pageUrl}#webpage`;
+const breadcrumbId = `${pageUrl}#breadcrumb`;
+const faqId = `${pageUrl}#faq`;
 const organizationId = `${canonicalUrl("/")}#organization`;
-const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
 const websiteId = `${canonicalUrl("/")}#website`;
+const pricingNote = "Plans, limits, and included features may change. The Shopify App Store listing is the source of truth for current billing information.";
 
-const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebPage",
-      "@id": productWebPageId,
-      name: "Hyper AI Chat & FAQs",
-      url: productPageUrl,
-      isPartOf: { "@id": websiteId },
-      publisher: { "@id": organizationId },
-      about: { "@id": productSoftwareId },
-      mainEntity: { "@id": productSoftwareId },
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": productSoftwareId,
-      name: "Hyper AI Chat & FAQs",
-      url: productPageUrl,
-      sameAs: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-      applicationCategory: "BusinessApplication",
-      applicationSubCategory: "Customer support and conversational commerce",
-      operatingSystem: "Shopify",
-      description:
-        "AI customer support and FAQ automation for Shopify stores. Hyper AI Chat & FAQs uses store-specific product information, policies, and support guidance to answer shopper questions around the clock, reduce repetitive tickets, and support purchase decisions.",
-      image: canonicalUrl("/aichat-banner.png"),
-      installUrl: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-      publisher: { "@id": organizationId },
-      provider: { "@id": organizationId },
-      creator: { "@id": organizationId },
-      brand: { "@id": brandId },
-      isPartOf: { "@id": brandId },
-      mainEntityOfPage: { "@id": productWebPageId },
-      offers: pricingTiers.map((tier) => ({
-        "@type": "Offer",
-        "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-        name: tier.name,
-        price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
-        priceCurrency: "USD",
-        url: tier.buttonHref,
-        itemOffered: { "@id": productSoftwareId },
-        seller: { "@id": organizationId },
-      })),
-      featureList: [
-        "AI-powered Shopify customer support chat",
-        "Store-specific AI training",
-        "Automated and searchable FAQs",
-        "Product information assistance",
-        "Shipping, return, sizing, and policy answers",
-        "Self-service customer responses",
-        "Conversation history",
-        "Customer support analytics",
-        "Custom chatbot branding",
-        "Support ticket deflection",
-      ],
-      "@reverse": {
-        mainEntity: { "@id": productWebPageId },
-        about: { "@id": productWebPageId },
-        itemOffered: pricingTiers.map((tier) => ({
-          "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-        })),
-      },
-    },
-  ],
+export const metadata = {
+  title: { absolute: "Shopify AI Chatbot & FAQ App | Hyper AI Chat" },
+  description: "Answer Shopify product, shipping, return and policy questions with an AI chatbot and searchable FAQs. Install Hyper AI Chat free.",
+  alternates: { canonical: pageUrl },
+  openGraph: { type: "website", url: pageUrl, title: "AI Chatbot and Searchable FAQs for Shopify | Hyper", description: "Give Shopify shoppers quick answers using an AI chatbot trained with your products, policies, FAQs, and approved support content.", images: [{ url: canonicalUrl(chatApp.screenshot), width: 1200, height: 630, alt: chatApp.screenshotAlt }] },
+  twitter: { card: "summary_large_image", title: "AI Chatbot and Searchable FAQs for Shopify | Hyper", description: "Give Shopify shoppers quick answers using an AI chatbot trained with your products, policies, FAQs, and approved support content.", images: [canonicalUrl(chatApp.screenshot)] },
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.a,
-    },
-  })),
-};
+const trustItems = ["Free plan available", "14-day paid-plan trial", "Product and policy training", "Searchable FAQ page", "Chat-history review", "Install through Shopify"];
+const productVisuals = [
+  { src: "/aichat-banner.png", alt: "Hyper AI Chat storefront chatbot and FAQ assistant preview", title: "AI chat and FAQ storefront experience", body: "Give shoppers a clear place to ask product, shipping, return, and policy questions using approved store content." },
+  { src: "/aichat-benefit-1.png", alt: "Hyper AI Chat answer workflow for Shopify product questions", title: "Product question handling", body: "Support common pre-purchase questions when relevant product information exists in the connected store content." },
+  { src: "/aichat-benefit-2.png", alt: "Hyper AI Chat FAQ management screen", title: "Searchable FAQ content", body: "Organize approved answers so shoppers can browse and search self-service support content." },
+  { src: "/aichat-benefit-3.png", alt: "Hyper AI Chat analytics and chat history interface", title: "Chat history and analytics", body: "Review shopper questions and identify missing answers without claiming unsupported automation." },
+];
+const problems = ["Shoppers cannot quickly find shipping information", "Product descriptions do not answer specific questions", "Sizing or compatibility questions block decisions", "Return and exchange policies are difficult to locate", "Customers ask the same questions repeatedly", "Support teams spend time copying the same answers", "Questions arrive outside normal business hours", "Merchants cannot easily see what shoppers are confused about"];
+const demoSteps = [["Open the chat widget", "A shopper opens the storefront chat experience when they need help."], ["Ask a product or policy question", "The question can be about sizing, availability, shipping, returns, or store information."], ["Use approved store content", "The app uses supported products, FAQs, policies, and support content when relevant information is available."], ["Give a clear answer", "The shopper receives a self-service answer or a clear next step when the content is incomplete."], ["Review the conversation", "The merchant reviews chat history and improves FAQs or training content where needed."]];
+const capabilities = [
+  { icon: MessageCircle, title: "AI Chatbot for Common Questions", body: "Give shoppers a place to ask about products, shipping, returns, availability, sizing, and store information. The chatbot uses connected store content to provide an answer when relevant information is available.", note: "Listed features include AI chatbots, greetings, quick replies, and product recommendations." },
+  { icon: Bot, title: "Store-Content Training", body: "Use Shopify products, approved FAQs, policies, and support content as information sources for chatbot responses.", note: "The listing confirms unlimited products for AI training on all plans." },
+  { icon: FileQuestion, title: "Searchable FAQ Page", body: "Create a customer-facing FAQ page where shoppers can search and browse approved answers without starting a support conversation.", note: "Free includes 10 FAQs, Starter includes 25 FAQs, and Growth/Pro include unlimited FAQs." },
+  { icon: History, title: "Chat History", body: "Review previous conversations to understand what shoppers ask, where information is missing, and which questions should be added to product pages or FAQs.", note: "History retention is 30 days, 180 days, 365 days, or unlimited by plan." },
+  { icon: Palette, title: "Widget Customization", body: "Adjust verified visual settings so the chatbot fits the store branding and storefront experience.", note: "Starter and Growth include custom branding. Pro includes white-label branding." },
+  { icon: BarChart3, title: "Support Analytics", body: "Monitor available conversation and support-activity data to identify frequently asked questions and improve self-service content over time.", note: "Analytics levels are Basic, Advanced, Premium, and Enterprise by plan." },
+  { icon: CheckCircle2, title: "Product Question Support", body: "Use synchronized product information to answer supported questions about product details and availability when that information exists in the store content.", note: "Avoid treating incomplete product data as authoritative." },
+  { icon: ShieldCheck, title: "Policy and Store Information", body: "Use approved shipping, return, exchange, and store-policy content to answer common informational questions.", note: "Sensitive or exception-based requests should still involve a person." },
+];
+const boundariesHelp = ["Common product questions", "Product-information lookup", "Shipping information", "Return and exchange policies", "Store FAQs", "Sizing information present in store content", "Availability information where supported", "Common pre-purchase questions"];
+const boundariesHuman = ["Complex complaints", "Payment disputes", "Fraud concerns", "Sensitive personal information", "Legal threats", "Medical or safety-critical questions", "Exceptions not covered by store policy", "Refunds, account changes, or manual actions unless technically supported"];
+const workSteps = [["Step 1", "Install Through Shopify", "Install the app and authorize the required Shopify permissions."], ["Step 2", "Connect Approved Store Content", "Select or synchronize supported products, policies, FAQs, and support information."], ["Step 3", "Configure the Chatbot and FAQs", "Set the widget appearance, welcome experience, FAQ content, and available behavior."], ["Step 4", "Publish the Customer Experience", "Add the chatbot and FAQ experience to supported storefront locations."], ["Step 5", "Review Questions and Improve Content", "Use chat history and available analytics to find missing answers and improve store information."]];
+const bestFit = ["Stores receiving repeated product questions", "Merchants with detailed shipping or return policies", "Stores selling products that require explanation", "Small teams handling support manually", "Growing stores that need more self-service content", "Merchants wanting to review common shopper questions", "Stores that want both chat and a searchable FAQ page"];
+const simplerFit = ["The store receives almost no customer questions", "Existing product pages already answer every common question", "The merchant only needs direct human live chat", "The business requires a full omnichannel help desk", "The business requires complex automated actions the app does not support", "The required languages are not currently supported"];
+const useCases = [["Product questions", ["What materials is this made from?", "Which size should I choose?", "Is this available in another color?", "What is included with the product?"]], ["Shipping questions", ["Where do you ship?", "How long does delivery take?", "Is expedited shipping available?", "How much does shipping cost?"]], ["Return questions", ["What is the return window?", "Can sale items be returned?", "Who pays return shipping?", "How do exchanges work?"]], ["Store-policy questions", ["What payment methods are accepted?", "Is there a warranty?", "How can I contact support?", "Where is the store located?"]]] as const;
+const comparisonRows = [["Automatic answers", "Yes, from supported store content", "No", "No, a person responds", "Often, depending on platform"], ["Searchable FAQ experience", "Yes", "Yes", "No", "Sometimes"], ["Product-content training", "Listed support", "No", "Manual agent knowledge", "Varies"], ["Policy-content training", "Listed support", "Manual page content", "Manual agent knowledge", "Varies"], ["Human-agent conversations", "Not positioned as a full live-chat team tool", "No", "Yes", "Yes"], ["Ticket management", "Not verified", "No", "Usually no", "Yes"], ["Social-channel support", "Not verified", "No", "No", "Often"], ["Chat history", "Yes, retention by plan", "No", "Usually", "Yes"], ["Analytics", "Basic to Enterprise by plan", "Limited", "Limited", "Advanced"], ["Typical best fit", "AI self-service and searchable FAQs", "Simple policy content", "Hands-on customer conversations", "Large support operations"]];
+const compatibilityItems = [["Installation method", "Install through the official Shopify App Store listing."], ["Shopify permissions", "Review the Shopify install screen before installation to confirm the exact permissions requested for your store."], ["Training sources", "The listing confirms store products, FAQs, policies, and support content as response sources."], ["Chat history", "Retention varies by plan from 30 days to unlimited history."], ["Theme integration", "Hyper is designed for Shopify storefronts. Confirm compatibility with your current theme and test the widget on a duplicate theme before publishing."], ["Mobile storefront", "The listing includes storefront and mobile-storefront images. Test the widget on your active mobile theme."], ["Supported language", "The Shopify listing shows English."], ["Data and privacy", "Do not paste private customer conversations into analytics or public content. Review the privacy policy and Shopify listing before installation."]];
+const faqs = [["What is a Shopify AI chatbot?", "It is a storefront chat experience that can answer supported shopper questions using approved store information."], ["What content can Hyper use to answer questions?", "The Shopify listing describes products, policies, FAQs, and support content as training sources."], ["Can it answer product questions?", "Yes, when the relevant product information is available in connected store content."], ["Can it answer shipping and return questions?", "Yes, when approved shipping and return policy content is available to the app."], ["Does it include a searchable FAQ page?", "Yes. FAQ limits vary by plan."], ["Can shoppers use it outside business hours?", "The chatbot can provide self-service answers outside business hours when relevant content is available."], ["What happens when the chatbot does not know an answer?", "The page should guide shoppers to relevant support content or merchant contact options; do not rely on the bot when store content is incomplete."], ["Can a person take over a conversation?", "Human takeover is not verified from the listing, so merchants should confirm this before relying on it."], ["Does it support live chat?", "The listing category includes live chat features, but this page positions Hyper as AI self-service and FAQs unless the owner confirms human-agent workflows."], ["Can it provide order updates?", "Order updates appear in the Shopify feature taxonomy, but merchants should verify the app behavior before promising order-status answers."], ["Can it recommend products?", "Product recommendations appear in the Shopify feature list."], ["How is an AI conversation counted?", "The listing bills by AI conversations per month. A precise counting definition should be confirmed with the product owner."], ["What happens when I reach my monthly limit?", "The exact limit behavior is not documented in the listing and should be confirmed before publishing a promise."], ["How long is chat history retained?", "Free: 30 days. Starter: 180 days. Growth: 365 days. Pro: unlimited chat history."], ["Can I remove Hyper branding?", "Pro lists white-label branding. Starter and Growth list custom branding."], ["Is there a free plan?", "Yes. Free includes 50 AI conversations per month."], ["How long is the free trial?", "Paid plans list a 14-day free trial."], ["Does installation require coding?", "Setup is designed to use Shopify app configuration and theme tools. Confirm whether custom themes require additional implementation."], ["Does it work on mobile?", "The listing includes a mobile-storefront image. Test your active theme before publishing."], ["Which languages are supported?", "The Shopify listing shows English."], ["Can I see a demo before installing?", "Yes. Use the demo store linked from this page."], ["Which plan should I choose?", "Choose by monthly AI conversation volume, FAQ count, chat-history needs, analytics level, and branding requirements."]];
+const resources = [["Hyper Apps by NiagaraT", "/", "See the parent product family."], ["Compare Hyper Apps", "/apps", "Choose between AI chat, search, and shoppable video."], ["Shopify tools", "/tools", "Use planning tools for Shopify workflows."], ["Shopify resources", "/resources", "Read guides for improving store operations."], ["Privacy policy", "/privacy", "Review NiagaraT privacy information."]];
+const otherApps = [["Shopify search and product filter app", "/apps/hyper-search-filter", "Help shoppers find products with search and filters."], ["Shopify shoppable video app", "/apps/hyper-shoppable-videos", "Turn product videos into shoppable storefront experiences."], ["Compare Hyper Apps", "/apps", "Compare the full Hyper Apps suite."]];
+const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", "@id": breadcrumbId, itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: canonicalUrl("/") }, { "@type": "ListItem", position: 2, name: "Apps", item: canonicalUrl("/apps") }, { "@type": "ListItem", position: 3, name: productName, item: pageUrl }] };
+const softwareSchema = { "@context": "https://schema.org", "@graph": [{ "@type": "WebPage", "@id": webPageId, name: "Shopify AI Chatbot & FAQ App | Hyper AI Chat", url: pageUrl, isPartOf: { "@id": websiteId }, breadcrumb: { "@id": breadcrumbId }, about: { "@id": softwareId }, mainEntity: { "@id": softwareId }, description: metadata.description }, { "@type": "SoftwareApplication", "@id": softwareId, name: productName, alternateName: officialName, applicationCategory: "Shopify application", applicationSubCategory: "Chat", operatingSystem: "Shopify", url: pageUrl, sameAs: installUrl, installUrl, screenshot: canonicalUrl(chatApp.screenshot), image: canonicalUrl(chatApp.screenshot), datePublished: "2026-05-12", inLanguage: "en", publisher: { "@id": organizationId }, developer: { "@id": organizationId }, description: "Hyper AI Chat & FAQs helps Shopify merchants provide AI self-service answers and searchable FAQs using approved products, policies, FAQs, and support content.", offers: chatApp.plans.map((plan) => ({ "@type": "Offer", name: plan.name, price: plan.price === "$0" ? "0" : plan.price.replace(/[^0-9.]/g, ""), priceCurrency: "USD", url: installUrl, description: [plan.productLimit, plan.trial, ...plan.limits].filter(Boolean).join("; ") })), featureList: ["AI chatbots", "FAQs", "Greetings", "Product recommendations", "Quick replies", "Business hours", "Welcome messages", "Agent avatar", "Chat history", "Support analytics"] }] };
+const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", "@id": faqId, mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) };
+function analyticsAttrs(event: string, sectionName: string, ctaText: string, destination: string, extra?: Record<string, string>) { return { "data-analytics-event": event, "data-analytics-section": sectionName, "data-analytics-cta": ctaText, "data-analytics-destination": destination, ...extra }; }
+function ExternalCta({ href, children, sectionName, event = "ai_chat_install_click", className, ctaText, planName }: { href: string; children: ReactNode; sectionName: string; event?: string; className: string; ctaText: string; planName?: string }) { return <Link href={href} className={className} aria-label={`${ctaText} for ${productName}`} {...analyticsAttrs(event, sectionName, ctaText, href, planName ? { "data-analytics-plan-name": planName } : undefined)}>{children}</Link>; }
 
 export default function HyperAIChatFAQPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: toJsonLd(softwareApplicationSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
-      />
-
-      {/* HERO */}
-      <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
-        <Container className="max-w-5xl text-center">
-          <div className="flex justify-center">
-            <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
-              <Image
-                src="/hyper-search.svg"
-                alt="Hyper AI Chat & FAQs app"
-                width={28}
-                height={28}
-                className="h-7 w-7 rounded-md object-contain"
-              />
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                Hyper AI Chat & FAQs
-              </span>
-            </div>
-          </div>
-
-          <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-            AI Chat & Smart FAQs for Shopify Customer Support
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Automate customer support with intelligent AI chat and FAQ systems. Hyper AI Chat & FAQs is developed by NiagaraT under the Hyper brand for Shopify merchants. It helps answer product, shipping, return, sizing, availability, and policy questions with an AI chatbot and searchable FAQ page.
-          </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <TrackLink
-              href="https://apps.shopify.com/hyper-chatbot-and-faqs"
-              eventName="click_install_button"
-              className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
-            >
-              Install on Shopify
-            </TrackLink>
-
-            <Link href="#features" className="text-sm font-medium text-primary underline">
-              Explore Features
-            </Link>
-          </div>
-        </Container>
-      </Section>
-
-      {/* FEATURES (MATCHED TEMPLATE STYLE) */}
-      <Section id="features" className="py-20 lg:py-28">
-        <Container className="max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center border border-border rounded-2xl bg-surface p-6 sm:p-10">
-            {/* LEFT */}
-            <div className="flex flex-col gap-8">
-              <div>
-                <span className="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-                  Core Features
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl tracking-tight font-semibold">
-                  AI Support Built for Shopify Stores
-                </h2>
-
-                <p className="text-muted-foreground text-base sm:text-lg leading-7 max-w-xl">
-                  Hyper AI Chat & FAQs uses store-specific content such as FAQs, product information, policies, and support guidance to answer common customer questions.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-6 pt-2">
-                {features.map((feature) => (
-                  <div key={feature} className="flex gap-4 items-start">
-                    <Check className="w-5 h-5 mt-1 text-primary shrink-0" />
-
-                    <div className="flex flex-col gap-1">
-                      <p className="font-medium text-sm sm:text-base">{feature}</p>
-                      <p className="text-sm text-muted-foreground leading-6">
-                        Intelligent automation improves response quality and speed.
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* RIGHT VISUAL */}
-            <div className="relative">
-              <div className="aspect-rectangle rounded-2xl bg-gradient-to-br from-primary/10 to-transparent border border-border flex items-center justify-center overflow-hidden">
-                <Image
-                  src="/aichat-banner.png"
-                  alt="AI Chat Dashboard"
-                  width={1200}
-                  height={900}
-                  className="opacity-80"
-                />
-              </div>
-
-              <div className="absolute -bottom-4 -left-4 bg-background border border-border rounded-xl px-4 py-2 shadow-sm">
-                <p className="text-xs text-muted-foreground">💬 Chat → Solve → Convert</p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-
-      <Section className="pb-20">
-        <Container className="max-w-6xl">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">
-              AI Customer Support Intelligence
-            </p>
-
-            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Automate Shopify Customer Support with AI Chat and FAQs
-            </h2>
-
-            <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-muted-foreground leading-7">
-              Explore how an AI chatbot, FAQ management, chat history, branding controls, and support analytics help Shopify merchants answer repeated questions and give shoppers clearer self-service support.
-            </p>
-          </div>
-
-          <div className="w-full flex justify-center">
-            <CardStack
-              items={benefits.map((b) => ({
-                id: b.id,
-                title: b.title,
-                imageSrc: b.imageSrc,
-              }))}
-              cardHeight={420}
-              autoAdvance={true}
-              intervalMs={3500}
-            />
-          </div>
-
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {seoBenefits.map((item) => (
-              <div
-                key={item.title}
-                className="
-        rounded-3xl
-        border
-        border-border
-        bg-surface
-        p-8
-        transition-all
-        duration-300
-        hover:border-primary/30
-        hover:shadow-xl
-      "
-              >
-                <div className="text-4xl">{item.icon}</div>
-
-                <h3 className="mt-5 text-lg font-semibold">{item.title}</h3>
-
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* HOW IT WORKS */}
-      <Section className="py-20 lg:py-24">
-        <Container className="max-w-6xl">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-              How It Works
-            </span>
-
-            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              How AI Chat Automates Support
-            </h2>
-
-            <p className="mt-5 text-muted-foreground leading-7">
-              Hyper AI Chat & FAQs helps Shopify merchants automate common support conversations. Customers can ask product, shipping, return, sizing, availability, and policy questions and receive self-service answers from the chat and FAQ experience.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                step: "01",
-                icon: "💬",
-                title: "Customer Asks a Question",
-                description:
-                  "Shoppers submit product, order, or policy questions through the AI chat widget directly on your Shopify store.",
-              },
-              {
-                step: "02",
-                icon: "🧠",
-                title: "AI Understands Intent",
-                description:
-                  "The app uses store content such as FAQs, product information, policies, and support guidance to provide a relevant answer when available.",
-              },
-              {
-                step: "03",
-                icon: "⚡",
-                title: "Instant Response Delivered",
-                description:
-                  "Customers receive quick self-service answers, reducing wait times for common questions and helping them make more confident purchase decisions.",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="
-            group relative overflow-hidden rounded-3xl
-            border border-border
-            bg-linear-to-b from-background to-surface
-            p-8
-            transition-all duration-300
-            hover:-translate-y-1
-            hover:border-primary/40
-            hover:shadow-xl
-          "
-              >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500">
-                  <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
-                </div>
-
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-sm font-medium text-primary">Step {item.step}</span>
-
-                  <span className="text-3xl">{item.icon}</span>
-                </div>
-
-                <h3 className="relative z-10 mt-6 text-xl font-semibold tracking-tight">
-                  {item.title}
-                </h3>
-
-                <p className="relative z-10 mt-4 text-sm leading-7 text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 rounded-3xl border border-border bg-surface p-8 sm:p-10">
-            <h3 className="text-2xl font-semibold tracking-tight">
-              Why Hyper AI Chat & FAQs Matters for Shopify Brands
-            </h3>
-
-            <p className="mt-5 text-muted-foreground leading-8">
-              Automated customer support combines AI chat, searchable FAQs, chat history, branding controls, and analytics. Hyper AI Chat & FAQs helps Shopify merchants reduce repetitive questions, improve self-service support, and give shoppers clearer information before purchase.
-            </p>
-          </div>
-        </Container>
-      </Section>
-      <PricingComponent
-        productName="Hyper AI Chat & FAQs"
-        title="Pricing for Hyper AI Chat & FAQs"
-        subtitle="Plans for Shopify merchants who want to answer customer questions with AI chat, searchable FAQs, chat history, custom branding, and support analytics."
-        tiers={pricingTiers}
-      />
-      <ProductEntityContext product="chat" />
-      {/* FAQ */}
-      <Section className="py-20 lg:py-24">
-        <Container className="max-w-5xl">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-              FAQ
-            </span>
-
-            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              Frequently Asked Questions About Shopify AI Chat & FAQs
-            </h2>
-
-            <p className="mt-5 text-muted-foreground leading-7">
-              Learn how Hyper AI Chat & FAQs helps Shopify merchants automate customer support,
-              reduce ticket volume, and improve customer satisfaction.
-            </p>
-          </div>
-
-          <div className="mt-14 space-y-5">
-            {faqs.map((faq, index) => (
-              <div
-                key={faq.q}
-                className="
-            group rounded-3xl
-            border border-border
-            bg-surface
-            p-6 sm:p-8
-            transition-all duration-300
-            hover:border-primary/30
-            hover:shadow-lg
-          "
-              >
-                <div className="flex items-start gap-5">
-                  <div
-                    className="
-              flex h-10 w-10 shrink-0 items-center justify-center
-              rounded-full bg-primary/10
-              text-sm font-semibold text-primary
-            "
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold tracking-tight">{faq.q}</h3>
-
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground">{faq.a}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 rounded-3xl border border-border bg-gradient-to-br from-primary/5 to-transparent p-8 text-center">
-            <h3 className="text-2xl font-semibold">
-              Why Shopify Merchants Choose Hyper AI Chat & FAQs
-            </h3>
-
-            <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
-              Hyper AI Chat & FAQs helps Shopify businesses answer repeated support questions with an AI chatbot and searchable FAQ page. By combining store-specific content, chat history, branding controls, and analytics, merchants can improve self-service support and purchase confidence.
-            </p>
-          </div>
-        </Container>
-      </Section>
-
-      {/* FINAL CTA */}
-      <Section className="pb-24 pt-8">
-        <Container className="max-w-6xl">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-background to-surface p-8 sm:p-12 lg:p-16">
-            {/* Background Effects (IMPORTANT) */}
-            <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-
-            <div className="relative z-10">
-              {/* Badge */}
-              <div className="flex justify-center">
-                <span className="inline-flex rounded-full border border-border px-4 py-1 text-xs font-medium text-muted-foreground">
-                  AI Customer Support Automation
-                </span>
-              </div>
-
-              {/* Heading */}
-              <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-                Turn Shopify Customer Questions Into Clear Answers
-              </h2>
-
-              {/* Description */}
-              <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
-                Hyper AI Chat & FAQs helps Shopify merchants automate common customer support questions with an AI chatbot, searchable FAQ page, chat history, branding controls, and analytics.
-              </p>
-
-              {/* Benefits Pills (IMPORTANT PART YOU WERE MISSING) */}
-              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-                <div className="rounded-full border border-border px-4 py-2">
-                  💬 Instant AI Replies
-                </div>
-
-                <div className="rounded-full border border-border px-4 py-2">Self-Service Support</div>
-
-                <div className="rounded-full border border-border px-4 py-2">
-                  🧠 Smart FAQ Automation
-                </div>
-
-                <div className="rounded-full border border-border px-4 py-2">
-                  Purchase Confidence
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <TrackLink
-                  href="https://apps.shopify.com/hyper-chatbot-and-faqs"
-                  className="
-              inline-flex items-center justify-center
-              rounded-full
-              bg-primary
-              px-8 py-4
-              text-sm font-medium
-              text-white
-              transition
-              hover:opacity-90
-            "
-                  eventName="click_install_button"
-                >
-                  Install on Shopify
-                </TrackLink>
-
-                <Link
-                  href="#features"
-                  className="
-              inline-flex items-center justify-center
-              rounded-full
-              border border-border
-              px-8 py-4
-              text-sm font-medium
-              hover:bg-surface
-              transition
-            "
-                >
-                  Explore Features
-                </Link>
-              </div>
-
-              {/* Trust Text */}
-              <p className="mt-8 text-center text-sm text-muted-foreground">
-                Built by NiagaraT for Shopify stores that want scalable self-service support for common customer questions.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(faqSchema) }} />
+      <Section className="border-b border-border bg-[linear-gradient(180deg,hsl(var(--surface)),hsl(var(--background)))] pb-14 pt-16 sm:pt-20 lg:pt-24"><Container><div className="max-w-4xl"><div><div className="inline-flex items-center gap-3 rounded-[8px] border border-border bg-background px-4 py-2 shadow-sm"><Image src={chatApp.icon} alt="" width={28} height={28} aria-hidden="true" className="rounded-[6px]" /><span className="text-sm font-bold text-muted-foreground">Hyper AI Chat & FAQs for Shopify</span></div><h1 className="mt-5 max-w-4xl text-4xl font-black leading-[1.08] tracking-normal text-foreground sm:text-5xl lg:text-6xl">AI Chatbot and FAQ App for Shopify Stores</h1><p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Give shoppers quick answers about products, sizing, shipping, returns, availability, and store policies using an AI chatbot and searchable FAQ page trained with your approved store content.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"><ExternalCta href={installUrl} sectionName="hero" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta><ExternalCta href={demoUrl} sectionName="hero" event="ai_chat_demo_click" ctaText="View Demo Store" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">View Demo Store</ExternalCta><Link href="#pricing" className="inline-flex min-h-11 items-center justify-center px-2 text-sm font-bold text-primary underline-offset-4 hover:underline">Compare Plans</Link></div><p className="mt-5 text-sm font-semibold text-foreground">Free includes up to 50 AI conversations per month. Paid plans include a 14-day trial.</p><dl className="mt-8 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">{trustItems.map((item) => <div key={item} className="flex min-h-12 items-center gap-2 rounded-[8px] border border-border bg-background px-4 py-3 text-muted-foreground shadow-sm"><CheckCircle2 aria-hidden="true" className="size-4 shrink-0 text-primary" /><span>{item}</span></div>)}</dl></div></div></Container></Section>
+      <ProductVisualGallery eyebrow="Product visuals" title="See the Chatbot and FAQ Experience" body="See the storefront chat assistant, FAQ answer surfaces, and chat-history views merchants use to spot repeated product, shipping, return, and policy questions." visuals={productVisuals} />
+      <Section spacing="lg"><Container><div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]"><div><h2 className="text-3xl font-black tracking-normal">Repeated Questions Create Friction Before Purchase</h2><p className="mt-4 text-muted-foreground">A shopper may need to know whether a product is available in a certain size, how long delivery takes, and whether it can be returned. Hyper can use approved product and policy information to provide a relevant self-service answer when that information is available.</p></div><div className="grid gap-3 sm:grid-cols-2">{problems.map((problem) => <div key={problem} className="rounded-[8px] border border-border bg-surface p-4 text-sm text-muted-foreground">{problem}</div>)}</div></div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">See Hyper AI Chat Answer Store Questions</h2><p className="mt-4 text-muted-foreground">Use the live demo to inspect the real storefront experience. The steps below explain the customer and merchant workflow without loading a production chatbot widget on this page.</p></div><ol className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">{demoSteps.map(([title, body], index) => <li key={title} className="rounded-[8px] border border-border bg-background p-4"><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">{String(index + 1).padStart(2, "0")}</p><h3 className="mt-2 font-bold leading-6">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></li>)}</ol><div className="mt-8 flex flex-col gap-3 sm:flex-row"><ExternalCta href={demoUrl} sectionName="demo" event="ai_chat_demo_click" ctaText="View Live Demo" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground hover:border-primary/60">View Live Demo</ExternalCta><ExternalCta href={installUrl} sectionName="demo" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta></div></Container></Section>
+      <Section id="features" spacing="lg"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">AI Self-Service Support Built for Shopify</h2><p className="mt-4 text-muted-foreground">Each capability uses distinct, verified or qualified copy so the page does not overstate what the app can do.</p></div><div className="mt-8 grid gap-6 md:grid-cols-2">{capabilities.map((feature) => { const Icon = feature.icon; return <article key={feature.title} className="rounded-[8px] border border-border bg-surface p-6" {...analyticsAttrs("ai_chat_feature_view", "core_capabilities", feature.title, `#${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`)}><Icon aria-hidden="true" className="size-6 text-primary" /><h3 className="mt-4 text-xl font-black tracking-normal">{feature.title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{feature.body}</p><p className="mt-4 rounded-[6px] bg-background p-3 text-xs leading-5 text-muted-foreground">{feature.note}</p></article>; })}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><h2 className="text-3xl font-black tracking-normal">Set Clear Boundaries for AI Answers</h2><div className="mt-8 grid gap-6 lg:grid-cols-2"><FitList title="Designed to help with" items={boundariesHelp} /><FitList title="Should still involve a person" items={boundariesHuman} muted /></div><p className="mt-5 text-sm text-muted-foreground">When reliable content is unavailable, the experience should avoid guessing and direct shoppers toward support content or merchant contact options.</p></Container></Section>
+      <Section spacing="lg"><Container><h2 className="text-3xl font-black tracking-normal">How Hyper AI Chat & FAQs Works</h2><div className="mt-8 grid gap-5 lg:grid-cols-5">{workSteps.map(([step, title, body]) => <article key={title} className="rounded-[8px] border border-border bg-surface p-5"><p className="text-sm font-bold text-primary">{step}</p><h3 className="mt-3 font-black tracking-normal">{title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p></article>)}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Questions Hyper Can Help Shopify Stores Answer</h2><p className="mt-4 text-muted-foreground">The quality of an answer depends on the accuracy and completeness of the store content provided to the app.</p></div><div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">{useCases.map(([title, items]) => <article key={title} className="rounded-[8px] border border-border bg-background p-5"><h3 className="font-black tracking-normal">{title}</h3><ul className="mt-4 space-y-2 text-sm leading-6 text-muted-foreground">{items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div></Container></Section>
+      <Section spacing="lg"><Container><h2 className="text-3xl font-black tracking-normal">Is Hyper AI Chat & FAQs Right for Your Store?</h2><div className="mt-8 grid gap-6 lg:grid-cols-2"><FitList title="Best suited for" items={bestFit} /><FitList title="A simpler solution may be enough when" items={simplerFit} muted /></div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">AI Chatbot, FAQ Page, or Full Help Desk?</h2><p className="mt-4 text-muted-foreground">Hyper AI Chat & FAQs is intended for Shopify merchants that want an AI chatbot and searchable self-service answers. Stores requiring advanced ticketing, omnichannel inboxes, or large support teams may still need a dedicated help-desk platform.</p></div><div className="mt-8 overflow-x-auto rounded-[8px] border border-border" tabIndex={0} aria-label="Scrollable support category comparison"><table className="min-w-[980px] w-full border-collapse bg-background text-left text-sm"><caption className="sr-only">Comparison of AI chatbot, FAQ page, live chat, and help desk options</caption><thead className="bg-surface"><tr><th scope="col" className="w-48 border-b border-border p-4 font-bold">Capability</th><th scope="col" className="border-b border-border p-4 font-bold">Hyper AI Chat & FAQs</th><th scope="col" className="border-b border-border p-4 font-bold">Static FAQ page</th><th scope="col" className="border-b border-border p-4 font-bold">Human live chat</th><th scope="col" className="border-b border-border p-4 font-bold">Full help desk</th></tr></thead><tbody>{comparisonRows.map(([label, hyper, faq, live, desk]) => <tr key={label} className="border-b border-border last:border-b-0"><th scope="row" className="bg-surface/70 p-4 align-top font-bold">{label}</th><td className="p-4 align-top text-muted-foreground">{hyper}</td><td className="p-4 align-top text-muted-foreground">{faq}</td><td className="p-4 align-top text-muted-foreground">{live}</td><td className="p-4 align-top text-muted-foreground">{desk}</td></tr>)}</tbody></table></div></Container></Section>
+      <Section id="pricing" spacing="lg"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Choose a Plan Based on Conversation Volume</h2><p className="mt-4 text-muted-foreground">Pricing is managed from the shared Hyper app data object and verified against the Shopify App Store listing on {hyperAppsUpdatedAt}.</p></div><div className="mt-8 grid gap-5 lg:grid-cols-4">{chatApp.plans.map((plan) => <article key={plan.name} className="flex min-h-[33rem] flex-col rounded-[8px] border border-border bg-surface p-5" {...analyticsAttrs("ai_chat_pricing_view", "pricing", plan.name, "#pricing", { "data-analytics-plan-name": plan.name })}><h3 className="text-xl font-black tracking-normal">{plan.name}</h3><p className="mt-3 text-3xl font-black tracking-normal">{plan.price}</p>{plan.trial ? <p className="mt-3 text-sm font-semibold text-primary">{plan.trial}</p> : <p className="mt-3 text-sm text-muted-foreground">Free plan</p>}<p className="mt-4 min-h-12 text-sm leading-6 text-muted-foreground">{plan.description}</p><dl className="mt-5 grid gap-3 text-sm"><div><dt className="font-bold">AI conversations</dt><dd className="text-muted-foreground">{plan.productLimit}</dd></div><div><dt className="font-bold">Chat history</dt><dd className="text-muted-foreground">{plan.analyticsHistory}</dd></div><div><dt className="font-bold">Merchant support</dt><dd className="text-muted-foreground">{plan.support}</dd></div></dl><ul className="mt-5 space-y-2">{plan.limits.map((item) => <li key={item} className="flex gap-2 text-sm leading-5 text-muted-foreground"><CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" /><span>{item}</span></li>)}</ul><div className="mt-auto pt-6"><ExternalCta href={installUrl} sectionName="pricing" event="ai_chat_plan_select" ctaText={plan.cta ?? "Install on Shopify"} planName={plan.name} className="inline-flex min-h-11 w-full items-center justify-center rounded-[6px] bg-primary px-5 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">{plan.cta ?? "Install on Shopify"}</ExternalCta></div></article>)}</div><p className="mt-5 text-sm text-muted-foreground">{pricingNote} Confirm monthly-limit behavior with the product owner before promising upgrade, pause, or overage behavior.</p></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]"><div><h2 className="text-3xl font-black tracking-normal">Estimate the Plan Your Store May Need</h2><p className="mt-4 text-muted-foreground">Estimated monthly AI conversations = monthly storefront visitors x chat-open rate x conversations per chat user. Example: 50,000 visitors x 2% x 1 conversation = 1,000 estimated AI conversations per month.</p></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{chatApp.plans.map((plan) => <div key={plan.name} className="rounded-[8px] border border-border bg-background p-4"><p className="font-bold">{plan.name}</p><p className="mt-2 text-sm text-muted-foreground">{plan.productLimit}</p></div>)}</div></div></Container></Section>
+      <Section spacing="lg"><Container><h2 className="text-3xl font-black tracking-normal">Setup, Store Data, and Shopify Compatibility</h2><div className="mt-8 grid gap-4 md:grid-cols-2">{compatibilityItems.map(([title, body]) => <article key={title} className="rounded-[8px] border border-border bg-surface p-5"><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></article>)}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container size="md"><header className="text-center"><h2 className="text-3xl font-black tracking-normal">Frequently Asked Questions About Shopify AI Chatbots</h2><p className="mx-auto mt-4 max-w-3xl text-muted-foreground">FAQ schema is generated only from the visible questions below.</p></header><div className="mt-8 divide-y divide-border rounded-[8px] border border-border bg-background">{faqs.map(([question, answer]) => <details key={question} className="group p-5" {...analyticsAttrs("ai_chat_faq_open", "faq", question, "#faq")}><summary className="cursor-pointer list-none text-base font-black text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden"><span className="flex items-center justify-between gap-4">{question}<span aria-hidden="true" className="text-primary">+</span></span></summary><p className="mt-4 text-sm leading-7 text-muted-foreground">{answer}</p></details>)}</div></Container></Section>
+      <Section spacing="lg"><Container><div className="grid gap-8 lg:grid-cols-[1fr_0.8fr]"><div><h2 className="text-3xl font-black tracking-normal">Improve Shopify Self-Service Support</h2><div className="mt-8 grid gap-4 sm:grid-cols-2">{resources.map(([title, href, body]) => <Link key={title} href={href} className="rounded-[8px] border border-border bg-surface p-5 transition hover:border-primary/50" {...analyticsAttrs("ai_chat_resource_click", "related_resources", title, href)}><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></Link>)}</div></div><div><h2 className="text-3xl font-black tracking-normal">Solve the Next Storefront Bottleneck</h2><div className="mt-8 grid gap-4">{otherApps.map(([title, href, body]) => <Link key={title} href={href} className="rounded-[8px] border border-border bg-surface p-5 transition hover:border-primary/50"><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></Link>)}</div></div></div></Container></Section>
+      <Section spacing="lg" className="bg-primary/10"><Container><div className="mx-auto max-w-3xl text-center"><h2 className="text-3xl font-black tracking-normal sm:text-4xl">Give Shopify Shoppers Faster Answers</h2><p className="mt-4 text-muted-foreground">Install Hyper AI Chat & FAQs free for up to 50 monthly AI conversations, or start a 14-day trial of a paid plan.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><ExternalCta href={installUrl} sectionName="final_cta" event="ai_chat_install_click" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta><ExternalCta href={demoUrl} sectionName="final_cta" event="ai_chat_demo_click" ctaText="View Demo Store" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground hover:border-primary/60">View Demo Store</ExternalCta><Link href="#pricing" className="inline-flex min-h-11 items-center justify-center px-3 text-sm font-bold text-primary underline-offset-4 hover:underline">Compare Plans</Link></div></div></Container></Section>
     </>
   );
 }
+
+function FitList({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) { return <article className="rounded-[8px] border border-border bg-surface p-6"><h3 className="text-xl font-black tracking-normal">{title}</h3><ul className="mt-5 space-y-3">{items.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground"><CheckCircle2 aria-hidden="true" className={`mt-0.5 size-4 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} /><span>{item}</span></li>)}</ul></article>; }
+
+
 

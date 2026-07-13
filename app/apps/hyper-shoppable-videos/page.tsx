@@ -1,732 +1,97 @@
-import Link from "next/link";
+import type { ReactNode } from "react";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import Link from "next/link";
+import { BarChart3, CheckCircle2, ExternalLink, GalleryHorizontalEnd, MousePointerClick, ShieldCheck, Tag, Upload, WandSparkles } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { canonicalUrl, createPageMetadata } from "@/config/metadata";
-import TrackLink from "@/components/TrackLink";
-import PricingComponent from "@/components/PricingComponent";
-import { ProductEntityContext } from "@/components/seo/product-entity-context";
+import { ProductVisualGallery } from "@/components/product-visual-gallery";
+import { canonicalUrl } from "@/config/metadata";
+import { getHyperApp, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 import { toJsonLd } from "@/lib/schema";
-import dynamic from "next/dynamic";
 
-const CardStack = dynamic(
-  () => import("@/components/CardStack").then((m) => m.CardStack),
-  {
-    // Reserve the same height the stack renders at (cardHeight={420} below)
-    // so the page doesn't jump once the lazy chunk loads.
-    loading: () => (
-      <div className="h-[420px] w-full max-w-3xl animate-pulse rounded-2xl bg-surface" />
-    ),
-  }
-);
+const videoApp = getHyperApp("video");
+if (!videoApp) throw new Error("Shoppable Videos app data is missing");
 
-export const metadata = createPageMetadata({
-  title: "Hyper Shoppable Videos: Shopify Video Commerce",
-  description:
-    "Hyper Shoppable Videos is a Shopify video commerce app from NiagaraT that helps merchants tag products in videos, add shoppable widgets, import social-style content, review analytics, and improve product discovery.",
-  path: "/apps/hyper-shoppable-videos",
-});
-
-const features = [
-  "Interactive shoppable product videos",
-  "Direct add-to-cart from videos",
-  "Real-time product tagging",
-  "Seamless Shopify integration",
-];
-
-const seoBenefits = [
-  {
-    icon: "🎥",
-    title: "Interactive Product Videos",
-    desc: "Create interactive shopping experiences by tagging products inside videos.",
-  },
-  {
-    icon: "🛒",
-    title: "Plan-Supported Add-to-Cart",
-    desc: "Let shoppers add products from video where the selected plan and widget setup support it.",
-  },
-  {
-    icon: "📈",
-    title: "Video Engagement Analytics",
-    desc: "Review video views and engagement analytics to understand how shoppers interact with product content.",
-  },
-  {
-    icon: "⚡",
-    title: "Improve Conversion Rates",
-    desc: "Reduce friction between product discovery and checkout with seamless video commerce.",
-  },
-];
-
-const benefits = [
-  {
-    id: 1,
-    title: "Improve Video Engagement",
-    description: "Interactive product videos help shoppers explore products while they stay engaged with your storefront content.",
-    imageSrc: "/shopable-benefit-1.png",
-  },
-  {
-    id: 2,
-    title: "Connect Video to Products",
-    description: "Reduce friction by connecting product demonstrations, social commerce clips, and UGC-style videos with tagged Shopify products.",
-    imageSrc: "/shopable-benefit-2.png",
-  },
-  {
-    id: 3,
-    title: "Manage Content Easily",
-    description: "Organize product-tagged videos, widgets, imports, and analytics from the Shopify video commerce workflow.",
-    imageSrc: "/shopable-benefit-3.png",
-  },
-];
-const pricingTiers = [
-  {
-    name: "Free",
-    subtitle: "Free",
-    price: "Free",
-    description: "Add shoppable product videos to Shopify and improve customer engagement.",
-    features: [
-      { text: "5 videos", included: true },
-      { text: "1 widget", included: true },
-      { text: "1 tag/video", included: true },
-      { text: "1000 monthly views", included: true },
-      { text: "Basic analytics", included: true },
-      { text: "Manual upload", included: true },
-      { text: "TikTok import", included: true },
-    ],
-    buttonText: "Install Free",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
-  },
-  {
-    name: "Starter",
-    subtitle: "Starter",
-    price: "$19",
-    period: "/mo",
-    description:
-      "Transform TikTok, Instagram, and UGC videos into shoppable storefront experiences.",
-    features: [
-      { text: "30 videos", included: true },
-      { text: "5 widgets", included: true },
-      { text: "3 tags/video", included: true },
-      { text: "8000 monthly views", included: true },
-      { text: "Standard analytics", included: true },
-      { text: "Manual upload", included: true },
-      { text: "TikTok import", included: true },
-      { text: "10 AI matches/month", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
-  },
-  {
-    name: "Growth",
-    subtitle: "GROWTH",
-    price: "$49",
-    period: "/mo",
-    description:
-      "Optimize video commerce performance with analytics, branding, and advanced controls.",
-    badge: { text: "Most Popular" },
-    features: [
-      { text: "200 videos", included: true },
-      { text: "15 widgets", included: true },
-      { text: "10 tags/video", included: true },
-      { text: "40,000 monthly views", included: true },
-      { text: "Advanced analytics", included: true },
-      { text: "TikTok/Instagram uploads", included: true },
-      { text: "75 AI matches/month", included: true },
-      { text: "A/B testing", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
-    highlighted: true,
-  },
-  {
-    name: "Pro",
-    subtitle: "PRO",
-    price: "$119",
-    period: "/mo",
-    description: "Complete Shopify video commerce solution with premium support and scalability.",
-    features: [
-      { text: "500 videos", included: true },
-      { text: "Unlimited widgets", included: true },
-      { text: "Unlimited tag/video", included: true },
-      { text: "Unlimited monthly views", included: true },
-      { text: "Advanced analytics", included: true },
-      { text: "TikTok/Instagram uploads", included: true },
-      { text: "300 AI matches/month", included: true },
-      { text: "HeyGen import", included: true },
-    ],
-    buttonText: "Install on Shopify",
-    buttonVariant: "secondary" as const,
-    buttonHref: "https://apps.shopify.com/hyper-shopable-videos",
-  },
-];
-
-const faqs = [
-  {
-    q: "What are shoppable videos for Shopify?",
-    a: "Shoppable videos are interactive product videos that allow customers to click featured products, view details, and continue toward purchase while watching.",
-  },
-  {
-    q: "How do shoppable videos support Shopify conversion?",
-    a: "By reducing the gap between product discovery and product exploration, shoppable videos can improve engagement and help shoppers move closer to purchase.",
-  },
-  {
-    q: "Can customers add products to cart from videos?",
-    a: "Yes. Hyper Shoppable Videos supports product interaction and plan-supported add-to-cart paths from video widgets.",
-  },
-  {
-    q: "Does Hyper Shoppable Videos work with Shopify themes?",
-    a: "Yes. The app integrates seamlessly with Shopify stores and is designed to work across modern Shopify themes.",
-  },
-  {
-    q: "Do shoppable videos improve customer engagement?",
-    a: "Interactive video commerce gives shoppers more ways to explore products than static content alone, especially for demos, styling, tutorials, and UGC-style clips.",
-  },
-  {
-    q: "Is coding required to use Hyper Shoppable Videos?",
-    a: "No. Hyper Shoppable Videos is designed as a plug-and-play Shopify app with an easy setup process.",
-  },
-  {
-    q: "Can merchants tag multiple products inside one video?",
-    a: "Yes. Paid plans support multiple product tags per video, making it easier to connect outfits, bundles, tutorials, demos, and UGC clips to the products featured on screen.",
-  },
-  {
-    q: "Can Hyper Shoppable Videos use TikTok or Instagram-style content?",
-    a: "Yes. Merchants can use short-form product videos, social commerce clips, tutorials, and UGC-style content to create interactive storefront experiences.",
-  },
-  {
-    q: "Where can shoppable video widgets appear on a Shopify store?",
-    a: "Shoppable video widgets can be used across product pages, home pages, landing pages, and campaign pages where merchants want to combine storytelling with direct product discovery.",
-  },
-  {
-    q: "What types of products are a strong fit for shoppable videos?",
-    a: "Fashion, beauty, home goods, electronics, accessories, and products that benefit from demos, styling, tutorials, or before-and-after content are strong fits for shoppable video commerce.",
-  },
-];
-
-const productPageUrl = canonicalUrl("/apps/hyper-shoppable-videos");
-const productSoftwareId = `${productPageUrl}#software`;
-const productWebPageId = `${productPageUrl}#webpage`;
+const productName = "Hyper Shoppable Videos";
+const officialName = "Hyper - Shoppable Videos";
+const installUrl = videoApp.installHref;
+const pageUrl = canonicalUrl(videoApp.internalHref);
+const softwareId = `${pageUrl}#software`;
+const webPageId = `${pageUrl}#webpage`;
+const breadcrumbId = `${pageUrl}#breadcrumb`;
+const faqId = `${pageUrl}#faq`;
 const organizationId = `${canonicalUrl("/")}#organization`;
-const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
 const websiteId = `${canonicalUrl("/")}#website`;
+const pricingNote = "Plans, limits, and included features may change. The Shopify App Store listing is the source of truth for current billing information.";
 
-const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebPage",
-      "@id": productWebPageId,
-      name: "Hyper Shoppable Videos",
-      url: productPageUrl,
-      isPartOf: { "@id": websiteId },
-      publisher: { "@id": organizationId },
-      about: { "@id": productSoftwareId },
-      mainEntity: { "@id": productSoftwareId },
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": productSoftwareId,
-      name: "Hyper Shoppable Videos",
-      url: productPageUrl,
-      sameAs: "https://apps.shopify.com/hyper-shopable-videos",
-      applicationCategory: "BusinessApplication",
-      applicationSubCategory: "Video commerce",
-      operatingSystem: "Shopify",
-      description:
-        "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and use plan-supported add-to-cart paths from engaging video experiences.",
-      image: canonicalUrl("/shoppable-banner.png"),
-      installUrl: "https://apps.shopify.com/hyper-shopable-videos",
-      publisher: { "@id": organizationId },
-      provider: { "@id": organizationId },
-      creator: { "@id": organizationId },
-      brand: { "@id": brandId },
-      isPartOf: { "@id": brandId },
-      mainEntityOfPage: { "@id": productWebPageId },
-      offers: pricingTiers.map((tier) => ({
-        "@type": "Offer",
-        "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-        name: tier.name,
-        price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
-        priceCurrency: "USD",
-        url: tier.buttonHref,
-        itemOffered: { "@id": productSoftwareId },
-        seller: { "@id": organizationId },
-      })),
-      featureList: [
-        "Interactive shoppable product videos",
-        "Direct add-to-cart from video",
-        "Product tagging inside videos",
-        "TikTok and Instagram video imports",
-        "User-generated content support",
-        "Multiple storefront video widgets",
-        "AI-assisted product matching",
-        "Video engagement analytics",
-        "A/B testing for video experiences",
-        "Responsive Shopify storefront integration",
-      ],
-      "@reverse": {
-        mainEntity: { "@id": productWebPageId },
-        about: { "@id": productWebPageId },
-        itemOffered: pricingTiers.map((tier) => ({
-          "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-        })),
-      },
-    },
-  ],
+export const metadata = {
+  title: { absolute: "Shopify Shoppable Video & UGC App | Hyper Videos" },
+  description: "Turn Shopify product videos, TikToks, Reels and UGC into shoppable widgets with product tags, add-to-cart actions and video analytics.",
+  alternates: { canonical: pageUrl },
+  openGraph: { type: "website", url: pageUrl, title: "Shoppable Videos and UGC Widgets for Shopify | Hyper", description: "Tag products in videos, add shoppable widgets to Shopify pages, and track views, clicks, and add-to-cart activity.", images: [{ url: canonicalUrl(videoApp.screenshot), width: 1200, height: 630, alt: videoApp.screenshotAlt }] },
+  twitter: { card: "summary_large_image", title: "Shoppable Videos and UGC Widgets for Shopify | Hyper", description: "Tag products in videos, add shoppable widgets to Shopify pages, and track views, clicks, and add-to-cart activity.", images: [canonicalUrl(videoApp.screenshot)] },
 };
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.a,
-    },
-  })),
-};
-
+const trustItems = ["Free plan available", "14-day paid-plan trial", "TikTok import", "Product tagging", "Video analytics", "Install through Shopify"];
+const productVisuals = [
+  { src: "/shoppable-banner.png", alt: "Hyper Shoppable Videos storefront widget with tagged product video", title: "Shoppable video storefront widget", body: "Show product videos with tagged items and shopping actions while keeping the page copy clear about supported behavior." },
+  { src: "/shopable-benefit-1.png", alt: "Hyper Shoppable Videos product tagging and video management workflow", title: "Product-tagged video workflow", body: "Connect Shopify products to the items featured in video content so shoppers can open relevant product information." },
+  { src: "/shopable-benefit-2.png", alt: "Hyper Shoppable Videos widget management screen", title: "Video widgets and placements", body: "Organize shoppable video widgets for storefront pages such as home, product, collection, and landing pages where supported." },
+  { src: "/shopable-benefit-3.png", alt: "Hyper Shoppable Videos analytics view for views clicks and add-to-cart events", title: "Video interaction analytics", body: "Track verified views, product clicks, and add-to-cart events without presenting those actions as completed purchases." },
+];
+const problems = ["Shoppers see a featured product but do not know its name", "Customers must leave the video and search the catalog manually", "Social videos are disconnected from Shopify products", "Multiple products appear in one video without clear links", "Product demonstrations do not include an immediate shopping action", "Merchants cannot see which videos generate product interest", "Video content exists but is not organized for storefront use", "Mobile shoppers expect social-style video experiences"];
+const demoSteps = [["Upload or import a video", "Add supported product demonstrations, tutorials, UGC, TikTok-style clips, or approved short-form content."], ["Link Shopify products", "Connect one or more Shopify products to the items shown in the video."], ["Place tags or hotspots", "Use product tags or supported hotspots so shoppers can identify products at the point of interest."], ["Choose a widget", "Publish a carousel, story-style placement, embedded video, or other supported storefront widget."], ["Review activity", "Track available views, product clicks, and add-to-cart events without treating them as completed purchases."]];
+const capabilities = [
+  { icon: Tag, title: "Product-Tagged Videos", body: "Connect products to the items shown in a video so shoppers can identify and explore featured products without searching the catalog manually.", note: "Product tags per video vary by plan from 1 on Free to unlimited on Pro." },
+  { icon: MousePointerClick, title: "Product Hotspots", body: "Place interactive points over products shown on screen so shoppers can open relevant product information at the point of interest.", note: "Confirm exact hotspot controls in the app before promising plan-specific behavior." },
+  { icon: CheckCircle2, title: "Add-to-Cart Actions", body: "Let shoppers add tagged products to cart from supported video widgets and plan configurations.", note: "An add-to-cart event is not a completed checkout or purchase." },
+  { icon: GalleryHorizontalEnd, title: "Video Carousels and Widgets", body: "Display product videos in storefront widgets such as carousels, embedded videos, and mobile-responsive story-style placements.", note: "The Shopify listing verifies video widgets, embedded videos, carousels, and mobile-responsive video." },
+  { icon: Upload, title: "Manual Upload and Imports", body: "Upload approved product videos or import supported short-form content for use in Shopify video widgets.", note: "Free and Starter list manual upload and TikTok import. Growth and Pro list TikTok and Instagram uploads." },
+  { icon: WandSparkles, title: "AI Product Matching", body: "Use AI-assisted matching to help connect video content with relevant Shopify catalog products, then review suggestions before relying on them.", note: "Starter includes 10 matches/month, Growth 75, and Pro 300. Confirm counting behavior with the product owner." },
+  { icon: BarChart3, title: "Video Analytics", body: "Track verified video views, product clicks, and add-to-cart events to understand how shoppers interact with video content.", note: "Do not claim revenue attribution, ROAS, watch time, or completion rate unless verified." },
+  { icon: ShieldCheck, title: "Rights and Store Data", body: "Use only videos, music, creator content, customer content, trademarks, and product imagery that the business owns or has permission to use.", note: "The Shopify listing discloses access to device activity, store owner data, customers, products, recent orders, and theme access." },
+];
+const workSteps = [["Step 1", "Install Through Shopify", "Install the app from the official Shopify listing and review the requested permissions."], ["Step 2", "Upload or Import Video Content", "Add supported video files or import content from available sources that your business has rights to use."], ["Step 3", "Connect Shopify Products", "Select products and place supported tags or hotspots inside the video experience."], ["Step 4", "Publish a Storefront Widget", "Choose a carousel, story-style layout, embedded video, or other available widget placement."], ["Step 5", "Review Video Activity", "Monitor supported views, product clicks, and add-to-cart events."]];
+const useCases = [["Product demonstrations", ["How a product works", "What is included", "Features in use", "Different product angles"]], ["Styling and lookbooks", ["Complete outfits", "Accessories", "Coordinated products", "Seasonal collections"]], ["Tutorials", ["Setup instructions", "Application steps", "Product routines", "Before-and-after processes without promising results"]], ["UGC and creator content", ["Customer demonstrations", "Unboxings", "Reviews used with permission", "Creator videos used with appropriate rights"]]] as const;
+const bestFit = ["Merchants already producing product videos", "Fashion and accessories stores", "Beauty and skincare stores", "Home and lifestyle brands", "Consumer electronics demonstrations", "Fitness and sporting-goods stores", "Merchants with UGC or creator content", "Stores using TikTok or Instagram video content", "Products that benefit from visual explanation"];
+const simplerFit = ["The store has no usable video content", "Products need little visual explanation", "The merchant only needs a standard YouTube or Vimeo embed", "The business cannot maintain video content", "The merchant does not have usage rights for imported content", "Native theme video already solves the requirement"];
+const comparisonRows = [["Product tagging", "Yes, plan limits apply", "No"], ["Product hotspots", "Listed support", "No"], ["Add-to-cart actions", "Supported from video widgets where configured", "No"], ["Multiple products per video", "Yes, based on product-tag limits", "No"], ["Video carousels", "Yes", "Theme-dependent"], ["Mobile stories", "Yes", "No"], ["TikTok import", "Listed", "No"], ["Instagram uploads", "Growth and Pro", "No"], ["AI product matching", "Starter, Growth, and Pro", "No"], ["View, click, add-to-cart analytics", "Listed", "Usually no specialized product analytics"], ["A/B testing", "Growth", "No"]];
+const compatibilityItems = [["Installation method", "Install through the official Shopify App Store listing and review permissions before approval."], ["Demo-store CTA", "The live demo store is not used as a primary CTA until public access is confirmed. This page links to the on-page product walkthrough instead."], ["Widget placement", "The listing describes home, product, collection, and landing-page video widgets. Test placements on a duplicate theme before publishing."], ["Video performance", "Avoid autoplay with sound, use poster images, lazy-load below-the-fold widgets where practical, and test LCP, INP, and CLS after installation."], ["Supported language", "The Shopify listing shows English."], ["Data access", "The listing discloses device and activity data, store-owner contact data, customer data, products and collections, recent orders, and theme access."], ["Content rights", "Merchants are responsible for ensuring they have permission to use uploaded or imported videos, music, creator content, customer content, trademarks, and imagery."], ["Limit behavior", "The listing verifies limits, but does not document overage or pause behavior. Confirm with the product owner before publishing overage promises."]];
+const faqs = [["What is a Shopify shoppable video?", "It is a video experience that connects featured products to the video so shoppers can open product information or use supported shopping actions while watching."], ["Can shoppers add products to cart from a video?", "Yes, the Shopify listing describes add-to-cart behavior. This page describes it as an add-to-cart action, not a completed purchase."], ["Can I tag multiple products in one video?", "Yes. Limits vary by plan: Free includes 1 product tag per video, Starter 3, Growth 10, and Pro unlimited product tags per video."], ["What are product hotspots?", "Product hotspots are interactive points placed over products in a video so shoppers can open relevant product information."], ["Which video widgets are available?", "The listing verifies video widgets, embedded videos, carousels, and mobile-responsive video. Test exact widget locations on your Shopify theme."], ["Can I create a shoppable video carousel?", "Yes, carousels are listed as a supported storefront video experience."], ["Does the app support mobile stories?", "Yes, the listing includes mobile-responsive video and mobile stories imagery."], ["Can I import TikTok videos?", "Yes. TikTok import is listed on Free and Starter, and TikTok uploads are listed on Growth and Pro."], ["Can I import Instagram videos?", "Growth and Pro list TikTok and Instagram uploads. Confirm the exact import method before relying on automated syncing."], ["Can I use UGC and creator content?", "Yes, if your business owns or has permission to use the video, music, likenesses, trademarks, product imagery, and other content."], ["Does the app support HeyGen?", "The listing shows HeyGen support, and Pro lists HeyGen import."], ["What does AI product matching do?", "It helps connect video content with relevant Shopify catalog products. Suggestions should be reviewed by the merchant."], ["Which analytics are included?", "The listing verifies video views, product clicks, and add-to-cart events, with analytics level varying by plan."], ["Does the app track sales or revenue?", "Revenue attribution is not verified from the listing, so this page does not claim sales tracking."], ["What happens when I reach a monthly-view limit?", "The Shopify listing verifies monthly-view limits, but does not document overage behavior. Confirm this before promising upgrades, pauses, or charges."], ["Does installation require code?", "Standard setup is designed to use Shopify app and theme tools. Custom themes may require additional configuration."], ["Will video widgets affect page speed?", "Any video widget can affect performance. Use posters, lazy loading, stable dimensions, and theme testing before publishing."], ["Which plan should I choose?", "Choose by video count, widget count, monthly views, product tags per video, import sources, AI-match needs, A/B testing, and HeyGen import."], ["Is there a free plan?", "Yes. Free includes 5 videos, 1 widget, 1 product tag per video, and 1,000 monthly views."], ["How long is the paid-plan trial?", "Paid plans list a 14-day free trial."], ["Can I view a demo before installing?", "Use the on-page walkthrough for now. The live demo-store CTA should only be promoted after public access is confirmed."], ["What Shopify data does the app access?", "The listing discloses device and activity data, store-owner data, customer data, products, collections, recent order history, and Online Store theme access."]];
+const resources = [["Hyper Apps by NiagaraT", "/", "See the parent product family."], ["Compare Hyper Apps", "/apps", "Choose between video, search, and AI chat apps."], ["Shopify search and product filter app", "/apps/hyper-search-filter", "Help shoppers find relevant products."], ["Shopify AI chatbot", "/apps/hyper-ai-chat-faq", "Answer common product and policy questions."], ["Shopify resources", "/resources", "Read guides for improving storefront workflows."], ["Privacy policy", "/privacy", "Review NiagaraT privacy information."]];
+const otherApps = [["Shopify search and product filter app", "/apps/hyper-search-filter", "Help shoppers find relevant products."], ["Shopify AI chatbot", "/apps/hyper-ai-chat-faq", "Answer product and policy questions."], ["Compare Hyper Apps", "/apps", "Compare the complete Hyper Apps suite."]];
+const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", "@id": breadcrumbId, itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: canonicalUrl("/") }, { "@type": "ListItem", position: 2, name: "Apps", item: canonicalUrl("/apps") }, { "@type": "ListItem", position: 3, name: productName, item: pageUrl }] };
+const softwareSchema = { "@context": "https://schema.org", "@graph": [{ "@type": "WebPage", "@id": webPageId, name: "Shopify Shoppable Video & UGC App | Hyper Videos", url: pageUrl, isPartOf: { "@id": websiteId }, breadcrumb: { "@id": breadcrumbId }, about: { "@id": softwareId }, mainEntity: { "@id": softwareId }, description: metadata.description }, { "@type": "SoftwareApplication", "@id": softwareId, name: productName, alternateName: officialName, applicationCategory: "Shopify application", applicationSubCategory: "Video and livestream", operatingSystem: "Shopify", url: pageUrl, sameAs: installUrl, installUrl, screenshot: canonicalUrl(videoApp.screenshot), image: canonicalUrl(videoApp.screenshot), datePublished: "2026-05-12", inLanguage: "en", publisher: { "@id": organizationId }, developer: { "@id": organizationId }, description: "Hyper Shoppable Videos helps Shopify merchants turn product videos, TikToks, Reels, and UGC into shoppable video widgets with product tags, add-to-cart actions, and video analytics.", offers: videoApp.plans.map((plan) => ({ "@type": "Offer", name: plan.name, price: plan.price === "$0" ? "0" : plan.price.replace(/[^0-9.]/g, ""), priceCurrency: "USD", url: installUrl, description: [plan.productLimit, plan.trial, ...plan.limits].filter(Boolean).join("; ") })), featureList: ["Shoppable videos", "Interactive video", "Product hotspots", "Video widgets", "Embedded videos", "Carousels", "Mobile responsive video", "Video views", "Product clicks", "Add-to-cart events", "HeyGen"] }] };
+const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", "@id": faqId, mainEntity: faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) };
+function analyticsAttrs(event: string, sectionName: string, ctaText: string, destination: string, extra?: Record<string, string>) { return { "data-analytics-event": event, "data-analytics-section": sectionName, "data-analytics-cta": ctaText, "data-analytics-destination": destination, ...extra }; }
+function ExternalCta({ href, children, sectionName, event = "shoppable_video_install_click", className, ctaText, planName }: { href: string; children: ReactNode; sectionName: string; event?: string; className: string; ctaText: string; planName?: string }) { return <Link href={href} className={className} aria-label={`${ctaText} for ${productName}`} {...analyticsAttrs(event, sectionName, ctaText, href, planName ? { "data-analytics-plan-name": planName } : undefined)}>{children}</Link>; }
 export default function HyperShoppableVideosPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: toJsonLd(softwareApplicationSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
-      />
-
-      {/* HERO */}
-      <Section className="pt-24 sm:pt-28 lg:pt-32 pb-14">
-        <Container className="max-w-5xl text-center">
-          {/* BRAND BADGE */}
-          <div className="flex justify-center">
-            <div className="flex items-center gap-3 rounded-full border border-border bg-surface px-5 py-2 shadow-sm">
-              <Image
-                src="/hyper-search.svg"
-                alt="Hyper Shoppable Videos app"
-                width={28}
-                height={28}
-                className="h-7 w-7 rounded-md object-contain"
-              />
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                Hyper Shoppable Videos
-              </span>
-            </div>
-          </div>
-
-          <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-            Turn Product Videos Into Shoppable Experiences
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base lg:text-lg text-muted-foreground leading-7">
-            Hyper Shoppable Videos is developed by NiagaraT under the Hyper brand for Shopify merchants. The app helps stores connect product videos with tagged products, storefront widgets, social-style content, analytics, and add-to-cart paths where supported by plan.
-          </p>
-
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <TrackLink
-              href="https://apps.shopify.com/hyper-shopable-videos"
-              className="w-full sm:w-auto rounded-full bg-primary px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition"
-              eventName="click_install_button"
-            >
-              Install on Shopify
-            </TrackLink>
-
-            <Link href="#features" className="text-sm font-medium text-primary underline">
-              Explore Features
-            </Link>
-          </div>
-        </Container>
-      </Section>
-      {/* FEATURES */}
-      <Section id="features" className="py-20 lg:py-28">
-        <Container className="max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-center border border-border rounded-2xl bg-surface p-6 sm:p-10">
-            {/* LEFT CONTENT */}
-            <div className="flex flex-col gap-8">
-              {/* BADGE */}
-              <div>
-                <span className="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-                  Core Features
-                </span>
-              </div>
-
-              {/* HEADING */}
-              <div className="flex flex-col gap-3">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl tracking-tight font-semibold">
-                  Shopify Shoppable Video Features
-                </h2>
-
-                <p className="text-muted-foreground text-base sm:text-lg leading-7 max-w-xl">
-                  Built for Shopify merchants who use product demonstrations, tutorials, short-form social content, and user-generated content to support product discovery and shopper engagement.
-                </p>
-              </div>
-
-              {/* FEATURES LIST (CHECK STYLE) */}
-              <div className="flex flex-col gap-6 pt-2">
-                {features.map((feature) => (
-                  <div key={feature} className="flex gap-4 items-start">
-                    <Check className="w-5 h-5 mt-1 text-primary shrink-0" />
-
-                    <div className="flex flex-col gap-1">
-                      <p className="font-medium text-sm sm:text-base">{feature}</p>
-                      <p className="text-sm text-muted-foreground leading-6">
-                        Enhance shopping experience with this capability inside video commerce.
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* RIGHT VISUAL */}
-            <div className="relative">
-              <div className="aspect-rectangle rounded-2xl bg-gradient-to-br from-primary/10 to-transparent border border-border flex items-center justify-center overflow-hidden">
-                {/* Replace with real product image or video preview */}
-                <Image
-                  src="/shoppable-banner.png"
-                  alt="Shoppable Video Commerce Preview"
-                  width={1200}
-                  height={1200}
-                  className="opacity-80"
-                />
-              </div>
-
-              {/* FLOATING BADGE (optional premium feel) */}
-              <div className="absolute -bottom-4 -left-4 bg-background border border-border rounded-xl px-4 py-2 shadow-sm">
-                <p className="text-xs text-muted-foreground">⚡ Video → Product → Purchase</p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Section>
-      <Section className="pb-20">
-        <Container className="max-w-6xl">
-          {/* SEO HEADER */}
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.25em] text-muted-foreground">
-              Shopify Video Commerce Intelligence
-            </p>
-
-            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Turn Shopify Product Videos Into Shoppable Experiences
-            </h2>
-
-            <p className="mt-5 max-w-3xl mx-auto text-sm sm:text-base text-muted-foreground leading-7">
-              Explore how product-tagged videos, storefront widgets, social-video imports, analytics, and add-to-cart paths can help Shopify shoppers move from watching product content to exploring the products featured in that content.
-            </p>
-          </div>
-
-          {/* CARD STACK */}
-          <div className="w-full flex justify-center">
-            <CardStack
-              items={benefits.map((b) => ({
-                id: b.id,
-                title: b.title,
-                imageSrc: b.imageSrc,
-              }))}
-              cardHeight={420}
-              autoAdvance={true}
-              intervalMs={3500}
-            />
-          </div>
-
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {seoBenefits.map((item) => (
-              <div
-                key={item.title}
-                className="
-        rounded-3xl
-        border
-        border-border
-        bg-surface
-        p-8
-        transition-all
-        duration-300
-        hover:border-primary/30
-        hover:shadow-xl
-      "
-              >
-                <div className="text-4xl">{item.icon}</div>
-
-                <h3 className="mt-5 text-lg font-semibold">{item.title}</h3>
-
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
-      {/* HOW IT WORKS */}
-      <Section className="py-20 lg:py-24">
-        <Container className="max-w-6xl">
-          {/* HEADER */}
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-              How It Works
-            </span>
-
-            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              How Shopify Shoppable Videos Turn Viewers Into Customers
-            </h2>
-
-            <p className="mt-5 text-muted-foreground leading-7">
-              Hyper Shoppable Videos transforms traditional product videos into interactive Shopify shopping experiences. Customers can discover tagged products, view product details, and continue toward purchase from the video experience.
-            </p>
-          </div>
-
-          {/* PROCESS */}
-          <div className="mt-14 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                step: "01",
-                icon: "🎥",
-                title: "Upload Product Videos",
-                description:
-                  "Merchants upload product, promotional, social commerce, or UGC-style videos and prepare them for interactive Shopify storefront placements.",
-              },
-              {
-                step: "02",
-                icon: "🏷️",
-                title: "Tag Products in Real Time",
-                description:
-                  "Products are linked inside the video experience so shoppers can explore the items featured on screen.",
-              },
-              {
-                step: "03",
-                icon: "🛒",
-                title: "Enable Instant Purchases",
-                description:
-                  "Where the selected plan supports it, customers can add products to cart from video and continue buying with fewer steps.",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="
-            group relative overflow-hidden rounded-3xl
-            border border-border
-            bg-linear-to-b from-background to-surface
-            p-8
-            transition-all duration-300
-            hover:-translate-y-1
-            hover:border-primary/40
-            hover:shadow-xl
-          "
-              >
-                {/* Background Glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500">
-                  <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
-                </div>
-
-                {/* Step */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-sm font-medium text-primary">Step {item.step}</span>
-
-                  <span className="text-3xl">{item.icon}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className="relative z-10 mt-6 text-xl font-semibold tracking-tight">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="relative z-10 mt-4 text-sm leading-7 text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* SEO BLOCK */}
-          <div className="mt-14 rounded-3xl border border-border bg-surface p-8 sm:p-10">
-            <h3 className="text-2xl font-semibold tracking-tight">
-              Why Shoppable Videos Matter for Shopify Brands
-            </h3>
-
-            <p className="mt-5 text-muted-foreground leading-8">
-              Interactive video commerce combines product storytelling with product discovery. Hyper Shoppable Videos helps Shopify merchants tag products in videos, place shoppable widgets across storefront pages, import social-style clips, review analytics, and reduce the gap between viewing content and exploring products.
-            </p>
-          </div>
-        </Container>
-      </Section>
-      <PricingComponent
-        productName="Hyper Shoppable Videos"
-        title="Pricing for Shoppable Videos"
-        subtitle="Plans for Shopify merchants who want product-tagged videos, storefront widgets, social-video uploads, analytics, and shoppable video engagement."
-        tiers={pricingTiers}
-      />
-
-      <ProductEntityContext product="video" />
-      {/* FAQ */}
-      <Section className="py-20 lg:py-24">
-        <Container className="max-w-5xl">
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
-              FAQ
-            </span>
-
-            <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              Frequently Asked Questions About Shopify Shoppable Videos
-            </h2>
-
-            <p className="mt-5 text-muted-foreground leading-7">
-              Learn how Hyper Shoppable Videos helps Shopify merchants create product-tagged video experiences, improve product discovery, and support shopper engagement.
-            </p>
-          </div>
-
-          {/* FAQ Cards */}
-          <div className="mt-14 space-y-5">
-            {faqs.map((faq, index) => (
-              <div
-                key={faq.q}
-                className="
-            group rounded-3xl
-            border border-border
-            bg-surface
-            p-6 sm:p-8
-            transition-all duration-300
-            hover:border-primary/30
-            hover:shadow-lg
-          "
-              >
-                <div className="flex items-start gap-5">
-                  {/* Number */}
-                  <div
-                    className="
-              flex h-10 w-10 shrink-0 items-center justify-center
-              rounded-full bg-primary/10
-              text-sm font-semibold text-primary
-            "
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  {/* Content */}
-                  <div>
-                    <h3 className="text-lg font-semibold tracking-tight">{faq.q}</h3>
-
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground">{faq.a}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* SEO Block */}
-          <div className="mt-14 rounded-3xl border border-border bg-gradient-to-br from-primary/5 to-transparent p-8 text-center">
-            <h3 className="text-2xl font-semibold">
-              Why Shopify Merchants Choose Hyper Shoppable Videos
-            </h3>
-
-            <p className="mt-5 text-muted-foreground leading-8 max-w-3xl mx-auto">
-              Hyper Shoppable Videos helps Shopify merchants transform traditional product videos into interactive shopping experiences. By combining product tagging, video widgets, social-style content, analytics, and add-to-cart paths where supported, merchants can improve product discovery and shopper engagement.
-            </p>
-          </div>
-        </Container>
-      </Section>
-      {/* CTA */}
-      {/* FINAL CTA */}
-      <Section className="pb-24 pt-8">
-        <Container className="max-w-6xl">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-background to-surface p-8 sm:p-12 lg:p-16">
-            {/* Background Effects */}
-            <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />
-
-            <div className="relative z-10">
-              {/* Badge */}
-              <div className="flex justify-center">
-                <span className="inline-flex rounded-full border border-border px-4 py-1 text-xs font-medium text-muted-foreground">
-                  Shopify Video Commerce
-                </span>
-              </div>
-
-              {/* Heading */}
-              <h2 className="mt-6 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight">
-                Turn Shopify Product Videos Into Product Discovery
-              </h2>
-
-              {/* Description */}
-              <p className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg leading-8 text-muted-foreground">
-                Hyper Shoppable Videos helps Shopify merchants create interactive product video experiences that improve discovery and engagement. Use product tagging, shoppable widgets, social-style uploads, analytics, and plan-supported add-to-cart paths to move shoppers from viewing content to exploring products.
-              </p>
-
-              {/* Benefits */}
-              <div className="mt-10 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-                <div className="rounded-full border border-border px-4 py-2">
-                  🎥 Interactive Videos
-                </div>
-
-                <div className="rounded-full border border-border px-4 py-2">
-                  🛒 Plan-Supported Add-to-Cart
-                </div>
-
-                <div className="rounded-full border border-border px-4 py-2">
-                  Product Discovery
-                </div>
-
-                <div className="rounded-full border border-border px-4 py-2">
-                  📈 Better Engagement
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <TrackLink
-                  href="https://apps.shopify.com/hyper-shopable-videos"
-                  className="
-              inline-flex items-center justify-center
-              rounded-full
-              bg-primary
-              px-8 py-4
-              text-sm font-medium
-              text-white
-              transition
-              hover:opacity-90
-            "
-                  eventName="click_install_button"
-                >
-                  Install on Shopify
-                </TrackLink>
-
-                <Link
-                  href="#features"
-                  className="
-              inline-flex items-center justify-center
-              rounded-full
-              border border-border
-              px-8 py-4
-              text-sm font-medium
-              hover:bg-surface
-              transition
-            "
-                >
-                  Explore Features
-                </Link>
-              </div>
-
-              {/* Trust Text */}
-              <p className="mt-8 text-center text-sm text-muted-foreground">
-                Built by NiagaraT for Shopify merchants using video commerce, product demonstrations, social commerce clips, and user-generated content to support shopper engagement.
-              </p>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(softwareSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(faqSchema) }} />
+      <Section className="border-b border-border bg-[linear-gradient(180deg,hsl(var(--surface)),hsl(var(--background)))] pb-14 pt-16 sm:pt-20 lg:pt-24"><Container><div className="max-w-4xl"><div><div className="inline-flex items-center gap-3 rounded-[8px] border border-border bg-background px-4 py-2 shadow-sm"><Image src={videoApp.icon} alt="" width={28} height={28} aria-hidden="true" className="rounded-[6px]" /><span className="text-sm font-bold text-muted-foreground">Hyper Shoppable Videos for Shopify</span></div><h1 className="mt-5 max-w-4xl text-4xl font-black leading-[1.08] tracking-normal text-foreground sm:text-5xl lg:text-6xl">Turn Shopify Product Videos Into Shoppable Experiences</h1><p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Tag products inside videos, add interactive video widgets to your storefront, and let shoppers explore or add featured products to cart while watching.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"><ExternalCta href={installUrl} sectionName="hero" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta><Link href="#demo" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground transition hover:border-primary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" {...analyticsAttrs("shoppable_video_demo_click", "hero", "Watch Product Demo", "#demo")}>Watch Product Demo</Link><Link href="#pricing" className="inline-flex min-h-11 items-center justify-center px-2 text-sm font-bold text-primary underline-offset-4 hover:underline">Compare Plans</Link></div><p className="mt-5 text-sm font-semibold text-foreground">Free includes up to 5 videos, 1 widget, and 1,000 monthly views. Paid plans include a 14-day trial.</p><dl className="mt-8 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">{trustItems.map((item) => <div key={item} className="flex min-h-12 items-center gap-2 rounded-[8px] border border-border bg-background px-4 py-3 text-muted-foreground shadow-sm"><CheckCircle2 aria-hidden="true" className="size-4 shrink-0 text-primary" /><span>{item}</span></div>)}</dl></div></div></Container></Section>
+      <ProductVisualGallery eyebrow="Product visuals" title="See the Shoppable Video Experience" body="See how merchants connect products to videos, publish shoppable carousel and story-style widgets, and review views, product clicks, and add-to-cart activity." visuals={productVisuals} />
+      <Section spacing="lg"><Container><div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]"><div><h2 className="text-3xl font-black tracking-normal">Product Videos Get Attention but Often Hide the Buying Path</h2><p className="mt-4 text-muted-foreground">A customer watches a styling video featuring three products. Instead of searching the catalog for each item, product tags can let the customer open the featured products directly from the video.</p></div><div className="grid gap-3 sm:grid-cols-2">{problems.map((problem) => <div key={problem} className="rounded-[8px] border border-border bg-surface p-4 text-sm text-muted-foreground">{problem}</div>)}</div></div></Container></Section>
+      <Section id="demo" spacing="lg" className="bg-surface"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">See a Shopify Video Become Shoppable</h2><p className="mt-4 text-muted-foreground">The public demo-store CTA is hidden until public access is confirmed. This crawlable walkthrough explains the verified workflow without sending shoppers to a password screen.</p></div><ol className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">{demoSteps.map(([title, body], index) => <li key={title} className="rounded-[8px] border border-border bg-background p-4"><p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">{String(index + 1).padStart(2, "0")}</p><h3 className="mt-2 font-bold leading-6">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></li>)}</ol><div className="mt-8 flex flex-col gap-3 sm:flex-row"><ExternalCta href={installUrl} sectionName="demo" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta><Link href="#features" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground hover:border-primary/60">Review Features</Link></div></Container></Section>
+      <Section id="features" spacing="lg"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Create Shoppable Video Experiences Inside Shopify</h2><p className="mt-4 text-muted-foreground">Each capability is qualified against the Shopify listing so the page avoids unsupported conversion, revenue, or engagement claims.</p></div><div className="mt-8 grid gap-6 md:grid-cols-2">{capabilities.map((feature) => { const Icon = feature.icon; return <article key={feature.title} className="rounded-[8px] border border-border bg-surface p-6" {...analyticsAttrs("shoppable_video_feature_view", "core_capabilities", feature.title, `#${feature.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`)}><Icon aria-hidden="true" className="size-6 text-primary" /><h3 className="mt-4 text-xl font-black tracking-normal">{feature.title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{feature.body}</p><p className="mt-4 rounded-[6px] bg-background p-3 text-xs leading-5 text-muted-foreground">{feature.note}</p></article>; })}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Video Content You Can Make Shoppable</h2><p className="mt-4 text-muted-foreground">Only upload or import videos, music, images, and creator content that your business owns or has permission to use.</p></div><div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">{useCases.map(([title, items]) => <article key={title} className="rounded-[8px] border border-border bg-background p-5"><h3 className="font-black tracking-normal">{title}</h3><ul className="mt-4 space-y-2 text-sm leading-6 text-muted-foreground">{items.map((item) => <li key={item}>{item}</li>)}</ul></article>)}</div></Container></Section>
+      <Section spacing="lg"><Container><h2 className="text-3xl font-black tracking-normal">How Hyper Shoppable Videos Works</h2><div className="mt-8 grid gap-5 lg:grid-cols-5">{workSteps.map(([step, title, body]) => <article key={title} className="rounded-[8px] border border-border bg-surface p-5"><p className="text-sm font-bold text-primary">{step}</p><h3 className="mt-3 font-black tracking-normal">{title}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{body}</p></article>)}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><h2 className="text-3xl font-black tracking-normal">Is Hyper Shoppable Videos Right for Your Store?</h2><div className="mt-8 grid gap-6 lg:grid-cols-2"><FitList title="Best suited for" items={bestFit} /><FitList title="A simpler setup may be enough when" items={simplerFit} muted /></div></Container></Section>
+      <Section spacing="lg"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Shoppable Video vs Standard Shopify Video Embeds</h2><p className="mt-4 text-muted-foreground">A standard video embed may be enough when a merchant only needs playback. Hyper Shoppable Videos is intended for merchants who want product connections, shopping actions, specialized widgets, and video interaction analytics.</p></div><div className="mt-8 overflow-x-auto rounded-[8px] border border-border" tabIndex={0} aria-label="Scrollable video comparison"><table className="min-w-[760px] w-full border-collapse bg-background text-left text-sm"><caption className="sr-only">Comparison of Hyper Shoppable Videos and standard video embeds</caption><thead className="bg-surface"><tr><th scope="col" className="w-56 border-b border-border p-4 font-bold">Capability</th><th scope="col" className="border-b border-border p-4 font-bold">Hyper Shoppable Videos</th><th scope="col" className="border-b border-border p-4 font-bold">Standard video embed</th></tr></thead><tbody>{comparisonRows.map(([label, hyper, standard]) => <tr key={label} className="border-b border-border last:border-b-0"><th scope="row" className="bg-surface/70 p-4 align-top font-bold">{label}</th><td className="p-4 align-top text-muted-foreground">{hyper}</td><td className="p-4 align-top text-muted-foreground">{standard}</td></tr>)}</tbody></table></div></Container></Section>
+      <Section id="pricing" spacing="lg"><Container><div className="max-w-3xl"><h2 className="text-3xl font-black tracking-normal">Choose a Plan Based on Videos, Widgets, and Monthly Views</h2><p className="mt-4 text-muted-foreground">Pricing is managed from the shared Hyper app data object and verified against the Shopify App Store listing on {hyperAppsUpdatedAt}.</p></div><div className="mt-8 grid gap-5 lg:grid-cols-4">{videoApp.plans.map((plan) => <article key={plan.name} className="flex min-h-[34rem] flex-col rounded-[8px] border border-border bg-surface p-5" {...analyticsAttrs("shoppable_video_pricing_view", "pricing", plan.name, "#pricing", { "data-analytics-plan-name": plan.name })}><h3 className="text-xl font-black tracking-normal">{plan.name}</h3><p className="mt-3 text-3xl font-black tracking-normal">{plan.price}</p>{plan.trial ? <p className="mt-3 text-sm font-semibold text-primary">{plan.trial}</p> : <p className="mt-3 text-sm text-muted-foreground">Free plan</p>}<p className="mt-4 min-h-12 text-sm leading-6 text-muted-foreground">{plan.description}</p><dl className="mt-5 grid gap-3 text-sm"><div><dt className="font-bold">Video limit</dt><dd className="text-muted-foreground">{plan.productLimit}</dd></div><div><dt className="font-bold">Analytics</dt><dd className="text-muted-foreground">{plan.analyticsHistory}</dd></div><div><dt className="font-bold">Imports and AI</dt><dd className="text-muted-foreground">{plan.support}</dd></div></dl><ul className="mt-5 space-y-2">{plan.limits.map((item) => <li key={item} className="flex gap-2 text-sm leading-5 text-muted-foreground"><CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" /><span>{item}</span></li>)}</ul><div className="mt-auto pt-6"><ExternalCta href={installUrl} sectionName="pricing" event="shoppable_video_plan_select" ctaText={plan.cta ?? "Install on Shopify"} planName={plan.name} className="inline-flex min-h-11 w-full items-center justify-center rounded-[6px] bg-primary px-5 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">{plan.cta ?? "Install on Shopify"}</ExternalCta></div></article>)}</div><p className="mt-5 text-sm text-muted-foreground">{pricingNote} The listing verifies limits but not overage behavior, so do not promise upgrade, pause, or billing rules until the product owner confirms them.</p></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container><div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]"><div><h2 className="text-3xl font-black tracking-normal">Estimate Which Plan Fits Your Video Traffic</h2><p className="mt-4 text-muted-foreground">Use the lowest plan that satisfies your number of videos, widgets, monthly video views, maximum product tags per video, and required features such as Instagram uploads, A/B testing, or HeyGen import.</p></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{videoApp.plans.map((plan) => <div key={plan.name} className="rounded-[8px] border border-border bg-background p-4"><p className="font-bold">{plan.name}</p><p className="mt-2 text-sm text-muted-foreground">{plan.limits.slice(0, 4).join("; ")}</p></div>)}</div></div></Container></Section>
+      <Section spacing="lg"><Container><h2 className="text-3xl font-black tracking-normal">Setup, Store Data, and Shopify Compatibility</h2><div className="mt-8 grid gap-4 md:grid-cols-2">{compatibilityItems.map(([title, body]) => <article key={title} className="rounded-[8px] border border-border bg-surface p-5"><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></article>)}</div></Container></Section>
+      <Section spacing="lg" className="bg-surface"><Container size="md"><header className="text-center"><h2 className="text-3xl font-black tracking-normal">Frequently Asked Questions About Shopify Shoppable Videos</h2><p className="mx-auto mt-4 max-w-3xl text-muted-foreground">FAQ schema is generated only from the visible questions below.</p></header><div className="mt-8 divide-y divide-border rounded-[8px] border border-border bg-background">{faqs.map(([question, answer]) => <details key={question} className="group p-5" {...analyticsAttrs("shoppable_video_faq_open", "faq", question, "#faq")}><summary className="cursor-pointer list-none text-base font-black text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden"><span className="flex items-center justify-between gap-4">{question}<span aria-hidden="true" className="text-primary">+</span></span></summary><p className="mt-4 text-sm leading-7 text-muted-foreground">{answer}</p></details>)}</div></Container></Section>
+      <Section spacing="lg"><Container><div className="grid gap-8 lg:grid-cols-[1fr_0.8fr]"><div><h2 className="text-3xl font-black tracking-normal">Build a Better Shopify Video-Commerce Program</h2><div className="mt-8 grid gap-4 sm:grid-cols-2">{resources.map(([title, href, body]) => <Link key={title} href={href} className="rounded-[8px] border border-border bg-surface p-5 transition hover:border-primary/50" {...analyticsAttrs("shoppable_video_resource_click", "related_resources", title, href)}><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></Link>)}</div></div><div><h2 className="text-3xl font-black tracking-normal">Solve the Next Storefront Bottleneck</h2><div className="mt-8 grid gap-4">{otherApps.map(([title, href, body]) => <Link key={title} href={href} className="rounded-[8px] border border-border bg-surface p-5 transition hover:border-primary/50"><h3 className="font-bold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{body}</p></Link>)}</div></div></div></Container></Section>
+      <Section spacing="lg" className="bg-primary/10"><Container><div className="mx-auto max-w-3xl text-center"><h2 className="text-3xl font-black tracking-normal sm:text-4xl">Make Your Shopify Product Videos Easier to Shop</h2><p className="mt-4 text-muted-foreground">Install Hyper Shoppable Videos free for up to 5 videos and 1,000 monthly views, or start a 14-day trial of a paid plan.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><ExternalCta href={installUrl} sectionName="final_cta" ctaText="Install Free on Shopify" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[6px] bg-primary px-6 py-3 text-sm font-bold text-primary-foreground hover:opacity-90">Install Free on Shopify <ExternalLink aria-hidden="true" className="size-4" /></ExternalCta><Link href="#demo" className="inline-flex min-h-11 items-center justify-center rounded-[6px] border border-border bg-background px-6 py-3 text-sm font-bold text-foreground hover:border-primary/60" {...analyticsAttrs("shoppable_video_demo_click", "final_cta", "Watch Product Demo", "#demo")}>Watch Product Demo</Link><Link href="#pricing" className="inline-flex min-h-11 items-center justify-center px-3 text-sm font-bold text-primary underline-offset-4 hover:underline">Compare Plans</Link></div></div></Container></Section>
     </>
   );
 }
+
+function FitList({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) { return <article className="rounded-[8px] border border-border bg-surface p-6"><h3 className="text-xl font-black tracking-normal">{title}</h3><ul className="mt-5 space-y-3">{items.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground"><CheckCircle2 aria-hidden="true" className={`mt-0.5 size-4 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} /><span>{item}</span></li>)}</ul></article>; }
+
+
 

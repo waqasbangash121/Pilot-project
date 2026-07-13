@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   AlertCircle,
   ArrowRight,
@@ -32,10 +33,23 @@ const errorMessages: Record<string, string> = {
   "too-many-sign-in-attempts": "Too many failed attempts. Please wait 15 minutes and try again.",
 };
 
-export const metadata = {
+export const metadata: Metadata = {
+  title: {
+    absolute: "Hyper Content Studio Sign In",
+  },
+  description: "Private sign-in page for the Hyper Content Studio.",
+  alternates: {
+    canonical: null,
+  },
+  openGraph: null,
+  twitter: null,
   robots: {
     index: false,
     follow: false,
+    nocache: true,
+    noarchive: true,
+    nosnippet: true,
+    noimageindex: true,
   },
 };
 

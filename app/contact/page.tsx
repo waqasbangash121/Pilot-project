@@ -9,7 +9,7 @@ import { toJsonLd } from "@/lib/schema";
 import { createLocalBusinessSchema } from "@/schemas";
 
 export const metadata = createPageMetadata({
-  title: "Contact NiagaraT | Hyper Apps for Shopify",
+  title: "Contact NiagaraT",
   description:
     "Contact NiagaraT to learn about Hyper Apps for Shopify merchants, including Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos.",
   path: "/contact",

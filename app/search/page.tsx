@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
@@ -9,8 +10,8 @@ import { getAllComparisons } from "@/lib/comparisons";
 import { getAllResources } from "@/lib/resources";
 import { getAllTools } from "@/lib/tools";
 
-export const metadata = createPageMetadata({
-  title: "Search Hyper Apps Shopify Content Shopify Content",
+const searchMetadata = createPageMetadata({
+  title: "Search Hyper Apps Shopify Content",
   description: "Search NiagaraT Hyper Apps articles, resources, comparisons, case studies, and tools for Shopify product discovery, support, shoppable videos, and conversion topics.",
   path: "/search",
 });
@@ -18,7 +19,23 @@ export const metadata = createPageMetadata({
 type SearchPageProps = {
   searchParams: Promise<{ q?: string }>;
 };
+export async function generateMetadata({
+  searchParams,
+}: SearchPageProps): Promise<Metadata> {
+  const { q } = await searchParams;
 
+  if (!normalizeQuery(q)) {
+    return searchMetadata;
+  }
+
+  return {
+    ...searchMetadata,
+    robots: {
+      index: false,
+      follow: true,
+    },
+  };
+}
 type SearchResult = {
   title: string;
   description: string;

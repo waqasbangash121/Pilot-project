@@ -7,73 +7,11 @@ const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
 const websiteId = `${canonicalUrl("/")}#website`;
 const vocabularyId = `${canonicalUrl("/")}#entity-vocabulary`;
 
-const productEntities = [
-  {
-    "@type": "SoftwareApplication",
-    "@id": `${canonicalUrl("/apps/hyper-search-filter")}#software`,
-    name: "Hyper Search & Product Filters",
-    alternateName: ["Hyper Search", "Shopify search and filter app"],
-    url: canonicalUrl("/apps/hyper-search-filter"),
-    sameAs: "https://apps.shopify.com/hyper-search-product-filters",
-    applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Shopify product discovery, storefront search, and product filtering",
-    operatingSystem: "Shopify",
-    description:
-      "Hyper Search & Product Filters is a Shopify product discovery app from NiagaraT for storefront search, smart filters, Shopify metafields, Shopify webhooks, merchandising, synonyms, typo tolerance, analytics, and catalog navigation.",
-    isPartOf: { "@id": brandId },
-    brand: { "@id": brandId },
-    publisher: { "@id": organizationId },
-    provider: { "@id": organizationId },
-    creator: { "@id": organizationId },
-    mainEntityOfPage: { "@id": `${canonicalUrl("/apps/hyper-search-filter")}#webpage` },
-    keywords:
-      "Hyper Search & Product Filters, Shopify product discovery, Shopify search and filter app, Shopify metafields, Shopify webhooks, product search, smart filters, merchandising controls",
-  },
-  {
-    "@type": "SoftwareApplication",
-    "@id": `${canonicalUrl("/apps/hyper-ai-chat-faq")}#software`,
-    name: "Hyper AI Chat & FAQs",
-    alternateName: ["Hyper AI Chat", "Shopify AI chatbot", "Shopify FAQ app"],
-    url: canonicalUrl("/apps/hyper-ai-chat-faq"),
-    sameAs: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-    applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Shopify AI chatbot, FAQ automation, and customer support",
-    operatingSystem: "Shopify",
-    description:
-      "Hyper AI Chat & FAQs is a Shopify AI chatbot and customer support app from NiagaraT for AI chatbot answers, searchable FAQs, support automation, customer support, product questions, policy questions, and self-service help.",
-    isPartOf: { "@id": brandId },
-    brand: { "@id": brandId },
-    publisher: { "@id": organizationId },
-    provider: { "@id": organizationId },
-    creator: { "@id": organizationId },
-    mainEntityOfPage: { "@id": `${canonicalUrl("/apps/hyper-ai-chat-faq")}#webpage` },
-    keywords:
-      "Hyper AI Chat & FAQs, Shopify AI chatbot, AI chatbot, customer support, support automation, searchable FAQs, e-commerce support, self-service support",
-  },
-  {
-    "@type": "SoftwareApplication",
-    "@id": `${canonicalUrl("/apps/hyper-shoppable-videos")}#software`,
-    name: "Hyper Shoppable Videos",
-    alternateName: ["Hyper Video", "Shopify shoppable video app", "video commerce app"],
-    url: canonicalUrl("/apps/hyper-shoppable-videos"),
-    sameAs: "https://apps.shopify.com/hyper-shopable-videos",
-    applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Shopify video commerce and shoppable video",
-    operatingSystem: "Shopify",
-    description:
-      "Hyper Shoppable Videos is a Shopify video commerce app from NiagaraT for product-tagged videos, shoppable video widgets, social-style content, video analytics, product discovery, and e-commerce engagement.",
-    isPartOf: { "@id": brandId },
-    brand: { "@id": brandId },
-    publisher: { "@id": organizationId },
-    provider: { "@id": organizationId },
-    creator: { "@id": organizationId },
-    mainEntityOfPage: { "@id": `${canonicalUrl("/apps/hyper-shoppable-videos")}#webpage` },
-    keywords:
-      "Hyper Shoppable Videos, Shopify shoppable video, video commerce, product-tagged videos, e-commerce video, product discovery, shoppable widgets",
-  },
+const productEntityRefs = [
+  { "@id": `${canonicalUrl("/apps/hyper-search-filter")}#software` },
+  { "@id": `${canonicalUrl("/apps/hyper-ai-chat-faq")}#software` },
+  { "@id": `${canonicalUrl("/apps/hyper-shoppable-videos")}#software` },
 ];
-
-const productEntityRefs = productEntities.map((product) => ({ "@id": product["@id"] }));
 
 const entityGraphSchema = {
   "@context": "https://schema.org",
@@ -82,17 +20,45 @@ const entityGraphSchema = {
       "@type": "Organization",
       "@id": organizationId,
       name: "Hyper Apps by NiagaraT",
+      alternateName: ["NiagaraT", "Hyper Apps"],
       url: canonicalUrl("/"),
       logo: canonicalUrl("/icon.svg"),
+      description:
+        "NiagaraT develops Hyper Apps for Shopify merchants, with products focused on storefront product discovery, AI-assisted customer support, searchable FAQs, and shoppable video commerce.",
+      slogan: "Practical Shopify apps for product discovery, support, and shoppable content.",
       contactPoint: {
         "@type": "ContactPoint",
         email: siteConfig.email,
         contactType: "customer support",
       },
+      about: [
+        {
+          "@type": "Thing",
+          name: "Mission",
+          description:
+            "Help Shopify merchants reduce friction in the buying journey by making products easier to find, shopper questions easier to answer, and product content easier to shop.",
+        },
+        {
+          "@type": "Thing",
+          name: "Product focus",
+          description:
+            "NiagaraT's Hyper Apps suite covers Shopify search and product filters, AI chat and FAQs, and product-tagged shoppable video widgets.",
+        },
+        {
+          "@type": "Thing",
+          name: "Operating principles",
+          description:
+            "The Hyper Apps site emphasizes verified Shopify App Store information, transparent plan limits, qualified product claims, and practical implementation guidance for merchants.",
+        },
+      ],
+      subjectOf: [
+        { "@type": "WebPage", name: "About NiagaraT and Hyper Apps", url: canonicalUrl("/about") },
+        { "@type": "WebPage", name: "Compare Hyper Apps", url: canonicalUrl("/apps") },
+      ],
       brand: { "@id": brandId },
-      makesOffer: productEntities.map((product) => ({
+      makesOffer: productEntityRefs.map((product) => ({
         "@type": "Offer",
-        itemOffered: { "@id": product["@id"] },
+        itemOffered: product,
       })),
       knowsAbout: [
         "Hyper Apps",
@@ -132,9 +98,9 @@ const entityGraphSchema = {
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Hyper Apps Shopify Conversion Stack",
-        itemListElement: productEntities.map((product) => ({
+        itemListElement: productEntityRefs.map((product) => ({
           "@type": "Offer",
-          itemOffered: { "@id": product["@id"] },
+          itemOffered: product,
         })),
       },
       keywords:
@@ -172,9 +138,7 @@ const entityGraphSchema = {
       "@reverse": {
         knowsAbout: { "@id": organizationId },
       },
-    },
-    ...productEntities,
-  ],
+    },  ],
 };
 
 export function HyperEntityGraph() {
@@ -185,3 +149,4 @@ export function HyperEntityGraph() {
     />
   );
 }
+

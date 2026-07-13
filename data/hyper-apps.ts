@@ -5,6 +5,11 @@ export type HyperPlan = {
   price: string;
   annual?: string;
   trial?: string;
+  description?: string;
+  productLimit?: string;
+  analyticsHistory?: string;
+  support?: string;
+  cta?: string;
   limits: string[];
 };
 
@@ -39,6 +44,7 @@ export type HyperApp = {
   plans: HyperPlan[];
 };
 
+// Product names, plan limits, prices, trials, demo links, and install links are the single source of truth for product pages. Verify against each Shopify App Store listing before updating.
 export const hyperAppsUpdatedAt = "2026-07-13";
 
 export const hyperApps: HyperApp[] = [
@@ -85,11 +91,21 @@ export const hyperApps: HyperApp[] = [
       {
         name: "Free",
         price: "$0",
+        description: "For very small catalogs testing advanced Shopify search and filters.",
+        productLimit: "Up to 50 products",
+        analyticsHistory: "7-day analytics history",
+        support: "Basic support",
+        cta: "Install Free",
         limits: [
           "Up to 50 products",
           "Unlimited search queries",
-          "Up to 15 filters and 2 filter trees",
+          "Real-time product sync",
+          "Typo tolerance",
+          "Up to 15 filters",
+          "Two filter trees",
+          "Four search templates",
           "7-day analytics history",
+          "Basic support",
         ],
       },
       {
@@ -97,23 +113,67 @@ export const hyperApps: HyperApp[] = [
         price: "$15/month",
         annual: "$150/year",
         trial: "14-day free trial",
-        limits: ["Up to 5,000 products", "Unlimited filters and trees", "50 synonyms"],
+        description: "For growing stores that need collection filters, custom CSS, and synonyms.",
+        productLimit: "Up to 5,000 products",
+        analyticsHistory: "30-day analytics history",
+        support: "Basic support",
+        cta: "Start 14-Day Trial",
+        limits: [
+          "Up to 5,000 products",
+          "Unlimited search queries",
+          "Unlimited filters",
+          "Unlimited filter trees",
+          "Collection-page filters",
+          "Custom CSS",
+          "50 synonyms",
+          "30-day analytics history",
+          "Basic support",
+        ],
       },
       {
         name: "Professional",
         price: "$29/month",
         annual: "$289/year",
         trial: "14-day free trial",
-        limits: ["Up to 50,000 products", "Unlimited synonyms", "1-year analytics history"],
+        description: "Best for catalogs up to 50,000 products that need deeper relevance controls.",
+        productLimit: "Up to 50,000 products",
+        analyticsHistory: "1-year analytics history",
+        support: "Priority support",
+        cta: "Start Professional Trial",
+        limits: [
+          "Up to 50,000 products",
+          "Remove powered by branding",
+          "Unlimited synonyms",
+          "Custom stop words",
+          "Data export and import",
+          "1-year analytics history",
+          "Filter-usage analytics",
+          "Priority support",
+        ],
       },
       {
         name: "Enterprise",
         price: "$99/month",
         annual: "$986/year",
         trial: "14-day free trial",
-        limits: ["Up to 200,000 products", "Unlimited analytics history", "Zero results report"],
+        description: "For high-volume catalogs that need maximum scale, swatches, and zero-result reports.",
+        productLimit: "Up to 200,000 products",
+        analyticsHistory: "Unlimited analytics history",
+        support: "Dedicated priority support",
+        cta: "Start Enterprise Trial",
+        limits: [
+          "Up to 200,000 products",
+          "Unlimited filters and filter trees",
+          "Color and size swatches",
+          "Data export and import",
+          "Unlimited product labels",
+          "Unlimited analytics history",
+          "Zero-result reports",
+          "Dedicated priority support",
+        ],
       },
     ],
+
   },
   {
     id: "chat",
@@ -159,32 +219,79 @@ export const hyperApps: HyperApp[] = [
       {
         name: "Free",
         price: "$0",
+        description: "For small stores testing AI self-service answers and a searchable FAQ page.",
+        productLimit: "50 AI conversations/month",
+        analyticsHistory: "30-day chat history",
+        support: "Email support",
+        cta: "Install Free",
         limits: [
           "50 AI conversations/month",
           "Unlimited products for AI training",
           "10 FAQs",
           "30-day chat history",
+          "Basic analytics",
+          "Email support",
         ],
       },
       {
         name: "Starter",
         price: "$19/month",
         trial: "14-day free trial",
-        limits: ["500 AI conversations/month", "25 FAQs", "180-day chat history"],
+        description: "For stores that need more monthly AI conversations, custom branding, and advanced analytics.",
+        productLimit: "500 AI conversations/month",
+        analyticsHistory: "180-day chat history",
+        support: "Basic support",
+        cta: "Start Starter Trial",
+        limits: [
+          "500 AI conversations/month",
+          "Unlimited products for AI training",
+          "25 FAQs",
+          "180-day chat history",
+          "Advanced analytics",
+          "Custom branding",
+          "Basic support",
+        ],
       },
       {
         name: "Growth",
         price: "$49/month",
         trial: "14-day free trial",
-        limits: ["2,500 AI conversations/month", "Unlimited FAQs", "365-day chat history"],
+        description: "Best for up to 2,500 monthly AI conversations and larger FAQ libraries.",
+        productLimit: "2,500 AI conversations/month",
+        analyticsHistory: "365-day chat history",
+        support: "Premium support",
+        cta: "Start Growth Trial",
+        limits: [
+          "2,500 AI conversations/month",
+          "Unlimited products for AI training",
+          "Unlimited FAQs",
+          "365-day chat history",
+          "Premium analytics",
+          "Custom branding",
+          "Premium support",
+        ],
       },
       {
         name: "Pro",
         price: "$99/month",
         trial: "14-day free trial",
-        limits: ["10,000 AI conversations/month", "Unlimited FAQs", "Unlimited chat history"],
+        description: "For stores with higher AI conversation volume, white-label branding, and 24/7 merchant support.",
+        productLimit: "10,000 AI conversations/month",
+        analyticsHistory: "Unlimited chat history",
+        support: "24/7 merchant support",
+        cta: "Start Pro Trial",
+        limits: [
+          "10,000 AI conversations/month",
+          "Unlimited products for AI training",
+          "Unlimited FAQs",
+          "Unlimited chat history",
+          "Enterprise analytics",
+          "White-label branding",
+          "24/7 merchant support",
+        ],
       },
     ],
+
   },
   {
     id: "video",
@@ -231,25 +338,80 @@ export const hyperApps: HyperApp[] = [
       {
         name: "Free",
         price: "$0",
-        limits: ["5 videos", "1 widget", "1 tag per video", "1,000 monthly views"],
+        description: "Best for testing one shoppable video widget.",
+        productLimit: "5 videos",
+        analyticsHistory: "Basic analytics",
+        support: "Manual upload and TikTok import",
+        cta: "Install Free",
+        limits: [
+          "5 videos",
+          "1 widget",
+          "1 product tag per video",
+          "1,000 monthly views",
+          "Basic analytics",
+          "Manual upload",
+          "TikTok import",
+        ],
       },
       {
         name: "Starter",
         price: "$19/month",
         trial: "14-day free trial",
-        limits: ["30 videos", "5 widgets", "3 tags per video", "8,000 monthly views"],
+        description: "Best for small video libraries and a few storefront placements.",
+        productLimit: "30 videos",
+        analyticsHistory: "Standard analytics",
+        support: "Manual upload, TikTok import, 10 AI product matches/month",
+        cta: "Start Starter Trial",
+        limits: [
+          "30 videos",
+          "5 widgets",
+          "3 product tags per video",
+          "8,000 monthly views",
+          "Standard analytics",
+          "Manual upload",
+          "TikTok import",
+          "10 AI product matches/month",
+        ],
       },
       {
         name: "Growth",
         price: "$49/month",
         trial: "14-day free trial",
-        limits: ["200 videos", "15 widgets", "10 tags per video", "40,000 monthly views"],
+        description: "Best for growing multi-page video programs.",
+        productLimit: "200 videos",
+        analyticsHistory: "Advanced analytics",
+        support: "TikTok and Instagram uploads, 75 AI product matches/month",
+        cta: "Start Growth Trial",
+        limits: [
+          "200 videos",
+          "15 widgets",
+          "10 product tags per video",
+          "40,000 monthly views",
+          "Advanced analytics",
+          "TikTok and Instagram uploads",
+          "75 AI product matches/month",
+          "A/B testing",
+        ],
       },
       {
         name: "Pro",
         price: "$119/month",
         trial: "14-day free trial",
-        limits: ["500 videos", "Unlimited widgets", "Unlimited monthly views", "HeyGen import"],
+        description: "Best for large video libraries, higher traffic, and HeyGen import.",
+        productLimit: "500 videos",
+        analyticsHistory: "Advanced analytics",
+        support: "TikTok and Instagram uploads, HeyGen import, 300 AI product matches/month",
+        cta: "Start Pro Trial",
+        limits: [
+          "500 videos",
+          "Unlimited widgets",
+          "Unlimited product tags per video",
+          "Unlimited monthly views",
+          "Advanced analytics",
+          "TikTok and Instagram uploads",
+          "300 AI product matches/month",
+          "HeyGen import",
+        ],
       },
     ],
   },
@@ -258,3 +420,10 @@ export const hyperApps: HyperApp[] = [
 export function getHyperApp(id: HyperAppId) {
   return hyperApps.find((app) => app.id === id);
 }
+
+
+
+
+
+
+

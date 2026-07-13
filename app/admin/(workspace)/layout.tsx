@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   BookOpenText,
   ExternalLink,
@@ -16,10 +17,23 @@ import { requireEditor } from "@/lib/editor-session";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
+export const metadata: Metadata = {
+  title: {
+    absolute: "Hyper Content Studio",
+  },
+  description: "Private content workspace for Hyper Apps.",
+  alternates: {
+    canonical: null,
+  },
+  openGraph: null,
+  twitter: null,
   robots: {
     index: false,
     follow: false,
+    nocache: true,
+    noarchive: true,
+    nosnippet: true,
+    noimageindex: true,
   },
 };
 

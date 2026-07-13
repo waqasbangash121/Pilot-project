@@ -4,7 +4,7 @@ import { createPageMetadata } from "@/config/metadata";
 import { PricingExplorer } from "@/components/pricing/pricing-explorer";
 
 export const metadata = createPageMetadata({
-  title: "Shopify App Pricing | Hyper Apps by NiagaraT",
+  title: "Shopify App Pricing",
   description:
     "Compare current pricing for Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos for Shopify stores.",
   path: "/pricing",
