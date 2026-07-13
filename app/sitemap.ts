@@ -16,10 +16,10 @@ const publicStaticRoutes = [
   "/apps/hyper-ai-chat-faq",
   "/apps/hyper-shoppable-videos",
   "/blog",
-  "/case-studies",
   "/comparisons",
   "/contact",
   "/cookie-policy",
+  "/pricing",
   "/privacy",
   "/resources",
   "/search",
@@ -29,7 +29,12 @@ const publicStaticRoutes = [
 ];
 
 const legalRoutes = new Set(["/privacy", "/terms", "/cookie-policy"]);
-const appRoutes = new Set(["/apps", "/apps/hyper-search-filter", "/apps/hyper-ai-chat-faq", "/apps/hyper-shoppable-videos"]);
+const appRoutes = new Set([
+  "/apps",
+  "/apps/hyper-search-filter",
+  "/apps/hyper-ai-chat-faq",
+  "/apps/hyper-shoppable-videos",
+]);
 
 export const revalidate = 3600;
 
@@ -49,7 +54,8 @@ function routePriority(route: string): number {
   if (route === "/") return 1;
   if (appRoutes.has(route)) return route === "/apps" ? 0.92 : 0.9;
   if (legalRoutes.has(route)) return 0.3;
-  if (["/blog", "/resources", "/comparisons", "/case-studies", "/tools"].includes(route)) return 0.82;
+  if (["/blog", "/resources", "/comparisons", "/case-studies", "/tools"].includes(route))
+    return 0.82;
   return 0.75;
 }
 
@@ -73,11 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const now = new Date();
-  const routes = [...new Set([...publicStaticRoutes, ...navigationRoutes()])].sort((left, right) => {
-    if (left === "/") return -1;
-    if (right === "/") return 1;
-    return left.localeCompare(right);
-  });
+  const routes = [...new Set([...publicStaticRoutes, ...navigationRoutes()])].sort(
+    (left, right) => {
+      if (left === "/") return -1;
+      if (right === "/") return 1;
+      return left.localeCompare(right);
+    },
+  );
 
   const staticEntries: MetadataRoute.Sitemap = routes.map((route) => ({
     url: new URL(route, siteConfig.url).toString(),

@@ -1,91 +1,77 @@
 import type { FooterNavigationGroup, MegaMenuColumn, RouteItem } from "@/types";
 
 export const primaryNavigation: RouteItem[] = [
-  { label: "Home", href: "/", description: "Hyper homepage" },
   { label: "Apps", href: "/apps", description: "Hyper Apps for Shopify merchants" },
-  { label: "Our Team", href: "/team", description: "Our dedicated team members" },
   { label: "Resources", href: "/resources", description: "Shopify guides and playbooks" },
-  { label: "Blog", href: "/blog", description: "Shopify conversion insights" },
-  //{ label: "Case Studies", href: "/case-studies", description: "Customer results and proof" },
-  //{ label: "Tools", href: "/tools", description: "Free utility tools" },
-  { label: "Contact", href: "/contact", description: "Contact NiagaraT about Hyper Apps" },
+  { label: "Pricing", href: "/pricing", description: "Compare app plans and install options" },
+  { label: "About", href: "/about", description: "About Hyper Apps by NiagaraT" },
+  {
+    label: "Book a Demo",
+    href: "/contact",
+    description: "Book a demo with Hyper Apps by NiagaraT",
+  },
 ];
 
 export const appsMegaMenu: MegaMenuColumn[] = [
   {
-    title: "Products",
+    title: "Hyper Apps",
     links: [
       {
-        label: "Hyper Search & Product Filters",
+        label: "Shopify Search",
         href: "/apps/hyper-search-filter",
-        description: "Shopify search, filters, merchandising, and analytics",
+        description: "AI search, filters, synonyms, merchandising, and analytics",
       },
       {
-        label: "Hyper AI Chat & FAQs",
+        label: "AI Chat",
         href: "/apps/hyper-ai-chat-faq",
-        description: "AI chatbot and searchable FAQs for Shopify support",
+        description: "AI chatbot and searchable FAQs for customer questions",
       },
       {
-        label: "Hyper Shoppable Videos",
+        label: "Shoppable Video",
         href: "/apps/hyper-shoppable-videos",
-        description: "Product-tagged video commerce for Shopify stores",
+        description: "Product-tagged videos and storefront video widgets",
       },
     ],
   },
-  // {
-  //   title: "Use Cases",
-  //   links: [
-  //     {
-  //       label: "Conversion Optimization",
-  //       href: "/comparisons",
-  //       description: "Improve product discovery and revenue",
-  //     },
-  //     {
-  //       label: "Support Deflection",
-  //       href: "/resources",
-  //       description: "Reduce repetitive support tickets",
-  //     },
-  //     {
-  //       label: "Storefront Engagement",
-  //       href: "/case-studies",
-  //       description: "Increase session depth and retention",
-  //     },
-  //   ],
-  // },
-  // {
-  //   title: "Explore",
-  //   links: [
-  //     {
-  //       label: "Pricing and Plans",
-  //       href: "/apps",
-  //       description: "Find the right plan for your store",
-  //     },
-  //     {
-  //       label: "Implementation Guides",
-  //       href: "/resources",
-  //       description: "Technical and onboarding guides",
-  //     },
-  //     { label: "Book a Demo", href: "/contact", description: "Talk to product specialists" },
-  //   ],
-  // },
 ];
 
 export const footerNavigation: FooterNavigationGroup[] = [
   {
     title: "Products",
     links: [
-      { label: "Apps", href: "/apps", description: "Hyper Apps Shopify conversion stack" },
-      { label: "Comparisons", href: "/comparisons", description: "Shopify app comparison pages" },
-      { label: "Tools", href: "/tools", description: "Shopify ecommerce tools" },
+      { label: "All Apps", href: "/apps", description: "Hyper Apps by NiagaraT product suite" },
+      {
+        label: "Shopify Search",
+        href: "/apps/hyper-search-filter",
+        description: "Search and filters app",
+      },
+      { label: "AI Chat", href: "/apps/hyper-ai-chat-faq", description: "AI chatbot and FAQ app" },
+      {
+        label: "Shoppable Video",
+        href: "/apps/hyper-shoppable-videos",
+        description: "Shoppable video app",
+      },
+      { label: "Pricing", href: "/pricing", description: "Compare app plans and install options" },
     ],
   },
   {
-    title: "Resources",
+    title: "Learn",
     links: [
       { label: "Resources", href: "/resources", description: "Guides and playbooks" },
       { label: "Blog", href: "/blog", description: "Articles and updates" },
-      { label: "Case Studies", href: "/case-studies", description: "Customer outcomes" },
-      { label: "About", href: "/about", description: "Learn about Hyper Apps" },
+      { label: "Comparisons", href: "/comparisons", description: "Shopify app comparison pages" },
+      { label: "Tools", href: "/tools", description: "Shopify ecommerce tools" },
+      { label: "Search", href: "/search", description: "Search Hyper Apps content" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Home", href: "/", description: "Hyper Apps by NiagaraT homepage" },
+      { label: "About", href: "/about", description: "Learn about Hyper Apps by NiagaraT" },
+      { label: "Team", href: "/team", description: "Meet the team behind Hyper Apps" },
+      { label: "Contact", href: "/contact", description: "Contact Hyper Apps by NiagaraT" },
+      { label: "Book a Demo", href: "/contact", description: "Book a product demo" },
     ],
   },
   {
@@ -98,11 +84,7 @@ export const footerNavigation: FooterNavigationGroup[] = [
   },
   {
     title: "Social",
-    links: [
-      { label: "X", href: "https://x.com", description: "Follow Hyper on X" },
-      { label: "LinkedIn", href: "https://linkedin.com", description: "Connect on LinkedIn" },
-      { label: "GitHub", href: "https://github.com", description: "Explore code and releases" },
-    ],
+    links: [],
   },
 ];
 

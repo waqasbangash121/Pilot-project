@@ -1,98 +1,84 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { appsMegaMenu, primaryNavigation } from "@/config/navigation";
 
+import { Container } from "../ui/container";
 import { BrandMark } from "./brand-mark";
 import { MegaMenu } from "./mega-menu";
-
 import { SearchBar } from "./search-bar";
 import { ThemeSwitcher } from "./theme-switcher";
-import { Container } from "../ui/container";
-import dynamic from "next/dynamic";
 
-const MobileMenu = dynamic(
-  () => import("./mobile-menu").then((m) => m.MobileMenu)
-);
+const MobileMenu = dynamic(() => import("./mobile-menu").then((m) => m.MobileMenu));
+
+const navLinkClass =
+  "inline-flex h-10 items-center rounded-[6px] px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+const demoLinkClass =
+  "inline-flex h-10 items-center justify-center rounded-[6px] bg-primary px-4 text-sm font-bold text-primary-foreground shadow-[0_14px_28px_-18px_hsl(var(--primary)/0.75)] transition hover:bg-primary/90 hover:shadow-[0_16px_30px_-18px_hsl(var(--primary)/0.9)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export function SiteHeader() {
   const appsNavigationItem = primaryNavigation.find((item) => item.label === "Apps");
-  const regularNavigationItems = primaryNavigation.filter((item) => item.label !== "Apps");
-  const visibleNavigationItems = regularNavigationItems.slice(0, 5);
-  const overflowNavigationItems = regularNavigationItems.slice(5);
+  const demoNavigationItem = primaryNavigation.find((item) => item.label === "Book a Demo");
+  const regularNavigationItems = primaryNavigation.filter(
+    (item) => item.label !== "Apps" && item.label !== "Book a Demo",
+  );
 
   return (
     <header
       role="banner"
-      className="sticky top-0 z-[100] border-b border-border/70 bg-background/95 shadow-sm backdrop-blur-xl"
+      className="sticky top-0 z-[100] border-b border-border/70 bg-background/92 shadow-[0_10px_30px_-28px_hsl(var(--shadow)/0.8)] backdrop-blur-xl"
     >
-      <Container className="flex items-center gap-3 py-3 md:py-4">
-        <Link href="https://niagarat.com" className="flex items-center gap-3 text-sm font-semibold text-foreground" aria-label="Hyper Apps Homepage">
-          <BrandMark className="h-9 w-9 sm:h-10 sm:w-10" />
-          <span className="hidden uppercase tracking-[0.35em] sm:inline">Hyper Apps</span>
+      <Container className="flex items-center gap-4 py-3">
+        <Link
+          href="/"
+          className="flex min-w-0 items-center gap-3 text-foreground"
+          aria-label="Hyper Apps by NiagaraT homepage"
+        >
+          <BrandMark className="h-9 w-9 shrink-0" />
+          <span className="hidden leading-tight sm:block">
+            <span className="block text-sm font-black tracking-normal">Hyper Apps</span>
+            <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              by NiagaraT
+            </span>
+          </span>
         </Link>
 
-        <nav
-          aria-label="Main navigation"
-          className="relative ml-4 hidden items-center gap-4 xl:flex"
-        >
+        <nav aria-label="Main navigation" className="ml-4 hidden items-center gap-1 xl:flex">
           {appsNavigationItem ? (
             <div className="group/mega relative">
-              <Link
-                href={appsNavigationItem.href}
-                className="rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-              >
+              <Link href={appsNavigationItem.href} className={navLinkClass}>
                 {appsNavigationItem.label}
               </Link>
               <MegaMenu columns={appsMegaMenu} />
             </div>
           ) : null}
 
-          {visibleNavigationItems.map((item) => (
-            <Link
-              key={item.href + item.label}
-              href={item.href}
-              className="rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-            >
+          {regularNavigationItems.map((item) => (
+            <Link key={item.href + item.label} href={item.href} className={navLinkClass}>
               {item.label}
             </Link>
           ))}
-
-          {overflowNavigationItems.length > 0 ? (
-            <div className="group/overflow relative">
-              <button
-                type="button"
-                className="rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Open more navigation links"
-              >
-                More
-              </button>
-              <div className="invisible absolute right-0 top-full z-[65] min-w-48 pt-3 opacity-0 transition duration-150 group-hover/overflow:visible group-hover/overflow:opacity-100 group-focus-within/overflow:visible group-focus-within/overflow:opacity-100">
-                <div className="rounded-[8px] border border-border bg-surface p-2 shadow-xl">
-                  <ul className="space-y-1">
-                    {overflowNavigationItems.map((item) => (
-                      <li key={item.href + item.label}>
-                        <Link
-                          href={item.href}
-                          className="block rounded-md px-3 py-2 text-sm text-foreground transition hover:bg-background"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ) : null}
         </nav>
 
-        <div className="ml-auto hidden w-full max-w-xs lg:block">
+        <div className="ml-auto hidden w-full max-w-[14rem] lg:block xl:max-w-[12rem]">
           <SearchBar compact />
         </div>
 
         <div className="hidden md:block">
           <ThemeSwitcher />
         </div>
+
+        {demoNavigationItem ? (
+          <Link
+            href={demoNavigationItem.href}
+            className="hidden lg:inline-flex"
+            data-analytics-event="demo_booking_click"
+            data-analytics-label="Header Book a Demo"
+          >
+            <span className={demoLinkClass}>{demoNavigationItem.label}</span>
+          </Link>
+        ) : null}
 
         <MobileMenu navigation={primaryNavigation} megaMenuColumns={appsMegaMenu} />
       </Container>

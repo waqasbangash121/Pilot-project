@@ -81,8 +81,14 @@ const entityGraphSchema = {
     {
       "@type": "Organization",
       "@id": organizationId,
-      name: "NiagaraT",
+      name: "Hyper Apps by NiagaraT",
       url: canonicalUrl("/"),
+      logo: canonicalUrl("/icon.svg"),
+      contactPoint: {
+        "@type": "ContactPoint",
+        email: siteConfig.email,
+        contactType: "customer support",
+      },
       brand: { "@id": brandId },
       makesOffer: productEntities.map((product) => ({
         "@type": "Offer",

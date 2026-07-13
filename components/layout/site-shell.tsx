@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
+import { AnalyticsEventTracker } from "@/components/analytics/analytics-event-tracker";
 import { CookieBanner } from "./cookie-banner";
 import { SiteHeader } from "./site-header";
 
@@ -24,6 +25,7 @@ export function SiteShell({ children, footer }: SiteShellProps) {
       <SiteHeader />
       <main className="flex-1">{children}</main>
       {footer}
+      <AnalyticsEventTracker />
       <CookieBanner />
     </div>
   );

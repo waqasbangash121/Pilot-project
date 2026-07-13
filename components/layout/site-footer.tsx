@@ -20,9 +20,12 @@ export async function SiteFooter() {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <BrandMark className="h-9 w-9" />
-            <p className="text-sm font-semibold uppercase tracking-[0.35em] text-foreground">
-              Hyper
-            </p>
+            <div className="leading-tight">
+              <p className="text-sm font-black tracking-normal text-foreground">Hyper Apps</p>
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                by NiagaraT
+              </p>
+            </div>
           </div>
           <p className="max-w-xl text-sm leading-7 text-muted-foreground">
             {siteConfig.description}
@@ -35,7 +38,7 @@ export async function SiteFooter() {
           </Link>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {footerGroups.map((group) => (
             <section key={group.title} aria-labelledby={`footer-${group.title.toLowerCase()}`}>
               <h2

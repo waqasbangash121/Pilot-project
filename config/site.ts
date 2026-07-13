@@ -5,10 +5,10 @@ const canonicalSiteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://niagarat.
   .replace(/\/$/, "");
 
 export const siteConfig: SiteConfig = {
-  name: "Hyper Apps",
-  shortName: "Hyper Apps",
+  name: "Hyper Apps by NiagaraT",
+  shortName: "Hyper Apps by NiagaraT",
   description:
-    "NiagaraT develops Hyper Apps for Shopify merchants, including Hyper Search & Product Filters, Hyper AI Chat & FAQs, and Hyper Shoppable Videos for product discovery, support automation, and video commerce.",
+    "Hyper Apps by NiagaraT helps Shopify merchants improve product discovery, answer customer questions, and turn product videos into shoppable experiences.",
 
   url: canonicalSiteUrl,
   email: "support@niagarat.com",
