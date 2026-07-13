@@ -4,10 +4,11 @@ import { Check } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { createPageMetadata } from "@/config/metadata";
+import { canonicalUrl, createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
 import { ProductEntityContext } from "@/components/seo/product-entity-context";
+import { toJsonLd } from "@/lib/schema";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(
@@ -216,44 +217,78 @@ const faqs = [
   },
 ];
 
+const productPageUrl = canonicalUrl("/apps/hyper-ai-chat-faq");
+const productSoftwareId = `${productPageUrl}#software`;
+const productWebPageId = `${productPageUrl}#webpage`;
+const organizationId = `${canonicalUrl("/")}#organization`;
+const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
+const websiteId = `${canonicalUrl("/")}#website`;
+
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": "https://niagarat.com/apps/hyper-ai-chat-faq#software",
-  name: "Hyper AI Chat & FAQs",
-  url: "https://niagarat.com/apps/hyper-ai-chat-faq",
-  applicationCategory: "BusinessApplication",
-  applicationSubCategory: "Customer support and conversational commerce",
-  operatingSystem: "Shopify",
-  description:
-    "AI customer support and FAQ automation for Shopify stores. Hyper AI Chat & FAQs uses store-specific product information, policies, and support guidance to answer shopper questions around the clock, reduce repetitive tickets, and support purchase decisions.",
-  image: "https://niagarat.com/aichat-banner.png",
-  installUrl: "https://apps.shopify.com/hyper-chatbot-and-faqs",
-  publisher: {
-    "@type": "Organization",
-    name: "NiagaraT",
-    url: "https://niagarat.com",
-  },
-  offers: pricingTiers.map((tier) => ({
-    "@type": "Offer",
-    name: tier.name,
-    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
-    priceCurrency: "USD",
-    url: tier.buttonHref,
-  })),
-  featureList: [
-    "AI-powered Shopify customer support chat",
-    "Store-specific AI training",
-    "Automated and searchable FAQs",
-    "Product information assistance",
-    "Shipping, return, sizing, and policy answers",
-    "Self-service customer responses",
-    "Conversation history",
-    "Customer support analytics",
-    "Custom chatbot branding",
-    "Support ticket deflection",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": productWebPageId,
+      name: "Hyper AI Chat & FAQs",
+      url: productPageUrl,
+      isPartOf: { "@id": websiteId },
+      publisher: { "@id": organizationId },
+      about: { "@id": productSoftwareId },
+      mainEntity: { "@id": productSoftwareId },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": productSoftwareId,
+      name: "Hyper AI Chat & FAQs",
+      url: productPageUrl,
+      sameAs: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "Customer support and conversational commerce",
+      operatingSystem: "Shopify",
+      description:
+        "AI customer support and FAQ automation for Shopify stores. Hyper AI Chat & FAQs uses store-specific product information, policies, and support guidance to answer shopper questions around the clock, reduce repetitive tickets, and support purchase decisions.",
+      image: canonicalUrl("/aichat-banner.png"),
+      installUrl: "https://apps.shopify.com/hyper-chatbot-and-faqs",
+      publisher: { "@id": organizationId },
+      provider: { "@id": organizationId },
+      creator: { "@id": organizationId },
+      brand: { "@id": brandId },
+      isPartOf: { "@id": brandId },
+      mainEntityOfPage: { "@id": productWebPageId },
+      offers: pricingTiers.map((tier) => ({
+        "@type": "Offer",
+        "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        name: tier.name,
+        price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+        priceCurrency: "USD",
+        url: tier.buttonHref,
+        itemOffered: { "@id": productSoftwareId },
+        seller: { "@id": organizationId },
+      })),
+      featureList: [
+        "AI-powered Shopify customer support chat",
+        "Store-specific AI training",
+        "Automated and searchable FAQs",
+        "Product information assistance",
+        "Shipping, return, sizing, and policy answers",
+        "Self-service customer responses",
+        "Conversation history",
+        "Customer support analytics",
+        "Custom chatbot branding",
+        "Support ticket deflection",
+      ],
+      "@reverse": {
+        mainEntity: { "@id": productWebPageId },
+        about: { "@id": productWebPageId },
+        itemOffered: pricingTiers.map((tier) => ({
+          "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        })),
+      },
+    },
   ],
 };
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -273,7 +308,7 @@ export default function HyperAIChatFAQPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(softwareApplicationSchema),
+          __html: toJsonLd(softwareApplicationSchema),
         }}
       />
       <script

@@ -4,10 +4,11 @@ import { Check } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { createPageMetadata } from "@/config/metadata";
+import { canonicalUrl, createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
 import { ProductEntityContext } from "@/components/seo/product-entity-context";
+import { toJsonLd } from "@/lib/schema";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(
@@ -205,44 +206,78 @@ const faqs = [
   },
 ];
 
+const productPageUrl = canonicalUrl("/apps/hyper-shoppable-videos");
+const productSoftwareId = `${productPageUrl}#software`;
+const productWebPageId = `${productPageUrl}#webpage`;
+const organizationId = `${canonicalUrl("/")}#organization`;
+const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
+const websiteId = `${canonicalUrl("/")}#website`;
+
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": "https://niagarat.com/apps/hyper-shoppable-videos#software",
-  name: "Hyper Shoppable Videos",
-  url: "https://niagarat.com/apps/hyper-shoppable-videos",
-  applicationCategory: "BusinessApplication",
-  applicationSubCategory: "Video commerce",
-  operatingSystem: "Shopify",
-  description:
-    "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and use plan-supported add-to-cart paths from engaging video experiences.",
-  image: "https://niagarat.com/shoppable-banner.png",
-  installUrl: "https://apps.shopify.com/hyper-shopable-videos",
-  publisher: {
-    "@type": "Organization",
-    name: "NiagaraT",
-    url: "https://niagarat.com",
-  },
-  offers: pricingTiers.map((tier) => ({
-    "@type": "Offer",
-    name: tier.name,
-    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
-    priceCurrency: "USD",
-    url: tier.buttonHref,
-  })),
-  featureList: [
-    "Interactive shoppable product videos",
-    "Direct add-to-cart from video",
-    "Product tagging inside videos",
-    "TikTok and Instagram video imports",
-    "User-generated content support",
-    "Multiple storefront video widgets",
-    "AI-assisted product matching",
-    "Video engagement analytics",
-    "A/B testing for video experiences",
-    "Responsive Shopify storefront integration",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": productWebPageId,
+      name: "Hyper Shoppable Videos",
+      url: productPageUrl,
+      isPartOf: { "@id": websiteId },
+      publisher: { "@id": organizationId },
+      about: { "@id": productSoftwareId },
+      mainEntity: { "@id": productSoftwareId },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": productSoftwareId,
+      name: "Hyper Shoppable Videos",
+      url: productPageUrl,
+      sameAs: "https://apps.shopify.com/hyper-shopable-videos",
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "Video commerce",
+      operatingSystem: "Shopify",
+      description:
+        "Interactive video commerce software for Shopify stores. Hyper Shoppable Videos connects products to TikTok, Instagram, user-generated, and uploaded videos so shoppers can explore items and use plan-supported add-to-cart paths from engaging video experiences.",
+      image: canonicalUrl("/shoppable-banner.png"),
+      installUrl: "https://apps.shopify.com/hyper-shopable-videos",
+      publisher: { "@id": organizationId },
+      provider: { "@id": organizationId },
+      creator: { "@id": organizationId },
+      brand: { "@id": brandId },
+      isPartOf: { "@id": brandId },
+      mainEntityOfPage: { "@id": productWebPageId },
+      offers: pricingTiers.map((tier) => ({
+        "@type": "Offer",
+        "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        name: tier.name,
+        price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+        priceCurrency: "USD",
+        url: tier.buttonHref,
+        itemOffered: { "@id": productSoftwareId },
+        seller: { "@id": organizationId },
+      })),
+      featureList: [
+        "Interactive shoppable product videos",
+        "Direct add-to-cart from video",
+        "Product tagging inside videos",
+        "TikTok and Instagram video imports",
+        "User-generated content support",
+        "Multiple storefront video widgets",
+        "AI-assisted product matching",
+        "Video engagement analytics",
+        "A/B testing for video experiences",
+        "Responsive Shopify storefront integration",
+      ],
+      "@reverse": {
+        mainEntity: { "@id": productWebPageId },
+        about: { "@id": productWebPageId },
+        itemOffered: pricingTiers.map((tier) => ({
+          "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        })),
+      },
+    },
   ],
 };
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -262,7 +297,7 @@ export default function HyperShoppableVideosPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(softwareApplicationSchema),
+          __html: toJsonLd(softwareApplicationSchema),
         }}
       />
       <script

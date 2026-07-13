@@ -4,10 +4,11 @@ import { Check } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { createPageMetadata } from "@/config/metadata";
+import { canonicalUrl, createPageMetadata } from "@/config/metadata";
 import TrackLink from "@/components/TrackLink";
 import PricingComponent from "@/components/PricingComponent";
 import { ProductEntityContext } from "@/components/seo/product-entity-context";
+import { toJsonLd } from "@/lib/schema";
 import dynamic from "next/dynamic";
 
 const CardStack = dynamic(() => import("@/components/CardStack").then((m) => m.CardStack), {
@@ -216,49 +217,82 @@ const faqs = [
   },
 ];
 
+const productPageUrl = canonicalUrl("/apps/hyper-search-filter");
+const productSoftwareId = `${productPageUrl}#software`;
+const productWebPageId = `${productPageUrl}#webpage`;
+const organizationId = `${canonicalUrl("/")}#organization`;
+const brandId = `${canonicalUrl("/")}#hyper-apps-suite`;
+const websiteId = `${canonicalUrl("/")}#website`;
+
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": "https://niagarat.com/apps/hyper-search-filter#software",
-  name: "Hyper Search & Product Filters",
-  url: "https://niagarat.com/apps/hyper-search-filter",
-  applicationCategory: "BusinessApplication",
-  applicationSubCategory: "Product discovery, storefront search, and product filtering",
-  operatingSystem: "Shopify",
-  description:
-    "Shopify product search, advanced filtering, merchandising, and analytics software developed by NiagaraT. Hyper Search & Product Filters supports typo tolerance, synonyms, metafield filters, catalogs of up to 200,000 products, zero-result reporting, and no-code Shopify app embed installation.",
-  image: "https://niagarat.com/search-banner.png",
-  installUrl: "https://apps.shopify.com/hyper-search-product-filters",
-  publisher: {
-    "@type": "Organization",
-    name: "NiagaraT",
-    url: "https://niagarat.com",
-  },
-  offers: pricingTiers.map((tier) => ({
-    "@type": "Offer",
-    name: tier.name,
-    price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
-    priceCurrency: "USD",
-    url: tier.buttonHref,
-  })),
-  featureList: [
-    "Shopify product search",
-    "Synonym matching",
-    "Typo tolerance",
-    "Metafield filters",
-    "Real-time Shopify webhook sync",
-    "Instant autocomplete",
-    "Smart merchandising controls",
-    "Zero-results reporting",
-    "Synonym and stop-word management",
-    "Custom product ranking",
-    "Collection, vendor, variant, and metafield filters",
-    "Color and size swatches",
-    "Product recommendations",
-    "Search query and conversion analytics",
-    "Filter usage analytics",
-    "Custom CSS storefront styling",
-    "No-code Shopify app embed installation",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": productWebPageId,
+      name: "Hyper Search & Product Filters",
+      url: productPageUrl,
+      isPartOf: { "@id": websiteId },
+      publisher: { "@id": organizationId },
+      about: { "@id": productSoftwareId },
+      mainEntity: { "@id": productSoftwareId },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": productSoftwareId,
+      name: "Hyper Search & Product Filters",
+      url: productPageUrl,
+      sameAs: "https://apps.shopify.com/hyper-search-product-filters",
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "Product discovery, storefront search, and product filtering",
+      operatingSystem: "Shopify",
+      description:
+        "Shopify product search, advanced filtering, merchandising, and analytics software developed by NiagaraT. Hyper Search & Product Filters supports typo tolerance, synonyms, metafield filters, catalogs of up to 200,000 products, zero-result reporting, and no-code Shopify app embed installation.",
+      image: canonicalUrl("/search-banner.png"),
+      installUrl: "https://apps.shopify.com/hyper-search-product-filters",
+      publisher: { "@id": organizationId },
+      provider: { "@id": organizationId },
+      creator: { "@id": organizationId },
+      brand: { "@id": brandId },
+      isPartOf: { "@id": brandId },
+      mainEntityOfPage: { "@id": productWebPageId },
+      offers: pricingTiers.map((tier) => ({
+        "@type": "Offer",
+        "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        name: tier.name,
+        price: tier.price === "Free" ? "0" : tier.price.replace("$", ""),
+        priceCurrency: "USD",
+        url: tier.buttonHref,
+        itemOffered: { "@id": productSoftwareId },
+        seller: { "@id": organizationId },
+      })),
+      featureList: [
+        "Shopify product search",
+        "Synonym matching",
+        "Typo tolerance",
+        "Metafield filters",
+        "Real-time Shopify webhook sync",
+        "Instant autocomplete",
+        "Smart merchandising controls",
+        "Zero-results reporting",
+        "Synonym and stop-word management",
+        "Custom product ranking",
+        "Collection, vendor, variant, and metafield filters",
+        "Color and size swatches",
+        "Product recommendations",
+        "Search query and conversion analytics",
+        "Filter usage analytics",
+        "Custom CSS storefront styling",
+        "No-code Shopify app embed installation",
+      ],
+      "@reverse": {
+        mainEntity: { "@id": productWebPageId },
+        about: { "@id": productWebPageId },
+        itemOffered: pricingTiers.map((tier) => ({
+          "@id": `${productPageUrl}#offer-${tier.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+        })),
+      },
+    },
   ],
 };
 
@@ -282,7 +316,7 @@ export default function HyperSearchFilterPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(softwareApplicationSchema),
+          __html: toJsonLd(softwareApplicationSchema),
         }}
       />
 
