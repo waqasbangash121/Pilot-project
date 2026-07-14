@@ -13,13 +13,14 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
+import { RelatedContentSection } from "@/components/content/related-content-section";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { toJsonLd } from "@/lib/schema";
-import { formatToolDate, getToolBySlug } from "@/lib/tools";
+import { formatToolDate, getAllTools, getToolBySlug } from "@/lib/tools";
 
 type ToolPageProps = {
   params: Promise<{ slug: string }>;
@@ -69,6 +70,15 @@ export default async function ToolPage({ params }: ToolPageProps) {
   if (!tool) notFound();
 
   const tags = Array.isArray(tool.tags) ? tool.tags : [];
+  const allTools = await getAllTools();
+  const relatedTools = allTools
+    .filter((candidate) => candidate.slug !== tool.slug)
+    .sort(
+      (a, b) =>
+        Number(b.toolType === tool.toolType) - Number(a.toolType === tool.toolType) ||
+        Number(b.category === tool.category) - Number(a.category === tool.category),
+    )
+    .slice(0, 3);
   const pageUrl = new URL(`/tools/${tool.slug}`, siteConfig.url).toString();
   const toolUrl = tool.toolUrl ? new URL(tool.toolUrl, siteConfig.url).toString() : pageUrl;
   const schema = {
@@ -261,6 +271,13 @@ export default async function ToolPage({ params }: ToolPageProps) {
           </div>
         </Container>
       </Section>
+
+      <RelatedContentSection
+        items={relatedTools}
+        basePath="/tools"
+        heading="More practical Shopify tools"
+        viewAllLabel="View all tools"
+      />
     </>
   );
 }

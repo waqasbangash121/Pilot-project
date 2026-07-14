@@ -6,12 +6,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
+import { RelatedContentSection } from "@/components/content/related-content-section";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatBlogDate, getBlogPostBySlug } from "@/lib/blog";
+import { formatBlogDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/blog";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -87,6 +88,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const tags = Array.isArray(post.tags) ? post.tags : [];
+  const allPosts = await getAllBlogPosts();
+  const relatedPosts = allPosts
+    .filter((candidate) => candidate.slug !== post.slug)
+    .sort(
+      (a, b) =>
+        Number(b.category === post.category) - Number(a.category === post.category),
+    )
+    .slice(0, 3);
 
   const articleUrl = new URL(`/blog/${post.slug}`, siteConfig.url).toString();
 
@@ -243,6 +252,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </Container>
       </Section>
+
+      <RelatedContentSection
+        items={relatedPosts}
+        basePath="/blog"
+        heading="More practical Shopify insights"
+        viewAllLabel="View all articles"
+      />
     </>
   );
 }

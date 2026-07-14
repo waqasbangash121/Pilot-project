@@ -6,12 +6,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
+import { RelatedContentSection } from "@/components/content/related-content-section";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatCaseStudyDate, getCaseStudyBySlug } from "@/lib/case-studies";
+import { formatCaseStudyDate, getAllCaseStudies, getCaseStudyBySlug } from "@/lib/case-studies";
 import { toJsonLd } from "@/lib/schema";
 
 type CaseStudyPageProps = {
@@ -64,6 +65,17 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   if (!caseStudy) notFound();
 
   const tags = Array.isArray(caseStudy.tags) ? caseStudy.tags : [];
+  const allCaseStudies = await getAllCaseStudies();
+  const relatedCaseStudies = allCaseStudies
+    .filter((candidate) => candidate.slug !== caseStudy.slug)
+    .sort(
+      (a, b) =>
+        Number(b.industry === caseStudy.industry) -
+          Number(a.industry === caseStudy.industry) ||
+        Number(b.category === caseStudy.category) -
+          Number(a.category === caseStudy.category),
+    )
+    .slice(0, 3);
   const pageUrl = new URL(`/case-studies/${caseStudy.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -250,6 +262,13 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           </div>
         </Container>
       </Section>
+
+      <RelatedContentSection
+        items={relatedCaseStudies}
+        basePath="/case-studies"
+        heading="More Shopify case studies"
+        viewAllLabel="View all case studies"
+      />
     </>
   );
 }

@@ -6,12 +6,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
+import { RelatedContentSection } from "@/components/content/related-content-section";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatResourceDate, getResourceBySlug } from "@/lib/resources";
+import { formatResourceDate, getAllResources, getResourceBySlug } from "@/lib/resources";
 import { toJsonLd } from "@/lib/schema";
 
 type ResourcePageProps = {
@@ -64,6 +65,16 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
   if (!resource) notFound();
 
   const tags = Array.isArray(resource.tags) ? resource.tags : [];
+  const allResources = await getAllResources();
+  const relatedResources = allResources
+    .filter((candidate) => candidate.slug !== resource.slug)
+    .sort(
+      (a, b) =>
+        Number(b.resourceType === resource.resourceType) -
+          Number(a.resourceType === resource.resourceType) ||
+        Number(b.category === resource.category) - Number(a.category === resource.category),
+    )
+    .slice(0, 3);
   const pageUrl = new URL(`/resources/${resource.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -208,6 +219,13 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
           </div>
         </Container>
       </Section>
+
+      <RelatedContentSection
+        items={relatedResources}
+        basePath="/resources"
+        heading="More practical Shopify resources"
+        viewAllLabel="View all resources"
+      />
     </>
   );
 }

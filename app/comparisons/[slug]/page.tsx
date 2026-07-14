@@ -6,12 +6,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ContentAnalyticsTracker } from "@/components/content-analytics-tracker";
+import { RelatedContentSection } from "@/components/content/related-content-section";
 import styles from "@/components/blog/article-content.module.css";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
-import { formatComparisonDate, getComparisonBySlug } from "@/lib/comparisons";
+import { formatComparisonDate, getAllComparisons, getComparisonBySlug } from "@/lib/comparisons";
 
 type ComparisonPageProps = {
   params: Promise<{ slug: string }>;
@@ -65,6 +66,15 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
   if (!comparison) notFound();
 
   const tags = Array.isArray(comparison.tags) ? comparison.tags : [];
+  const allComparisons = await getAllComparisons();
+  const relatedComparisons = allComparisons
+    .filter((candidate) => candidate.slug !== comparison.slug)
+    .sort(
+      (a, b) =>
+        Number(b.category === comparison.category) -
+        Number(a.category === comparison.category),
+    )
+    .slice(0, 3);
   const pageUrl = new URL(`/comparisons/${comparison.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
@@ -211,6 +221,13 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
           </div>
         </Container>
       </Section>
+
+      <RelatedContentSection
+        items={relatedComparisons}
+        basePath="/comparisons"
+        heading="More Shopify app comparisons"
+        viewAllLabel="View all comparisons"
+      />
     </>
   );
 }
