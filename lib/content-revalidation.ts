@@ -29,4 +29,6 @@ export function revalidateContentRoutes(
   }
 
   revalidatePath("/sitemap.xml");
+  revalidatePath("/llms.txt");
+  revalidatePath("/llms-full.txt");
 }

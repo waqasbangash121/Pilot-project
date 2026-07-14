@@ -12,6 +12,7 @@ import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
 import { formatCaseStudyDate, getCaseStudyBySlug } from "@/lib/case-studies";
+import { toJsonLd } from "@/lib/schema";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -66,23 +67,62 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const pageUrl = new URL(`/case-studies/${caseStudy.slug}`, siteConfig.url).toString();
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: caseStudy.title,
-    description: caseStudy.seoDescription ?? caseStudy.excerpt,
-    datePublished: caseStudy.publishedAt,
-    dateModified: caseStudy.updatedAt ?? caseStudy.publishedAt,
-    mainEntityOfPage: pageUrl,
-    author: { "@type": "Organization", name: caseStudy.author },
-    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-    about: [{ "@type": "Organization", name: caseStudy.customerName }],
-    image: caseStudy.coverImage ? [new URL(caseStudy.coverImage, siteConfig.url).toString()] : undefined,
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: caseStudy.title,
+        description: caseStudy.seoDescription ?? caseStudy.excerpt,
+        isPartOf: { "@id": `${siteConfig.url}#website` },
+        primaryImageOfPage: caseStudy.coverImage ? { "@id": `${pageUrl}#primary-image` } : undefined,
+        about: [
+          { "@type": "Brand", name: "Hyper Apps" },
+          caseStudy.customerName
+            ? { "@type": "Organization", name: caseStudy.customerName }
+            : { "@type": "Thing", name: caseStudy.category },
+        ],
+      },
+      {
+        "@type": "Article",
+        "@id": `${pageUrl}#article`,
+        headline: caseStudy.title,
+        description: caseStudy.seoDescription ?? caseStudy.excerpt,
+        articleSection: caseStudy.category,
+        genre: "Case study",
+        keywords: tags.join(", "),
+        datePublished: caseStudy.publishedAt,
+        dateModified: caseStudy.updatedAt ?? caseStudy.publishedAt,
+        mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
+        author: { "@type": "Organization", name: caseStudy.author },
+        publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+        about: [
+          caseStudy.customerName
+            ? { "@type": "Organization", name: caseStudy.customerName }
+            : { "@type": "Thing", name: caseStudy.category },
+          caseStudy.industry ? { "@type": "Thing", name: caseStudy.industry } : undefined,
+        ].filter(Boolean),
+        abstract: caseStudy.outcomeSummary || caseStudy.excerpt,
+        image: caseStudy.coverImage
+          ? [new URL(caseStudy.coverImage, siteConfig.url).toString()]
+          : undefined,
+      },
+      caseStudy.coverImage
+        ? {
+            "@type": "ImageObject",
+            "@id": `${pageUrl}#primary-image`,
+            url: new URL(caseStudy.coverImage, siteConfig.url).toString(),
+            caption: caseStudy.title,
+          }
+        : undefined,
+    ].filter(Boolean),
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(schema) }}
       />
 
       <ContentAnalyticsTracker contentType="case-study" slug={caseStudy.slug} path={`/case-studies/${caseStudy.slug}`} />

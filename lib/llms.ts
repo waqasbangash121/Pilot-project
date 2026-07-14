@@ -19,6 +19,14 @@ type LlmContentItem = {
   content?: string;
 };
 
+type PublishedContentInput = {
+  posts: BlogPostInput[];
+  comparisons: ManagedContentInput[];
+  resources: ManagedContentInput[];
+  caseStudies: ManagedContentInput[];
+  tools: ManagedContentInput[];
+};
+
 const staticPages = [
   {
     title: "Home",
@@ -244,7 +252,46 @@ function renderGroup(group: LlmContentGroup, includeContent: boolean): string {
   return `## ${group.title}\n\n${group.description}\n\nIndex: ${absoluteUrl(group.path)}\n\n${items}`;
 }
 
-export function buildLlmsText(): string {
+function publishedDate(item: LlmContentItem): string {
+  return item.metadata.find((line) => line.startsWith("Published: ")) || "";
+}
+
+function latestItems(input: PublishedContentInput): LlmContentItem[] {
+  return [
+    ...input.posts.map((post) => blogItem(post, false)),
+    ...input.resources.map((item) => managedItem(item, "/resources", false)),
+    ...input.comparisons.map((item) => managedItem(item, "/comparisons", false)),
+    ...input.caseStudies.map((item) => managedItem(item, "/case-studies", false)),
+    ...input.tools.map((item) => managedItem(item, "/tools", false)),
+  ]
+    .sort((left, right) => publishedDate(right).localeCompare(publishedDate(left)))
+    .slice(0, 12);
+}
+
+function renderLatestContent(input?: PublishedContentInput): string {
+  if (!input) return "";
+
+  const items = latestItems(input);
+  if (!items.length) return "";
+
+  const list = items
+    .map((item) => {
+      const metadata = item.metadata
+        .filter(
+          (line) =>
+            line.startsWith("Category: ") ||
+            line.startsWith("Focus keyword: ") ||
+            line.startsWith("Published: "),
+        )
+        .join("; ");
+      return `- [${item.title}](${item.url}): ${item.description} (${metadata})`;
+    })
+    .join("\n");
+
+  return `## Latest Published Content\n\nRecently published public URLs across the Hyper Apps blog, resource library, comparisons, case studies, and tools.\n\n${list}\n`;
+}
+
+export function buildLlmsText(input?: PublishedContentInput): string {
   const products = productEntities
     .map(
       (product) =>
@@ -285,6 +332,8 @@ ${facts}
 
 ${routes}
 
+${renderLatestContent(input)}
+
 ## Full LLM Context
 
 - [llms-full.txt](${absoluteUrl("/llms-full.txt")}): complete AI-readable entity map, product descriptions, route index, and published content summaries for ${siteConfig.name}.
@@ -293,13 +342,7 @@ ${routes}
 `;
 }
 
-export function buildLlmsFullText(input: {
-  posts: BlogPostInput[];
-  comparisons: ManagedContentInput[];
-  resources: ManagedContentInput[];
-  caseStudies: ManagedContentInput[];
-  tools: ManagedContentInput[];
-}): string {
+export function buildLlmsFullText(input: PublishedContentInput): string {
   const productText = productEntities
     .map(
       (product) =>

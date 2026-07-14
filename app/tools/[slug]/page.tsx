@@ -18,6 +18,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl, compactPageTitle } from "@/config/metadata";
 import { siteConfig } from "@/config/site";
+import { toJsonLd } from "@/lib/schema";
 import { formatToolDate, getToolBySlug } from "@/lib/tools";
 
 type ToolPageProps = {
@@ -69,25 +70,70 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
   const tags = Array.isArray(tool.tags) ? tool.tags : [];
   const pageUrl = new URL(`/tools/${tool.slug}`, siteConfig.url).toString();
+  const toolUrl = tool.toolUrl ? new URL(tool.toolUrl, siteConfig.url).toString() : pageUrl;
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: tool.title,
-    description: tool.seoDescription ?? tool.excerpt,
-    datePublished: tool.publishedAt,
-    dateModified: tool.updatedAt ?? tool.publishedAt,
-    mainEntityOfPage: pageUrl,
-    author: { "@type": "Organization", name: tool.author },
-    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
-    about: [{ "@type": "Thing", name: tool.toolType }],
-    image: tool.coverImage ? [new URL(tool.coverImage, siteConfig.url).toString()] : undefined,
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: tool.title,
+        description: tool.seoDescription ?? tool.excerpt,
+        isPartOf: { "@id": `${siteConfig.url}#website` },
+        primaryImageOfPage: tool.coverImage ? { "@id": `${pageUrl}#primary-image` } : undefined,
+        mainEntity: { "@id": `${pageUrl}#tool` },
+      },
+      {
+        "@type": "Article",
+        "@id": `${pageUrl}#article`,
+        headline: tool.title,
+        description: tool.seoDescription ?? tool.excerpt,
+        articleSection: tool.category,
+        keywords: tags.join(", "),
+        datePublished: tool.publishedAt,
+        dateModified: tool.updatedAt ?? tool.publishedAt,
+        mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
+        author: { "@type": "Organization", name: tool.author },
+        publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+        about: [
+          { "@type": "Thing", name: tool.toolType },
+          tool.useCase ? { "@type": "Thing", name: tool.useCase } : undefined,
+        ].filter(Boolean),
+        image: tool.coverImage ? [new URL(tool.coverImage, siteConfig.url).toString()] : undefined,
+      },
+      {
+        "@type": "WebApplication",
+        "@id": `${pageUrl}#tool`,
+        name: tool.title,
+        url: toolUrl,
+        applicationCategory: tool.toolType || "BusinessApplication",
+        operatingSystem: "Web",
+        description: tool.useCase || tool.seoDescription || tool.excerpt,
+        provider: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+        audience: { "@type": "Audience", audienceType: "Shopify merchants" },
+        offers: {
+          "@type": "Offer",
+          availability: "https://schema.org/OnlineOnly",
+          url: toolUrl,
+        },
+      },
+      tool.coverImage
+        ? {
+            "@type": "ImageObject",
+            "@id": `${pageUrl}#primary-image`,
+            url: new URL(tool.coverImage, siteConfig.url).toString(),
+            caption: tool.title,
+          }
+        : undefined,
+    ].filter(Boolean),
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(schema) }}
       />
 
       <ContentAnalyticsTracker contentType="tool" slug={tool.slug} path={`/tools/${tool.slug}`} />
