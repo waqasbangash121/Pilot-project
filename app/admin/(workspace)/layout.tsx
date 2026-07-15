@@ -12,6 +12,7 @@ import {
   UsersRound,
 } from "lucide-react";
 
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 import { requireEditor } from "@/lib/editor-session";
 
@@ -37,55 +38,15 @@ export const metadata: Metadata = {
   },
 };
 
-const modules = [
-  {
-    href: "/admin",
-    label: "Dashboard",
-    description: "Workspace overview",
-    Icon: LayoutDashboard,
-  },
-  {
-    href: "/admin/blogs",
-    label: "Articles",
-    description: "Articles and thought leadership",
-    Icon: BookOpenText,
-  },
-  {
-    href: "/admin/comparisons",
-    label: "Comparisons",
-    description: "Alternative and versus pages",
-    Icon: Scale,
-  },
-  {
-    href: "/admin/resources",
-    label: "Resources",
-    description: "Guides, playbooks, and templates",
-    Icon: FileText,
-  },
-  {
-    href: "/admin/case-studies",
-    label: "Case Studies",
-    description: "Customer stories and outcomes",
-    Icon: FileText,
-  },
-  {
-    href: "/admin/tools",
-    label: "Tools",
-    description: "Audits, calculators, and utilities",
-    Icon: SearchCheck,
-  },
-  {
-    href: "/admin/team",
-    label: "Team",
-    description: "People and public profiles",
-    Icon: UsersRound,
-  },
-  {
-    href: "/admin/settings",
-    label: "Settings",
-    description: "AI connection and workspace preferences",
-    Icon: Settings2,
-  },
+const mobileModules = [
+  { href: "/admin", label: "Dashboard", Icon: LayoutDashboard },
+  { href: "/admin/blogs", label: "Articles", Icon: BookOpenText },
+  { href: "/admin/comparisons", label: "Comparisons", Icon: Scale },
+  { href: "/admin/resources", label: "Resources", Icon: FileText },
+  { href: "/admin/case-studies", label: "Case Studies", Icon: FileText },
+  { href: "/admin/tools", label: "Tools", Icon: SearchCheck },
+  { href: "/admin/team", label: "Team", Icon: UsersRound },
+  { href: "/admin/settings", label: "Settings", Icon: Settings2 },
 ];
 
 function SignOutButton({ compact = false }: { compact?: boolean }) {
@@ -112,63 +73,7 @@ export default async function ContentStudioLayout({ children }: { children: Reac
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto flex min-h-screen max-w-[1500px]">
-        <aside className="sticky top-0 hidden h-screen w-72 shrink-0 overflow-hidden border-r border-border bg-surface/90 px-4 py-4 backdrop-blur lg:flex lg:flex-col">
-          <Link
-            href="/admin"
-            className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <span className="inline-flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              H
-            </span>
-            <span>
-              <span className="block text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Hyper
-              </span>
-              <span className="block text-lg font-semibold tracking-tight">Content Studio</span>
-            </span>
-          </Link>
-
-          <nav
-            aria-label="Content modules"
-            className="mt-6 grid min-h-0 flex-1 content-start gap-1 overflow-y-auto pr-1"
-          >
-            {modules.map(({ href, label, description, Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                className="group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-all hover:bg-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition-colors group-hover:border-primary/40 group-hover:text-primary">
-                    <Icon aria-hidden="true" className="size-4" />
-                  </span>
-                  <span className="min-w-0 text-sm font-semibold">{label}</span>
-                </div>
-              </Link>
-            ))}
-          </nav>
-
-          <div className="mt-4 shrink-0 rounded-lg border border-border bg-background p-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Signed in
-            </p>
-            <p className="mt-1.5 truncate text-sm font-semibold">{editor.login}</p>
-            <div className="mt-3 flex items-center justify-between rounded-md border border-border bg-surface px-3 py-1.5">
-              <span className="text-sm font-semibold text-muted-foreground">Theme</span>
-              <ThemeSwitcher />
-            </div>
-            <div className="mt-2.5 grid gap-2">
-              <Link
-                href="/"
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-border bg-surface px-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
-              >
-                <ExternalLink aria-hidden="true" className="size-4" />
-                View website
-              </Link>
-              <SignOutButton />
-            </div>
-          </div>
-        </aside>
+        <AdminSidebar editorLogin={editor.login} />
 
         <div className="min-w-0 flex-1">
           <header className="sticky top-0 z-20 border-b border-border bg-surface/90 px-4 py-3 backdrop-blur lg:hidden">
@@ -201,7 +106,7 @@ export default async function ContentStudioLayout({ children }: { children: Reac
               aria-label="Mobile content modules"
               className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5"
             >
-              {modules.map(({ href, label, Icon }) => (
+              {mobileModules.map(({ href, label, Icon }) => (
                 <Link
                   key={href}
                   href={href}
