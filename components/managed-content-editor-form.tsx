@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  AlertCircle,
   ArrowLeft,
   CalendarDays,
+  Check,
+  CheckCircle2,
   Clock3,
   FileText,
   Globe2,
@@ -14,8 +17,10 @@ import {
   Loader2,
   Save,
   Send,
+  Sparkles,
   Tag,
   UserRound,
+  X,
 } from "lucide-react";
 
 import { AdminStatusBadge } from "@/components/admin/admin-ui";
@@ -25,7 +30,6 @@ import {
 } from "@/components/admin/collapsible-editor-section";
 import { ContentPreview } from "@/components/admin/content-preview";
 import { BlogAuditPanel, type BlogAuditResult } from "@/components/blog-audit-panel";
-import { ContentAiAssistant } from "@/components/content-ai-assistant";
 import { MarkdownBlockEditor } from "@/components/markdown-block-editor";
 import type {
   ManagedContentInput,
@@ -50,6 +54,12 @@ const toolTypes: ToolType[] = [
   "Template",
   "Worksheet",
 ];
+
+function completionLabel(done: number, total: number) {
+  if (done === total) return "Ready to publish";
+  if (done >= Math.ceil(total * 0.7)) return "Almost ready";
+  return "Draft setup";
+}
 
 type ModuleCopy = {
   singular: string;
@@ -202,6 +212,293 @@ const secondaryButtonClass =
 const primaryButtonClass =
   "inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60";
 
+type InlineAiTask = "outline" | "metadata" | "faq" | "section";
+
+type ToastState = {
+  id: number;
+  type: "success" | "error" | "warning";
+  title: string;
+  message?: string;
+  actionLabel?: string;
+  onAction?: () => void;
+};
+
+function lengthMeterState(value: string, min: number, max: number) {
+  const length = value.trim().length;
+
+  if (length === 0) {
+    return {
+      label: "Empty",
+      barClass: "bg-muted-foreground/25",
+      textClass: "text-muted-foreground",
+    };
+  }
+
+  if (length < min) {
+    return {
+      label: "Short",
+      barClass: "bg-amber-500",
+      textClass: "text-amber-700 dark:text-amber-300",
+    };
+  }
+
+  if (length > max) {
+    return {
+      label: "Long",
+      barClass: "bg-rose-500",
+      textClass: "text-rose-700 dark:text-rose-300",
+    };
+  }
+
+  return {
+    label: "Good",
+    barClass: "bg-emerald-500",
+    textClass: "text-emerald-700 dark:text-emerald-300",
+  };
+}
+
+function CharacterMeter({ value, max, min }: { value: string; max: number; min: number }) {
+  const meter = lengthMeterState(value, min, max);
+  const length = value.trim().length;
+  const width = Math.min(100, Math.round((length / max) * 100));
+
+  return (
+    <div className="grid gap-1.5">
+      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+        <div
+          className={`h-full rounded-full transition-all ${meter.barClass}`}
+          style={{ width: `${width}%` }}
+        />
+      </div>
+      <div className="flex items-center justify-between gap-3 text-xs font-normal">
+        <span className={meter.textClass}>{meter.label}</span>
+        <span className="text-muted-foreground">
+          {length}/{max} characters
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function compactSuggestion(text: string) {
+  return text
+    .trim()
+    .replace(/^```(?:\w+)?\s*/i, "")
+    .replace(/```$/i, "")
+    .trim();
+}
+
+function singleLineSuggestion(text: string) {
+  const cleaned = compactSuggestion(text)
+    .split("\n")
+    .map((line) =>
+      line
+        .replace(/^[-*\d.)\s]+/, "")
+        .replace(/^[A-Za-z ]+:\s*/, "")
+        .trim(),
+    )
+    .filter(Boolean)[0];
+
+  return (cleaned ?? "").replace(/^['"]|['"]$/g, "").trim();
+}
+
+function EditorToast({ toast, onClose }: { toast: ToastState; onClose: () => void }) {
+  useEffect(() => {
+    if (toast.actionLabel) return;
+
+    const timeout = window.setTimeout(onClose, toast.type === "success" ? 4200 : 6500);
+    return () => window.clearTimeout(timeout);
+  }, [onClose, toast]);
+
+  const isSuccess = toast.type === "success";
+  const isWarning = toast.type === "warning";
+
+  return (
+    <div className="fixed right-4 top-4 z-50 w-[calc(100vw-2rem)] max-w-sm rounded-lg border border-border bg-surface p-4 shadow-lg sm:right-6 sm:top-6">
+      <div className="flex items-start gap-3">
+        <span
+          className={
+            isSuccess
+              ? "inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200"
+              : isWarning
+                ? "inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-amber-50 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200"
+                : "inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-rose-50 text-rose-700 dark:bg-rose-400/15 dark:text-rose-200"
+          }
+        >
+          {isSuccess ? (
+            <CheckCircle2 aria-hidden="true" className="size-5" />
+          ) : (
+            <AlertCircle aria-hidden="true" className="size-5" />
+          )}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-foreground">{toast.title}</p>
+          {toast.message ? (
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">{toast.message}</p>
+          ) : null}
+          {toast.actionLabel && toast.onAction ? (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                toast.onAction?.();
+              }}
+              className="mt-3 inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground"
+            >
+              {toast.actionLabel}
+            </button>
+          ) : null}
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          aria-label="Dismiss notification"
+        >
+          <X aria-hidden="true" className="size-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+type InlineAiSuggestionPanelProps = {
+  module: ManagedContentType;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  applyLabel: string;
+  task: InlineAiTask;
+  instruction: string;
+  itemTitle: string;
+  focusKeyword?: string;
+  audience?: string;
+  competitorName?: string;
+  existingContent: string;
+  onApply: (text: string) => void;
+  transformResult?: (text: string) => string;
+};
+
+function InlineAiSuggestionPanel({
+  module,
+  title,
+  description,
+  buttonLabel,
+  applyLabel,
+  task,
+  instruction,
+  itemTitle,
+  focusKeyword,
+  audience,
+  competitorName,
+  existingContent,
+  onApply,
+  transformResult = compactSuggestion,
+}: InlineAiSuggestionPanelProps) {
+  const [running, setRunning] = useState(false);
+  const [result, setResult] = useState("");
+  const [panelError, setPanelError] = useState("");
+  const [applied, setApplied] = useState(false);
+
+  async function generate() {
+    setRunning(true);
+    setPanelError("");
+    setApplied(false);
+
+    try {
+      const response = await fetch("/api/admin/content/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          module,
+          task,
+          title: itemTitle.trim() || "Untitled content page",
+          focusKeyword,
+          audience,
+          competitorName,
+          existingContent,
+          specificInstruction: instruction,
+        }),
+      });
+      const body = (await response.json()) as { text?: string; error?: string };
+
+      if (!response.ok || !body.text)
+        throw new Error(body.error || "Content generation could not be completed.");
+      setResult(transformResult(body.text));
+    } catch (generationError) {
+      setPanelError(
+        generationError instanceof Error
+          ? generationError.message
+          : "Content generation could not be completed.",
+      );
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  function applyResult() {
+    if (!result) return;
+    onApply(result);
+    setApplied(true);
+  }
+
+  return (
+    <details className="rounded-md border border-border bg-background p-3">
+      <summary className="cursor-pointer list-none">
+        <span className="flex items-start justify-between gap-3">
+          <span className="flex min-w-0 items-start gap-2">
+            <span className="mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <Sparkles aria-hidden="true" className="size-4" />
+            </span>
+            <span>
+              <span className="block text-sm font-semibold">{title}</span>
+              <span className="mt-1 block text-xs font-normal leading-5 text-muted-foreground">
+                {description}
+              </span>
+            </span>
+          </span>
+          <span className="text-xs font-semibold text-muted-foreground">AI</span>
+        </span>
+      </summary>
+      <div className="mt-4 grid gap-3">
+        <button
+          type="button"
+          onClick={generate}
+          disabled={running}
+          className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-surface px-3 text-xs font-semibold transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {running ? (
+            <Loader2 aria-hidden="true" className="size-3.5 animate-spin" />
+          ) : (
+            <Sparkles aria-hidden="true" className="size-3.5" />
+          )}
+          {running ? "Generating..." : buttonLabel}
+        </button>
+        {panelError ? (
+          <p className="rounded-md border border-rose-200 bg-rose-50 p-3 text-xs leading-5 text-rose-950 dark:border-rose-400/30 dark:bg-rose-400/15 dark:text-rose-50">
+            {panelError}
+          </p>
+        ) : null}
+        {result ? (
+          <div className="rounded-md border border-border bg-muted/50 p-3">
+            <pre className="max-h-56 overflow-auto whitespace-pre-wrap text-xs leading-5 text-foreground">
+              {result}
+            </pre>
+            <button
+              type="button"
+              onClick={applyResult}
+              className="mt-3 inline-flex h-8 items-center gap-2 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground"
+            >
+              {applied ? <Check aria-hidden="true" className="size-3.5" /> : null}
+              {applied ? "Applied" : applyLabel}
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </details>
+  );
+}
+
 export function ManagedContentEditorForm({
   type,
   initialItem,
@@ -212,9 +509,9 @@ export function ManagedContentEditorForm({
   const [item, setItem] = useState<ManagedContentInput>(initialItem ?? createEmptyItem(type));
   const [tagsText, setTagsText] = useState((initialItem?.tags ?? []).join(", "));
   const [saving, setSaving] = useState<"draft" | "publish" | null>(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [toast, setToast] = useState<ToastState | null>(null);
   const [auditResult, setAuditResult] = useState<BlogAuditResult | null>(null);
+  const [generatingCoverImage, setGeneratingCoverImage] = useState(false);
 
   const publicUrl = useMemo(
     () => copy.publicRoot + "/" + (item.slug || "your-" + type + "-slug"),
@@ -235,6 +532,60 @@ export function ManagedContentEditorForm({
     }),
     [item, parsedTags],
   );
+  const aiAudience = item.audience || item.industry || item.useCase;
+  const moduleReadinessItem = useMemo(() => {
+    if (type === "comparison") {
+      return { label: "Comparison target", done: Boolean((item.competitorName ?? "").trim()) };
+    }
+
+    if (type === "resource") {
+      return { label: "Target audience", done: Boolean((item.audience ?? "").trim()) };
+    }
+
+    if (type === "case-study") {
+      return {
+        label: "Customer context",
+        done: Boolean((item.customerName ?? "").trim() || (item.industry ?? "").trim()),
+      };
+    }
+
+    return { label: "Tool use case", done: Boolean((item.useCase ?? "").trim()) };
+  }, [item.audience, item.competitorName, item.customerName, item.industry, item.useCase, type]);
+  const readinessItems = useMemo(
+    () => [
+      { label: "Title", done: item.title.trim().length >= 12 },
+      { label: "Focus keyword", done: Boolean((item.focusKeyword ?? "").trim()) },
+      moduleReadinessItem,
+      { label: "Slug", done: Boolean(item.slug.trim()) },
+      { label: "Excerpt", done: item.excerpt.trim().length >= 80 },
+      { label: "Cover image", done: Boolean(item.coverImage.trim()) },
+      {
+        label: `${copy.singular[0].toUpperCase()}${copy.singular.slice(1)} draft`,
+        done: item.content.trim().length >= 350 && item.content !== copy.defaultContent,
+      },
+      {
+        label: "SEO title",
+        done: item.seoTitle.trim().length >= 35 && item.seoTitle.trim().length <= 70,
+      },
+      {
+        label: "SEO description",
+        done: item.seoDescription.trim().length >= 110 && item.seoDescription.trim().length <= 180,
+      },
+    ],
+    [copy.defaultContent, copy.singular, item, moduleReadinessItem],
+  );
+  const completedReadiness = readinessItems.filter((readinessItem) => readinessItem.done).length;
+  const readinessPercent = Math.round((completedReadiness / readinessItems.length) * 100);
+  const missingPublishItems = readinessItems
+    .filter((readinessItem) => !readinessItem.done)
+    .map((readinessItem) => readinessItem.label);
+  const canPublish = missingPublishItems.length === 0;
+  const coverImageValue = item.coverImage.trim();
+  const coverImageAlt = item.title || `${copy.singular} cover preview`;
+
+  function showToast(toastDetails: Omit<ToastState, "id">) {
+    setToast({ ...toastDetails, id: Date.now() });
+  }
 
   function update<K extends keyof ManagedContentInput>(key: K, value: ManagedContentInput[K]) {
     setItem((current) => ({ ...current, [key]: value }));
@@ -245,13 +596,70 @@ export function ManagedContentEditorForm({
       ...current,
       content: `${current.content.trim()}\n\n${text.trim()}`.trim(),
     }));
-    setSuccess("AI suggestion added to the editable draft. Review it before saving or publishing.");
+    showToast({
+      type: "success",
+      title: "AI suggestion added",
+      message: "Review the inserted draft before saving or publishing.",
+    });
+  }
+
+  async function generateCoverImage() {
+    setToast(null);
+    setGeneratingCoverImage(true);
+
+    try {
+      const response = await fetch("/api/admin/content/generate-cover-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          module: type,
+          title: item.title,
+          focusKeyword: item.focusKeyword,
+          existingContent: item.content,
+        }),
+      });
+      const result = (await response.json()) as { error?: string; imagePath?: string };
+
+      if (!response.ok || !result.imagePath) {
+        throw new Error(result.error || `The ${copy.singular} cover could not be generated.`);
+      }
+
+      update("coverImage", result.imagePath);
+      showToast({
+        type: "success",
+        title: "Cover image generated",
+        message: "The new image path was added and the preview is ready.",
+      });
+    } catch (coverError) {
+      const message =
+        coverError instanceof Error
+          ? coverError.message
+          : `The ${copy.singular} cover could not be generated.`;
+      showToast({
+        type: "error",
+        title: "Could not generate cover",
+        message,
+        actionLabel: "Retry",
+        onAction: generateCoverImage,
+      });
+    } finally {
+      setGeneratingCoverImage(false);
+    }
   }
 
   async function save(mode: "draft" | "publish") {
+    setToast(null);
+
+    if (mode === "publish" && !canPublish) {
+      showToast({
+        type: "warning",
+        title: "Finish required fields",
+        message: "Before publishing, finish: " + missingPublishItems.join(", ") + ".",
+      });
+      return;
+    }
+
     setSaving(mode);
-    setError("");
-    setSuccess("");
 
     const payload: ManagedContentInput = {
       ...item,
@@ -275,18 +683,27 @@ export function ManagedContentEditorForm({
       }
 
       setItem((current) => ({ ...current, ...payload }));
-      setSuccess(
-        mode === "publish"
-          ? `Published to Neon. The public ${copy.singular} is available now.`
-          : `Draft saved to Neon. It remains hidden from the public ${copy.plural} page.`,
-      );
+      showToast({
+        type: "success",
+        title: mode === "publish" ? `${copy.singular} published` : "Draft saved",
+        message:
+          mode === "publish"
+            ? `Published to Neon. The public ${copy.singular} is available now.`
+            : `Draft saved to Neon. It remains hidden from the public ${copy.plural} page.`,
+      });
 
       if (result.slug !== originalSlug) router.push(`/admin/${copy.plural}/${result.slug}`);
       router.refresh();
     } catch (saveError) {
-      setError(
-        saveError instanceof Error ? saveError.message : `The ${copy.singular} could not be saved.`,
-      );
+      const message =
+        saveError instanceof Error ? saveError.message : `The ${copy.singular} could not be saved.`;
+      showToast({
+        type: "error",
+        title: `Could not save ${copy.singular}`,
+        message,
+        actionLabel: "Retry",
+        onAction: () => save(mode),
+      });
     } finally {
       setSaving(null);
     }
@@ -306,7 +723,23 @@ export function ManagedContentEditorForm({
               placeholder="The product or alternative being compared"
             />
           </label>
-          <label className={fieldLabelClass}>
+          <InlineAiSuggestionPanel
+            module={type}
+            title="Comparison target angle"
+            description="Suggest a safe comparison target label or placeholder based on the page title."
+            buttonLabel="Suggest target"
+            applyLabel="Use target"
+            task="metadata"
+            itemTitle={item.title}
+            focusKeyword={item.focusKeyword}
+            audience={aiAudience}
+            competitorName={item.competitorName}
+            existingContent={item.content}
+            instruction="Return only one comparison target name or generic alternative placeholder. Do not invent a real company, product, or competitor if the title does not identify one. Do not include labels, bullets, quotes, or explanation."
+            transformResult={singleLineSuggestion}
+            onApply={(text) => update("competitorName", text)}
+          />
+          <label className={`${fieldLabelClass} sm:col-span-2`}>
             Decision summary
             <textarea
               value={item.decisionSummary ?? ""}
@@ -316,6 +749,23 @@ export function ManagedContentEditorForm({
               placeholder="Summarize the buyer scenario and when each option may be the right fit."
             />
           </label>
+          <div className="sm:col-span-2">
+            <InlineAiSuggestionPanel
+              module={type}
+              title="Decision summary suggestion"
+              description="Draft a neutral buyer-fit summary without unsupported competitor claims."
+              buttonLabel="Suggest summary"
+              applyLabel="Use summary"
+              task="metadata"
+              itemTitle={item.title}
+              focusKeyword={item.focusKeyword}
+              audience={aiAudience}
+              competitorName={item.competitorName}
+              existingContent={item.content}
+              instruction="Return only one neutral comparison decision summary between 120 and 220 characters. Mark unverifiable claims with [verify]. Do not include labels, bullets, quotes, or explanation."
+              onApply={(text) => update("decisionSummary", text)}
+            />
+          </div>
         </div>
       );
     }
@@ -347,6 +797,23 @@ export function ManagedContentEditorForm({
               placeholder="Shopify merchants and ecommerce teams"
             />
           </label>
+          <div className="sm:col-span-2">
+            <InlineAiSuggestionPanel
+              module={type}
+              title="Audience suggestion"
+              description="Name the specific reader group this resource should serve."
+              buttonLabel="Suggest audience"
+              applyLabel="Use audience"
+              task="metadata"
+              itemTitle={item.title}
+              focusKeyword={item.focusKeyword}
+              audience={aiAudience}
+              existingContent={item.content}
+              instruction="Return only one concise target audience phrase under 120 characters. Do not include labels, bullets, quotes, or explanation."
+              transformResult={singleLineSuggestion}
+              onApply={(text) => update("audience", text)}
+            />
+          </div>
         </div>
       );
     }
@@ -363,6 +830,9 @@ export function ManagedContentEditorForm({
               maxLength={120}
               placeholder="Customer or brand name"
             />
+            <span className="text-xs font-normal leading-5 text-muted-foreground">
+              Use a real approved customer name, or an approved anonymized label.
+            </span>
           </label>
           <label className={fieldLabelClass}>
             Industry
@@ -374,6 +844,23 @@ export function ManagedContentEditorForm({
               placeholder="Fashion, beauty, electronics, B2B commerce..."
             />
           </label>
+          <div className="sm:col-span-2">
+            <InlineAiSuggestionPanel
+              module={type}
+              title="Industry suggestion"
+              description="Suggest a concise industry label from the approved customer context."
+              buttonLabel="Suggest industry"
+              applyLabel="Use industry"
+              task="metadata"
+              itemTitle={item.title}
+              focusKeyword={item.focusKeyword}
+              audience={aiAudience}
+              existingContent={item.content}
+              instruction="Return only one broad ecommerce industry label. Do not invent customer identity or metrics. Do not include labels, bullets, quotes, or explanation."
+              transformResult={singleLineSuggestion}
+              onApply={(text) => update("industry", text)}
+            />
+          </div>
           <label className={`${fieldLabelClass} sm:col-span-2`}>
             Outcome summary
             <textarea
@@ -384,6 +871,22 @@ export function ManagedContentEditorForm({
               placeholder="Summarize the verified outcome, implementation lesson, or customer result."
             />
           </label>
+          <div className="sm:col-span-2">
+            <InlineAiSuggestionPanel
+              module={type}
+              title="Outcome summary suggestion"
+              description="Shape the outcome language while keeping unverified metrics marked."
+              buttonLabel="Suggest outcome"
+              applyLabel="Use outcome"
+              task="metadata"
+              itemTitle={item.title}
+              focusKeyword={item.focusKeyword}
+              audience={aiAudience}
+              existingContent={item.content}
+              instruction="Return only one case-study outcome summary between 120 and 220 characters. Use [verify] for metrics, quotes, or results that need confirmation. Do not include labels, bullets, quotes, or explanation."
+              onApply={(text) => update("outcomeSummary", text)}
+            />
+          </div>
         </div>
       );
     }
@@ -414,6 +917,23 @@ export function ManagedContentEditorForm({
             placeholder="Audit search quality, prioritize merchandising work..."
           />
         </label>
+        <div className="sm:col-span-2">
+          <InlineAiSuggestionPanel
+            module={type}
+            title="Use-case suggestion"
+            description="Clarify when someone should use this tool and what job it helps with."
+            buttonLabel="Suggest use case"
+            applyLabel="Use case"
+            task="metadata"
+            itemTitle={item.title}
+            focusKeyword={item.focusKeyword}
+            audience={aiAudience}
+            existingContent={item.content}
+            instruction="Return only one practical tool use-case phrase under 150 characters. Do not imply features or automation not described in the draft. Do not include labels, bullets, quotes, or explanation."
+            transformResult={singleLineSuggestion}
+            onApply={(text) => update("useCase", text)}
+          />
+        </div>
         <label className={`${fieldLabelClass} sm:col-span-2`}>
           Launch URL
           <input
@@ -430,9 +950,9 @@ export function ManagedContentEditorForm({
       </div>
     );
   }
-
   return (
     <div className="space-y-6">
+      {toast ? <EditorToast key={toast.id} toast={toast} onClose={() => setToast(null)} /> : null}
       <section className={sectionClass}>
         <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
           <div className="min-w-0">
@@ -499,6 +1019,22 @@ export function ManagedContentEditorForm({
                   placeholder={copy.titlePlaceholder}
                 />
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Title suggestion"
+                description={`Generate one focused ${copy.singular} title for this page.`}
+                buttonLabel="Suggest title"
+                applyLabel="Use as title"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one polished ${copy.singular} title, under 70 characters when possible. Use the focus keyword naturally if it fits. Do not include labels, bullets, quotes, or explanation.`}
+                transformResult={singleLineSuggestion}
+                onApply={(text) => update("title", text)}
+              />
               {renderBriefFields()}
               <label className={fieldLabelClass}>
                 Focus keyword
@@ -510,6 +1046,22 @@ export function ManagedContentEditorForm({
                   placeholder={copy.focusPlaceholder}
                 />
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Focus keyword suggestion"
+                description={`Find one search phrase that fits this ${copy.singular} and its reader intent.`}
+                buttonLabel="Suggest keyword"
+                applyLabel="Use keyword"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one primary focus keyword phrase for this ${copy.singular}, under 80 characters. Do not include labels, bullets, quotes, or explanation.`}
+                transformResult={singleLineSuggestion}
+                onApply={(text) => update("focusKeyword", text)}
+              />
               <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
                 <label className={fieldLabelClass}>
                   URL slug
@@ -542,10 +1094,23 @@ export function ManagedContentEditorForm({
                   maxLength={350}
                   placeholder="A clear summary for cards, search previews, and reader expectations."
                 />
-                <span className="text-xs font-normal text-muted-foreground">
-                  {item.excerpt.length}/350 characters
-                </span>
+                <CharacterMeter value={item.excerpt} min={120} max={350} />
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Excerpt suggestion"
+                description="Draft a clear summary for cards, previews, and reader expectations."
+                buttonLabel="Suggest excerpt"
+                applyLabel="Use as excerpt"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one ${copy.singular} excerpt between 120 and 180 characters. Make it specific, useful, and plainspoken. Do not include labels, bullets, quotes, or explanation.`}
+                onApply={(text) => update("excerpt", text)}
+              />
             </div>
           </CollapsibleEditorSection>
 
@@ -598,6 +1163,23 @@ export function ManagedContentEditorForm({
               </label>
             </div>
             <div className="mt-5 grid gap-5">
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Category suggestion"
+                description={`Choose a concise taxonomy label for this ${copy.singular}.`}
+                buttonLabel="Suggest category"
+                applyLabel="Use category"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one short category for this ${copy.singular}, 2 to 5 words. Do not include labels, bullets, quotes, or explanation.`}
+                transformResult={singleLineSuggestion}
+                onApply={(text) => update("category", text)}
+              />
+
               <label className={fieldLabelClass}>
                 Tags
                 <input
@@ -610,6 +1192,21 @@ export function ManagedContentEditorForm({
                   Separate tags with commas. Maximum 10 tags.
                 </span>
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Tag suggestions"
+                description="Generate a clean comma-separated tag set for filtering and cards."
+                buttonLabel="Suggest tags"
+                applyLabel="Use tags"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only 5 to 8 comma-separated tags for this ${copy.singular}. Do not include labels, bullets, quotes, or explanation.`}
+                onApply={(text) => setTagsText(text)}
+              />
               <label className={fieldLabelClass}>
                 <span className="inline-flex items-center gap-2">
                   <ImageIcon aria-hidden="true" className="size-4" /> Cover image path or URL
@@ -621,6 +1218,45 @@ export function ManagedContentEditorForm({
                   placeholder={copy.coverPlaceholder}
                 />
               </label>
+
+              <div className="rounded-md border border-primary/20 bg-primary/5 p-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold">AI cover image</p>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      Generate a no-text editorial cover, save it to the site, and preview it here.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={generateCoverImage}
+                    disabled={generatingCoverImage}
+                    className={secondaryButtonClass}
+                  >
+                    {generatingCoverImage ? (
+                      <Loader2 aria-hidden="true" className="size-4 animate-spin" />
+                    ) : (
+                      <Sparkles aria-hidden="true" className="size-4" />
+                    )}
+                    {generatingCoverImage ? "Generating..." : "Generate cover"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-md border border-border bg-background">
+                {coverImageValue ? (
+                  <div
+                    aria-label={coverImageAlt}
+                    className="aspect-[16/7] bg-cover bg-center"
+                    role="img"
+                    style={{ backgroundImage: "url('" + coverImageValue + "')" }}
+                  />
+                ) : (
+                  <div className="flex aspect-[16/7] items-center justify-center bg-muted text-sm font-semibold text-muted-foreground">
+                    Cover preview appears here
+                  </div>
+                )}
+              </div>
             </div>
           </CollapsibleEditorSection>
 
@@ -631,7 +1267,54 @@ export function ManagedContentEditorForm({
             title={copy.contentLabel}
             badge="Direct answers help search"
           >
-            <div>
+            <div className="grid gap-4">
+              <div className="grid gap-3 lg:grid-cols-3">
+                <InlineAiSuggestionPanel
+                  module={type}
+                  title="Outline"
+                  description="Create a practical H2 flow before writing."
+                  buttonLabel="Generate outline"
+                  applyLabel="Append outline"
+                  task="outline"
+                  itemTitle={item.title}
+                  focusKeyword={item.focusKeyword}
+                  audience={aiAudience}
+                  competitorName={item.competitorName}
+                  existingContent={item.content}
+                  instruction={`Return a concise Markdown outline for this ${copy.singular} with H2 headings and brief notes. Do not include an H1 or preface.`}
+                  onApply={appendGeneratedContent}
+                />
+                <InlineAiSuggestionPanel
+                  module={type}
+                  title="Section block"
+                  description="Draft one useful section that can be edited in place."
+                  buttonLabel="Draft section"
+                  applyLabel="Append section"
+                  task="section"
+                  itemTitle={item.title}
+                  focusKeyword={item.focusKeyword}
+                  audience={aiAudience}
+                  competitorName={item.competitorName}
+                  existingContent={item.content}
+                  instruction={`Return one Markdown section for this ${copy.singular} with a clear H2 heading, answer-first opening, practical explanation, and concise takeaway.`}
+                  onApply={appendGeneratedContent}
+                />
+                <InlineAiSuggestionPanel
+                  module={type}
+                  title="FAQ block"
+                  description="Add direct-answer questions for readers and AI search."
+                  buttonLabel="Generate FAQs"
+                  applyLabel="Append FAQs"
+                  task="faq"
+                  itemTitle={item.title}
+                  focusKeyword={item.focusKeyword}
+                  audience={aiAudience}
+                  competitorName={item.competitorName}
+                  existingContent={item.content}
+                  instruction={`Return a Markdown FAQ block for this ${copy.singular} with 4 concise questions and direct answers. Use H2 for the FAQ heading and H3 for each question.`}
+                  onApply={appendGeneratedContent}
+                />
+              </div>
               <MarkdownBlockEditor
                 label={copy.contentLabel}
                 value={item.content}
@@ -658,10 +1341,24 @@ export function ManagedContentEditorForm({
                   className={inputClass}
                   placeholder={item.title || "SEO title"}
                 />
-                <span className="text-xs font-normal text-muted-foreground">
-                  {item.seoTitle.length}/70 characters
-                </span>
+                <CharacterMeter value={item.seoTitle} min={35} max={70} />
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="SEO title suggestion"
+                description="Generate a search-focused title that stays within the visible range."
+                buttonLabel="Suggest SEO title"
+                applyLabel="Use SEO title"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one SEO title for this ${copy.singular} between 45 and 60 characters. Use the focus keyword naturally if it fits. Do not include labels, bullets, quotes, or explanation.`}
+                transformResult={singleLineSuggestion}
+                onApply={(text) => update("seoTitle", text)}
+              />
               <label className={fieldLabelClass}>
                 SEO description
                 <textarea
@@ -671,10 +1368,23 @@ export function ManagedContentEditorForm({
                   className={`${textareaClass} min-h-28`}
                   placeholder={item.excerpt || "SEO description"}
                 />
-                <span className="text-xs font-normal text-muted-foreground">
-                  {item.seoDescription.length}/180 characters
-                </span>
+                <CharacterMeter value={item.seoDescription} min={110} max={180} />
               </label>
+              <InlineAiSuggestionPanel
+                module={type}
+                title="Meta description suggestion"
+                description="Generate a concise search snippet that matches the page promise."
+                buttonLabel="Suggest description"
+                applyLabel="Use description"
+                task="metadata"
+                itemTitle={item.title}
+                focusKeyword={item.focusKeyword}
+                audience={aiAudience}
+                competitorName={item.competitorName}
+                existingContent={item.content}
+                instruction={`Return only one meta description for this ${copy.singular} between 140 and 160 characters. Make it specific and useful. Do not include labels, bullets, quotes, or explanation.`}
+                onApply={(text) => update("seoDescription", text)}
+              />
               <div className="rounded-md border border-border bg-background p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   Search preview
@@ -699,13 +1409,54 @@ export function ManagedContentEditorForm({
               <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary">
                 <Send aria-hidden="true" className="size-5" />
               </span>
-              <div>
-                <h2 className="font-semibold">Publishing</h2>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="font-semibold">Publishing</h2>
+                  <AdminStatusBadge draft={item.draft} />
+                </div>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Saving writes the content record to Neon and refreshes the public routes.
+                  Drafts can be saved anytime. Publishing asks for the essentials first.
                 </p>
               </div>
             </div>
+
+            <div className="mt-5 rounded-md border border-border bg-background p-4">
+              <div className="flex items-center justify-between gap-3 text-sm font-semibold">
+                <span>{completionLabel(completedReadiness, readinessItems.length)}</span>
+                <span className="text-muted-foreground">
+                  {completedReadiness}/{readinessItems.length}
+                </span>
+              </div>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full rounded-full bg-primary transition-all"
+                  style={{ width: readinessPercent + "%" }}
+                />
+              </div>
+              <div className="mt-4 grid gap-2">
+                {readinessItems.map((readinessItem) => (
+                  <div
+                    key={readinessItem.label}
+                    className="flex items-center gap-2 text-sm text-muted-foreground"
+                  >
+                    {readinessItem.done ? (
+                      <span className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300">
+                        <Check aria-hidden="true" className="size-3" />
+                      </span>
+                    ) : (
+                      <CheckCircle2
+                        aria-hidden="true"
+                        className="size-4 shrink-0 text-muted-foreground/40"
+                      />
+                    )}
+                    <span className={readinessItem.done ? "text-foreground" : undefined}>
+                      {readinessItem.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="mt-5 grid gap-3">
               <button
                 type="button"
@@ -736,27 +1487,7 @@ export function ManagedContentEditorForm({
             </div>
           </div>
 
-          <ContentAiAssistant
-            module={type}
-            title={item.title}
-            focusKeyword={item.focusKeyword}
-            audience={item.audience || item.industry || item.useCase}
-            competitorName={item.competitorName}
-            existingContent={item.content}
-            onAppendToContent={appendGeneratedContent}
-          />
           <BlogAuditPanel article={auditItem} result={auditResult} onResult={setAuditResult} />
-
-          {error ? (
-            <p className="rounded-md border border-rose-200 bg-rose-50 p-4 text-sm text-rose-950 dark:border-rose-400/30 dark:bg-rose-400/15 dark:text-rose-50">
-              {error}
-            </p>
-          ) : null}
-          {success ? (
-            <p className="rounded-md border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-50">
-              {success}
-            </p>
-          ) : null}
         </aside>
       </div>
     </div>
