@@ -9,6 +9,7 @@ import { Section } from "@/components/ui/section";
 import { AppPageLinkSection } from "@/components/app-page-link-section";
 import { ProductVisualGallery } from "@/components/product-visual-gallery";
 import { canonicalUrl } from "@/config/metadata";
+import { languageAlternates } from "@/lib/i18n/metadata";
 import { getHyperApp, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 import { toJsonLd } from "@/lib/schema";
 
@@ -31,7 +32,7 @@ const pricingNote = "Plans, limits, and included features may change. The Shopif
 export const metadata = {
   title: { absolute: "Shopify AI Chatbot & FAQ App | Hyper AI Chat" },
   description: "Answer Shopify product, shipping, return and policy questions with an AI chatbot and searchable FAQs. Install Hyper AI Chat free.",
-  alternates: { canonical: pageUrl },
+  alternates: languageAlternates(chatApp.internalHref),
   openGraph: { type: "website", url: pageUrl, title: "AI Chatbot and Searchable FAQs for Shopify | Hyper", description: "Give Shopify shoppers quick answers using an AI chatbot trained with your products, policies, FAQs, and approved support content.", images: [{ url: canonicalUrl(chatApp.screenshot), width: 1200, height: 630, alt: chatApp.screenshotAlt }] },
   twitter: { card: "summary_large_image", title: "AI Chatbot and Searchable FAQs for Shopify | Hyper", description: "Give Shopify shoppers quick answers using an AI chatbot trained with your products, policies, FAQs, and approved support content.", images: [canonicalUrl(chatApp.screenshot)] },
 };
@@ -99,6 +100,7 @@ export default function HyperAIChatFAQPage() {
 }
 
 function FitList({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) { return <article className="rounded-[8px] border border-border bg-surface p-6"><h3 className="text-xl font-black tracking-normal">{title}</h3><ul className="mt-5 space-y-3">{items.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground"><CheckCircle2 aria-hidden="true" className={`mt-0.5 size-4 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} /><span>{item}</span></li>)}</ul></article>; }
+
 
 
 

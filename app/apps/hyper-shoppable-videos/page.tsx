@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/section";
 import { AppPageLinkSection } from "@/components/app-page-link-section";
 import { ProductVisualGallery } from "@/components/product-visual-gallery";
 import { canonicalUrl } from "@/config/metadata";
+import { languageAlternates } from "@/lib/i18n/metadata";
 import { getHyperApp, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 import { toJsonLd } from "@/lib/schema";
 
@@ -29,7 +30,7 @@ const pricingNote = "Plans, limits, and included features may change. The Shopif
 export const metadata = {
   title: { absolute: "Shopify Shoppable Video & UGC App | Hyper Videos" },
   description: "Turn Shopify product videos, TikToks, Reels and UGC into shoppable widgets with product tags, add-to-cart actions and video analytics.",
-  alternates: { canonical: pageUrl },
+  alternates: languageAlternates(videoApp.internalHref),
   openGraph: { type: "website", url: pageUrl, title: "Shoppable Videos and UGC Widgets for Shopify | Hyper", description: "Tag products in videos, add shoppable widgets to Shopify pages, and track views, clicks, and add-to-cart activity.", images: [{ url: canonicalUrl(videoApp.screenshot), width: 1200, height: 630, alt: videoApp.screenshotAlt }] },
   twitter: { card: "summary_large_image", title: "Shoppable Videos and UGC Widgets for Shopify | Hyper", description: "Tag products in videos, add shoppable widgets to Shopify pages, and track views, clicks, and add-to-cart activity.", images: [canonicalUrl(videoApp.screenshot)] },
 };
@@ -93,6 +94,7 @@ export default function HyperShoppableVideosPage() {
 }
 
 function FitList({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) { return <article className="rounded-[8px] border border-border bg-surface p-6"><h3 className="text-xl font-black tracking-normal">{title}</h3><ul className="mt-5 space-y-3">{items.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground"><CheckCircle2 aria-hidden="true" className={`mt-0.5 size-4 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} /><span>{item}</span></li>)}</ul></article>; }
+
 
 
 

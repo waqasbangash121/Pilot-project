@@ -1,0 +1,43 @@
+import Link from "next/link";
+import { ArrowRight, BookOpenText, CheckCircle2, Clock3, FileText, ListChecks, Scale, Sparkles, UsersRound } from "lucide-react";
+
+import { Container } from "@/components/ui/container";
+import { Section } from "@/components/ui/section";
+import { formatResourceDate, getAllResources } from "@/lib/resources";
+import { createSpanishPageMetadata } from "@/lib/i18n/metadata";
+import { publicImageSrc } from "@/lib/public-image-src";
+import { toJsonLd } from "@/lib/schema";
+import { siteConfig } from "@/config/site";
+
+export const dynamic = "force-dynamic";
+
+export const metadata = createSpanishPageMetadata({
+  title: "Guias, playbooks y recursos ecommerce para Shopify",
+  description:
+    "Explora recursos de NiagaraT para comerciantes Shopify sobre descubrimiento, busqueda, soporte con IA, videos comprables y crecimiento de conversion.",
+  path: "/es/resources",
+});
+
+const resourceFormats = [
+  ["Guias", "Aprende un concepto, entiende el contexto y encuentra el siguiente paso practico.", BookOpenText],
+  ["Playbooks", "Convierte un objetivo en un proceso repetible que tu equipo puede seguir y mejorar.", ListChecks],
+  ["Checklists y plantillas", "Avanza mas rapido con estructuras para planificacion, revision, implementacion y alineacion.", CheckCircle2],
+] as const;
+
+const relatedLinks = [["/es/blog", "Leer el blog", "Contexto practico sobre comercio IA, descubrimiento y conversion.", BookOpenText], ["/es/comparisons", "Ver comparaciones", "Evalua soluciones Shopify con criterios y ventajas y desventajas mas claros.", Scale]] as const;
+
+export default async function SpanishResourcesPage() {
+  const resources = await getAllResources();
+  const resourcesUrl = new URL("/es/resources", siteConfig.url).toString();
+  const resourcesSchema = { "@context": "https://schema.org", "@type": "CollectionPage", "@id": `${resourcesUrl}#webpage`, name: "Guias, playbooks y recursos ecommerce para Shopify", description: "Recursos de NiagaraT para comerciantes Shopify.", url: resourcesUrl, inLanguage: "es", isPartOf: { "@id": `${siteConfig.url}#website` } };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toJsonLd(resourcesSchema) }} />
+      <Section spacing="none" className="pb-6 pt-10 sm:pb-8 sm:pt-14 lg:pt-16"><Container className="max-w-6xl"><div className="relative overflow-hidden rounded-3xl border border-border bg-surface px-6 py-7 shadow-[0_28px_70px_-46px_hsl(var(--shadow)/0.72)] sm:px-10 sm:py-9"><div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-end"><div><div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"><Sparkles aria-hidden="true" className="size-3.5 text-primary" />Aprendizaje Shopify</div><p className="mt-4 text-sm font-semibold uppercase tracking-[0.22em] text-primary">Recursos de Hyper Apps</p><h1 className="mt-3 max-w-4xl type-display">Recursos Shopify para descubrimiento, soporte y conversion.</h1><p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">Usa guias, playbooks, checklists y plantillas de NiagaraT para mejorar descubrimiento de productos, soporte al cliente, comercio con video y conversion con un plan de implementacion mas claro.</p></div><aside className="rounded-2xl border border-border bg-background/75 p-5 backdrop-blur sm:p-6"><FileText aria-hidden="true" className="size-5 text-primary" /><p className="mt-4 text-4xl font-semibold tracking-tight">{resources.length}</p><p className="mt-1 text-sm font-semibold text-foreground">{resources.length === 1 ? "recurso" : "recursos"} de aprendizaje</p><p className="mt-2 text-sm leading-6 text-muted-foreground">Disenados para pasar de una pregunta a una accion util.</p></aside></div></div></Container></Section>
+      <Section spacing="none" className="pb-6 sm:pb-8"><Container className="max-w-6xl"><div className="grid gap-4 md:grid-cols-3">{resourceFormats.map(([title, description, Icon]) => (<article key={title} className="rounded-2xl border border-border bg-surface p-5 shadow-sm"><span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-background text-primary"><Icon aria-hidden="true" className="size-5" /></span><h2 className="mt-4 text-lg font-semibold tracking-tight">{title}</h2><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></article>))}</div></Container></Section>
+      <Section spacing="none" className="pb-8 sm:pb-10"><Container className="max-w-6xl"><div className="flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Biblioteca de recursos</p><h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Elige un siguiente paso util.</h2></div><p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-right">Explora guias, playbooks y recursos utiles para planear tu siguiente mejora Shopify.</p></div>{resources.length ? <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{resources.map((resource) => { const displayDate = resource.updatedAt ?? resource.publishedAt; return <Link key={resource.slug} href={`/resources/${resource.slug}`} className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/45">{resource.coverImage ? <div className="-mx-6 -mt-6 mb-6 overflow-hidden border-b border-border bg-muted"><img src={publicImageSrc(resource.coverImage)} alt={resource.title} className="aspect-[16/9] w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" /></div> : null}<div className="flex items-start justify-between gap-4"><span className="inline-flex size-11 items-center justify-center rounded-xl border border-border bg-muted/60 text-primary"><FileText aria-hidden="true" className="size-5" /></span><span className="rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold text-primary">{resource.resourceType}</span></div><h3 className="mt-6 text-2xl font-semibold tracking-tight transition-colors group-hover:text-primary">{resource.title}</h3><p className="mt-3 text-sm leading-7 text-muted-foreground">{resource.excerpt}</p>{resource.audience ? <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground"><UsersRound aria-hidden="true" className="size-3.5 text-primary" />{resource.audience}</span> : null}<div className="mt-auto flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between"><span className="inline-flex items-center gap-2 text-sm text-muted-foreground"><Clock3 aria-hidden="true" className="size-4" />{resource.readingTime} min de lectura</span><time dateTime={displayDate} className="text-sm font-medium text-muted-foreground">{formatResourceDate(displayDate)}</time></div><span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors group-hover:text-primary">Abrir recurso<ArrowRight aria-hidden="true" className="size-4" /></span></Link>; })}</div> : <div className="mt-6 grid place-items-center rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center"><FileText aria-hidden="true" className="size-8 text-primary" /><h3 className="mt-4 text-2xl font-semibold tracking-tight">Nuevos recursos estan en camino.</h3><p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Guias, plantillas y playbooks apareceran aqui pronto.</p></div>}</Container></Section>
+      <Section spacing="none" className="pb-12 sm:pb-16"><Container className="max-w-6xl"><div className="rounded-3xl border border-border bg-surface p-5 shadow-sm sm:p-6"><div className="mt-1 grid gap-4 md:grid-cols-2">{relatedLinks.map(([href, label, description, Icon]) => (<Link key={href} href={href} className="group rounded-2xl border border-border bg-background p-5 transition-all hover:-translate-y-0.5 hover:border-primary/40"><span className="inline-flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-primary"><Icon aria-hidden="true" className="size-5" /></span><h3 className="mt-4 text-lg font-semibold tracking-tight transition-colors group-hover:text-primary">{label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p></Link>))}</div></div></Container></Section>
+    </>
+  );
+}

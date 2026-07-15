@@ -1,13 +1,17 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { appsMegaMenu, primaryNavigation } from "@/config/navigation";
+import { getAppsMegaMenu, getPrimaryNavigation } from "@/lib/i18n/navigation";
 
 import { Container } from "../ui/container";
 import { BrandMark } from "./brand-mark";
 import { MegaMenu } from "./mega-menu";
 import { SearchBar } from "./search-bar";
 import { ThemeSwitcher } from "./theme-switcher";
+import { LanguageSwitcher } from "./language-switcher";
 
 const MobileMenu = dynamic(() => import("./mobile-menu").then((m) => m.MobileMenu));
 
@@ -18,10 +22,14 @@ const demoLinkClass =
   "inline-flex h-10 items-center justify-center rounded-[6px] bg-primary px-4 text-sm font-bold text-primary-foreground shadow-[0_14px_28px_-18px_hsl(var(--primary)/0.75)] transition hover:bg-primary/90 hover:shadow-[0_16px_30px_-18px_hsl(var(--primary)/0.9)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export function SiteHeader() {
+  const pathname = usePathname() || "/";
+  const locale = pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en";
+  const primaryNavigation = getPrimaryNavigation(locale);
+  const appsMegaMenu = getAppsMegaMenu(locale);
   const appsNavigationItem = primaryNavigation.find((item) => item.label === "Apps");
-  const demoNavigationItem = primaryNavigation.find((item) => item.label === "Book a Demo");
+  const demoNavigationItem = primaryNavigation[primaryNavigation.length - 1];
   const regularNavigationItems = primaryNavigation.filter(
-    (item) => item.label !== "Apps" && item.label !== "Book a Demo",
+    (item) => item !== appsNavigationItem && item !== demoNavigationItem,
   );
 
   return (
@@ -33,7 +41,7 @@ export function SiteHeader() {
         <Link
           href="/"
           className="flex min-w-0 items-center gap-3 text-foreground"
-          aria-label="Hyper Apps by NiagaraT homepage"
+          aria-label={locale === "es" ? "Pagina principal de Hyper Apps by NiagaraT" : "Hyper Apps by NiagaraT homepage"}
         >
           <BrandMark className="h-9 w-9 shrink-0" />
           <span className="hidden leading-tight sm:block">
@@ -69,6 +77,10 @@ export function SiteHeader() {
           <ThemeSwitcher />
         </div>
 
+        <div className="hidden md:block">
+          <LanguageSwitcher />
+        </div>
+
         {demoNavigationItem ? (
           <Link
             href={demoNavigationItem.href}
@@ -80,8 +92,11 @@ export function SiteHeader() {
           </Link>
         ) : null}
 
-        <MobileMenu navigation={primaryNavigation} megaMenuColumns={appsMegaMenu} />
+        <MobileMenu navigation={primaryNavigation} megaMenuColumns={appsMegaMenu} locale={locale} />
       </Container>
     </header>
   );
 }
+
+
+

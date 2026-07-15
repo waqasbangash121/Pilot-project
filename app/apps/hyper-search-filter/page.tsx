@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/section";
 import { AppPageLinkSection } from "@/components/app-page-link-section";
 import { ProductVisualGallery } from "@/components/product-visual-gallery";
 import { canonicalUrl } from "@/config/metadata";
+import { languageAlternates } from "@/lib/i18n/metadata";
 import { getHyperApp, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 import { toJsonLd } from "@/lib/schema";
 
@@ -29,7 +30,7 @@ const pricingNote = "Plans and limits may change. The Shopify App Store listing 
 export const metadata = {
   title: { absolute: "Shopify AI Search & Product Filter App | Hyper" },
   description: "Add AI search, instant suggestions, typo tolerance, collection filters and search analytics to Shopify. Install Hyper Search & Filter free.",
-  alternates: { canonical: pageUrl },
+  alternates: languageAlternates(searchApp.internalHref),
   openGraph: {
     type: "website",
     url: pageUrl,
@@ -256,6 +257,8 @@ export default function HyperSearchFilterPage() {
 function FitList({ title, items, muted = false }: { title: string; items: string[]; muted?: boolean }) {
   return <article className="rounded-[8px] border border-border bg-surface p-6"><h3 className="text-xl font-black tracking-normal">{title}</h3><ul className="mt-5 space-y-3">{items.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-muted-foreground"><CheckCircle2 aria-hidden="true" className={`mt-0.5 size-4 shrink-0 ${muted ? "text-muted-foreground" : "text-primary"}`} /><span>{item}</span></li>)}</ul></article>;
 }
+
+
 
 
 

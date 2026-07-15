@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, ExternalLink } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { canonicalUrl } from "@/config/metadata";
+import { languageAlternates } from "@/lib/i18n/metadata";
 import { hyperApps, hyperAppsUpdatedAt } from "@/data/hyper-apps";
 
 const title = "Compare Hyper Shopify Apps: Search, Chat & Video | NiagaraT";
@@ -14,7 +15,7 @@ const description =
 export const metadata = {
   title: { absolute: title },
   description,
-  alternates: { canonical: canonicalUrl("/apps") },
+  alternates: languageAlternates("/apps"),
   openGraph: {
     type: "website",
     url: canonicalUrl("/apps"),
@@ -911,3 +912,5 @@ function Diagnostic({ title, items }: { title: string; items: string[] }) {
     </div>
   );
 }
+
+

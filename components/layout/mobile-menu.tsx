@@ -9,13 +9,15 @@ import type { MegaMenuColumn, RouteItem } from "@/types";
 import { Button } from "../ui/button";
 import { SearchBar } from "./search-bar";
 import { ThemeSwitcher } from "./theme-switcher";
+import { LanguageSwitcher } from "./language-switcher";
 
 type MobileMenuProps = {
   navigation: RouteItem[];
   megaMenuColumns: MegaMenuColumn[];
+  locale?: "en" | "es";
 };
 
-export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
+export function MobileMenu({ navigation, megaMenuColumns, locale = "en" }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -57,7 +59,7 @@ export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
               </p>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
-              Close
+              {locale === "es" ? "Cerrar" : "Close"}
             </Button>
           </div>
           <SearchBar compact />
@@ -65,7 +67,7 @@ export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
 
         <nav aria-label="Mobile navigation" className="flex-1 overflow-y-auto p-3">
           <p className="px-3 pb-2 pt-1 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-            Apps
+            {locale === "es" ? "Apps" : "Apps"}
           </p>
           <ul className="space-y-1">
             {productLinks.map((item) => (
@@ -85,7 +87,7 @@ export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
           </ul>
 
           <p className="mt-4 px-3 pb-2 pt-1 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-            Company
+            {locale === "es" ? "Empresa" : "Company"}
           </p>
           <ul className="space-y-1">
             {regularLinks.map((item) => (
@@ -114,12 +116,13 @@ export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
               {demoLink.label}
             </Link>
           ) : null}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Mode
+              {locale === "es" ? "Modo" : "Mode"}
             </p>
             <ThemeSwitcher />
           </div>
+          <LanguageSwitcher />
         </div>
       </div>
     </div>
@@ -131,15 +134,18 @@ export function MobileMenu({ navigation, megaMenuColumns }: MobileMenuProps) {
         variant="outline"
         size="sm"
         className="ml-auto border-primary/30 text-primary hover:border-primary/45 hover:bg-primary/10 md:hidden"
-        aria-label="Open mobile menu"
+        aria-label={locale === "es" ? "Abrir menu movil" : "Open mobile menu"}
         aria-expanded={isOpen}
         aria-controls="mobile-nav-panel"
         onClick={() => setIsOpen(true)}
       >
-        Menu
+        {locale === "es" ? "Menu" : "Menu"}
       </Button>
 
       {mounted ? createPortal(menu, document.body) : null}
     </>
   );
 }
+
+
+

@@ -8,6 +8,27 @@ import { getAllComparisons } from "@/lib/comparisons";
 import { getAllResources } from "@/lib/resources";
 import { getAllTools } from "@/lib/tools";
 
+const localizedSpanishStaticRoutes = [
+  "/es",
+  "/es/about",
+  "/es/apps",
+  "/es/apps/hyper-search-filter",
+  "/es/apps/hyper-ai-chat-faq",
+  "/es/apps/hyper-shoppable-videos",
+  "/es/blog",
+  "/es/case-studies",
+  "/es/comparisons",
+  "/es/contact",
+  "/es/cookie-policy",
+  "/es/pricing",
+  "/es/privacy",
+  "/es/resources",
+  "/es/search",
+  "/es/team",
+  "/es/terms",
+  "/es/tools",
+];
+
 const publicStaticRoutes = [
   "/",
   "/about",
@@ -93,6 +114,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: routePriority(route),
   }));
 
+  const spanishStaticEntries: MetadataRoute.Sitemap = localizedSpanishStaticRoutes.map((route) => ({
+    url: new URL(route, siteConfig.url).toString(),
+    changeFrequency: route === "/es" || route.startsWith("/es/apps") ? "weekly" : "monthly",
+    priority: route === "/es" ? 0.92 : route.includes("/apps") ? 0.84 : 0.72,
+  }));
+
   const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
     url: new URL(`/blog/${post.slug}`, siteConfig.url).toString(),
     lastModified: contentDate(post.updatedAt, post.publishedAt),
@@ -130,6 +157,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticEntries,
+    ...spanishStaticEntries,
     ...blogEntries,
     ...comparisonEntries,
     ...resourceEntries,
@@ -137,3 +165,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...toolEntries,
   ];
 }
+
+
+

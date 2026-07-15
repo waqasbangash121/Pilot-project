@@ -67,6 +67,47 @@ type PageMetadataInput = {
 };
 
 const MAX_PAGE_TITLE_LENGTH = 62;
+const localizedStaticRoutes = new Set([
+  "/",
+  "/about",
+  "/apps",
+  "/apps/hyper-search-filter",
+  "/apps/hyper-ai-chat-faq",
+  "/apps/hyper-shoppable-videos",
+  "/blog",
+  "/case-studies",
+  "/comparisons",
+  "/contact",
+  "/cookie-policy",
+  "/pricing",
+  "/privacy",
+  "/resources",
+  "/search",
+  "/team",
+  "/terms",
+  "/tools",
+]);
+
+function localizedAlternates(path: string): Metadata["alternates"] {
+  const cleanPath = path === "/" ? "/" : path.replace(/\/+$|[?#].*/g, "");
+
+  if (!localizedStaticRoutes.has(cleanPath)) {
+    return {
+      canonical: canonicalUrl(path),
+    };
+  }
+
+  const spanishPath = cleanPath === "/" ? "/es" : `/es${cleanPath}`;
+
+  return {
+    canonical: canonicalUrl(path),
+    languages: {
+      en: canonicalUrl(cleanPath),
+      es: canonicalUrl(spanishPath),
+      "x-default": canonicalUrl(cleanPath),
+    },
+  };
+}
 
 export function compactPageTitle(title: string): string {
   if (title.length <= MAX_PAGE_TITLE_LENGTH) return title;
@@ -83,9 +124,7 @@ export function createPageMetadata({ title, description, path }: PageMetadataInp
     ...defaultMetadata,
     title: compactTitle,
     description,
-    alternates: {
-      canonical: canonicalUrl(path),
-    },
+    alternates: localizedAlternates(path),
     openGraph: {
       ...defaultMetadata.openGraph,
       title: compactTitle,
@@ -99,3 +138,6 @@ export function createPageMetadata({ title, description, path }: PageMetadataInp
     },
   };
 }
+
+
+
