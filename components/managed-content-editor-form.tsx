@@ -29,7 +29,12 @@ import {
   EditorAccordion,
 } from "@/components/admin/collapsible-editor-section";
 import { ContentPreview } from "@/components/admin/content-preview";
-import { BlogAuditPanel, type BlogAuditResult } from "@/components/blog-audit-panel";
+import {
+  BlogAuditFeedback,
+  BlogAuditPanel,
+  BlogKeywordIdeas,
+  type BlogAuditResult,
+} from "@/components/blog-audit-panel";
 import { MarkdownBlockEditor } from "@/components/markdown-block-editor";
 import type {
   ManagedContentInput,
@@ -532,6 +537,10 @@ export function ManagedContentEditorForm({
     }),
     [item, parsedTags],
   );
+  const auditChecks = useMemo(
+    () => new Map((auditResult?.article.checks ?? []).map((check) => [check.id, check])),
+    [auditResult],
+  );
   const aiAudience = item.audience || item.industry || item.useCase;
   const moduleReadinessItem = useMemo(() => {
     if (type === "comparison") {
@@ -585,6 +594,13 @@ export function ManagedContentEditorForm({
 
   function showToast(toastDetails: Omit<ToastState, "id">) {
     setToast({ ...toastDetails, id: Date.now() });
+  }
+
+  function feedbackFor(...ids: string[]) {
+    return ids.flatMap((id) => {
+      const check = auditChecks.get(id);
+      return check ? [check] : [];
+    });
   }
 
   function update<K extends keyof ManagedContentInput>(key: K, value: ManagedContentInput[K]) {
@@ -1007,6 +1023,7 @@ export function ManagedContentEditorForm({
             icon={FileText}
             eyebrow="Content brief"
             title="Page details"
+            description="Start with the title, keyword, URL, and summary. These fields drive the review feedback and public preview."
           >
             <div className="grid gap-5">
               <label className={fieldLabelClass}>
@@ -1019,6 +1036,7 @@ export function ManagedContentEditorForm({
                   placeholder={copy.titlePlaceholder}
                 />
               </label>
+              <BlogAuditFeedback checks={feedbackFor("title-keyword")} />
               <InlineAiSuggestionPanel
                 module={type}
                 title="Title suggestion"
@@ -1046,6 +1064,12 @@ export function ManagedContentEditorForm({
                   placeholder={copy.focusPlaceholder}
                 />
               </label>
+              <BlogAuditFeedback checks={feedbackFor("focus-keyword")} />
+              <BlogKeywordIdeas
+                title="Secondary keyword ideas"
+                description="Use these phrases where they genuinely support the page topic."
+                ideas={auditResult?.keywordIdeas.secondary ?? []}
+              />
               <InlineAiSuggestionPanel
                 module={type}
                 title="Focus keyword suggestion"
@@ -1081,6 +1105,7 @@ export function ManagedContentEditorForm({
                   Generate slug
                 </button>
               </div>
+              <BlogAuditFeedback checks={feedbackFor("slug-keyword")} />
               <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground">
                 <Globe2 aria-hidden="true" className="size-4 shrink-0" />
                 <span className="truncate">Public URL: {publicUrl}</span>
@@ -1096,6 +1121,7 @@ export function ManagedContentEditorForm({
                 />
                 <CharacterMeter value={item.excerpt} min={120} max={350} />
               </label>
+              <BlogAuditFeedback checks={feedbackFor("excerpt-keyword")} />
               <InlineAiSuggestionPanel
                 module={type}
                 title="Excerpt suggestion"
@@ -1192,6 +1218,7 @@ export function ManagedContentEditorForm({
                   Separate tags with commas. Maximum 10 tags.
                 </span>
               </label>
+              <BlogAuditFeedback checks={feedbackFor("tag-keywords")} />
               <InlineAiSuggestionPanel
                 module={type}
                 title="Tag suggestions"
@@ -1265,7 +1292,7 @@ export function ManagedContentEditorForm({
             icon={ImageIcon}
             eyebrow="Visual draft"
             title={copy.contentLabel}
-            badge="Direct answers help search"
+            badge="H2 sections recommended"
           >
             <div className="grid gap-4">
               <div className="grid gap-3 lg:grid-cols-3">
@@ -1321,6 +1348,24 @@ export function ManagedContentEditorForm({
                 onChange={(content) => update("content", content)}
               />
             </div>
+            <div className="mt-4">
+              <BlogAuditFeedback
+                checks={feedbackFor(
+                  "content-depth",
+                  "content-keyword",
+                  "intro-keyword",
+                  "heading-coverage",
+                  "question-coverage",
+                )}
+              />
+            </div>
+            <div className="mt-4">
+              <BlogKeywordIdeas
+                title={`Questions to answer in the ${copy.singular}`}
+                description="Turn the most relevant questions into H2 sections, then answer each directly in the first paragraph below it."
+                ideas={auditResult?.keywordIdeas.questions ?? []}
+              />
+            </div>
           </CollapsibleEditorSection>
 
           <ContentPreview type={type} item={auditItem} tags={parsedTags} publicUrl={publicUrl} />
@@ -1330,6 +1375,7 @@ export function ManagedContentEditorForm({
             icon={Globe2}
             eyebrow="Search and social"
             title="SEO preview"
+            description="These fields control the document title, meta description, social preview, and structured page metadata."
           >
             <div className="grid gap-5">
               <label className={fieldLabelClass}>
@@ -1343,6 +1389,7 @@ export function ManagedContentEditorForm({
                 />
                 <CharacterMeter value={item.seoTitle} min={35} max={70} />
               </label>
+              <BlogAuditFeedback checks={feedbackFor("seo-title-keyword")} />
               <InlineAiSuggestionPanel
                 module={type}
                 title="SEO title suggestion"
@@ -1370,6 +1417,7 @@ export function ManagedContentEditorForm({
                 />
                 <CharacterMeter value={item.seoDescription} min={110} max={180} />
               </label>
+              <BlogAuditFeedback checks={feedbackFor("seo-description-keyword")} />
               <InlineAiSuggestionPanel
                 module={type}
                 title="Meta description suggestion"
