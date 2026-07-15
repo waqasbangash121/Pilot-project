@@ -17,7 +17,29 @@ function deviceType(): EventParams["device_type"] {
   return window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop";
 }
 
+function isAdminUrl(value: string | undefined): boolean {
+  if (!value) return false;
+
+  try {
+    const pathname = value.startsWith("http://") || value.startsWith("https://") ? new URL(value).pathname : value;
+    return pathname === "/admin" || pathname.startsWith("/admin/");
+  } catch {
+    return false;
+  }
+}
+
+function shouldTrackAnalytics(): boolean {
+  if (process.env.NODE_ENV !== "production") return false;
+  if (typeof window === "undefined") return false;
+
+  const pathname = window.location.pathname;
+  return pathname !== "/admin" && !pathname.startsWith("/admin/");
+}
+
 function sendEvent(eventName: string, params: EventParams) {
+  if (!shouldTrackAnalytics()) return;
+  if (isAdminUrl(params.link_url) || isAdminUrl(params.destination)) return;
+
   const payload = { ...params, device_type: params.device_type || deviceType() };
   window.gtag?.("event", eventName, payload);
   window.va?.("event", { name: eventName, ...payload });
@@ -26,6 +48,8 @@ function sendEvent(eventName: string, params: EventParams) {
 
 export function AnalyticsEventTracker() {
   useEffect(() => {
+    if (!shouldTrackAnalytics()) return;
+
     function onClick(event: MouseEvent) {
       const target = event.target as Element | null;
       const tracked = target?.closest<HTMLElement>("[data-analytics-event]");

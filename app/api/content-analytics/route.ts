@@ -29,6 +29,21 @@ async function readJson(request: NextRequest): Promise<JsonBody | null> {
   }
 }
 
+function isAdminPath(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+
+  try {
+    const pathname = value.startsWith("http://") || value.startsWith("https://") ? new URL(value).pathname : value;
+    return pathname === "/admin" || pathname.startsWith("/admin/");
+  } catch {
+    return false;
+  }
+}
+
+function isAdminAnalyticsPayload(body: JsonBody): boolean {
+  return isAdminPath(body.path) || isAdminPath(body.targetUrl) || isAdminPath(body.referrer);
+}
+
 function toAnalyticsInput(body: JsonBody): RecordContentAnalyticsInput {
   return {
     contentType: body.contentType,
@@ -55,6 +70,10 @@ export async function POST(request: NextRequest) {
   const body = await readJson(request);
   if (!body) {
     return NextResponse.json({ ok: false }, { status: 400 });
+  }
+
+  if (isAdminAnalyticsPayload(body)) {
+    return NextResponse.json({ ok: true, recorded: false });
   }
 
   try {

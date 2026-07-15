@@ -74,9 +74,29 @@ function postEvent(payload: Record<string, unknown>): void {
   }).catch(() => undefined);
 }
 
+function isAdminPath(pathname: string): boolean {
+  return pathname === "/admin" || pathname.startsWith("/admin/");
+}
+
+function isAdminUrl(value: string): boolean {
+  try {
+    const pathname = value.startsWith("http://") || value.startsWith("https://") ? new URL(value).pathname : value;
+    return isAdminPath(pathname);
+  } catch {
+    return false;
+  }
+}
+
+function shouldTrackContentAnalytics(path: string): boolean {
+  if (process.env.NODE_ENV !== "production") return false;
+  if (typeof window === "undefined") return false;
+
+  return !isAdminUrl(window.location.pathname) && !isAdminUrl(path);
+}
+
 export function ContentAnalyticsTracker({ contentType, slug, path }: ContentAnalyticsTrackerProps) {
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production") return;
+    if (!shouldTrackContentAnalytics(path)) return;
 
     const visitorId = getOrCreateCookie(VISITOR_COOKIE, VISITOR_MAX_AGE_SECONDS);
     const sessionId = getOrCreateCookie(SESSION_COOKIE, SESSION_MAX_AGE_SECONDS);
